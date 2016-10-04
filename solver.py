@@ -1,5 +1,11 @@
+# -*- coding: utf-8 -*-
+# @Author: Luis Perez
+# @Date:   2016-10-04 16:14:34
+# @Last Modified by:   Luis Perez
+# @Last Modified time: 2016-10-04 16:17:52
+
 '''
-Solver for game.
+Solver for Make 24 Game
 '''
 
 
