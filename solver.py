@@ -2,7 +2,7 @@
 # @Author: Luis Perez
 # @Date:   2016-10-04 16:14:34
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-04 16:17:52
+# @Last Modified time: 2016-10-04 17:40:31
 
 '''
 Solver for Make 24 Game
@@ -29,7 +29,6 @@ def numberOfSolutions(numbers, returnWays=False):
         return None
 
     ways = waysToK(numbers, 24.0)
-    print "There are {} ways to make 24 using {}.".format(len(ways), numbers)
 
     if returnWays:
         return len(ways), ways
