@@ -2,11 +2,13 @@
 # @Author: Luis Perez
 # @Date:   2016-10-04 16:14:34
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-04 17:40:31
+# @Last Modified time: 2016-10-05 18:26:27
 
 '''
 Solver for Make 24 Game
 '''
+
+import formatter
 
 
 def numberOfSolutions(numbers, returnWays=False):
@@ -65,25 +67,26 @@ def waysToK(S, k):
         newSet = S[:i] + S[i + 1:]
 
         # k = number + X or k = X + number
-        ways += map(lambda el: "{} + {}".format(el, integer),
-                    waysToK(newSet, k - number))
+        ways += [formatter.addition(el, integer)
+                 for el in waysToK(newSet, k - number)]
         # k = number - X
-        ways += map(lambda el: "{} - ({})".format(integer, el),
-                    waysToK(newSet, number - k))
+        ways += [formatter.subtractedFrom(el, integer)
+                 for el in waysToK(newSet, number - k)]
         # k = X - number
-        ways += map(lambda el: "{} - {}".format(el, integer),
-                    waysToK(newSet, k + number))
+        ways += [formatter.subtractFrom(el, integer)
+                 for el in waysToK(newSet, k + number)]
+
         # k = X / number
-        ways += map(lambda el: "({}) / {}".format(el, integer),
-                    waysToK(newSet, k * number))
+        ways += [formatter.divideBy(el, integer)
+                 for el in waysToK(newSet, k * number)]
         # k = number / X
         if k != 0:
-            ways += map(lambda el: "{} / ({})".format(integer, el),
-                        waysToK(newSet, number / k))
+            ways += [formatter.dividedBy(el, integer)
+                     for el in waysToK(newSet, number / k)]
         # k = number * X
         if number != 0:
-            ways += map(lambda el: "({}) * {}".format(el, integer),
-                        waysToK(newSet, k / number))
+            ways += [formatter.multiplication(el, integer)
+                     for el in waysToK(newSet, k / number)]
 
     # remove duplicates
     ways = list(set(ways))
