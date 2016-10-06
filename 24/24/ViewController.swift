@@ -14,43 +14,46 @@ typealias Rational = (num : Int, den : Int)
 
 class ViewController: UIViewController {
     
+    // Answer board area.
     @IBOutlet weak var answerNumber1Label: UILabel!
     @IBOutlet weak var answerOperationLabel: UILabel!
     @IBOutlet weak var answerNumber2Label: UILabel!
-    // if users taps a filled answer
-    @IBOutlet var tappedAnswer1: UITapGestureRecognizer!
-    @IBOutlet var tappedOperation: UITapGestureRecognizer!
-    @IBOutlet var tappedAnswer2: UITapGestureRecognizer!
     
+    // Operations below answer board
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var clearButton: UIButton!
     @IBOutlet weak var newSetButton: UIButton!
     
+    // Player buttons
     @IBOutlet weak var number1Button: UIButton!
     @IBOutlet weak var number2Button: UIButton!
     @IBOutlet weak var number3Button: UIButton!
     @IBOutlet weak var number4Button: UIButton!
+    var numberButtons = [UIButton!]()
     
+    // Player operations
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var minusButton: UIButton!
     @IBOutlet weak var multiplyButton: UIButton!
     @IBOutlet weak var divideButton: UIButton!
     
-    
+    // Game options
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var leaderboardButton: UIButton!
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var soundIcon: UIImageView!
     
-    var answersFilled = 0
-    var numbersLeft = 4
+    // Gameplay related variables
+    var answersFilled: Int = 0
+    var numbersLeft: Int = 4
     var currentNumbers = [Int:Int]()
     
     
     // sound related variables
-    var silent = false
-    var player: AVAudioPlayer?
+    var silent: Bool = false
+    var player: AVAudioPlayer? = nil
     var backgroundMusicPlayer = AVAudioPlayer()
+    
     let pop = NSBundle.mainBundle().URLForResource("pop", withExtension: "mp3")!
     let glassPing = NSBundle.mainBundle().URLForResource("calculated", withExtension: "mp3")!
     let computerMistake = NSBundle.mainBundle().URLForResource("computer_error", withExtension: "mp3")!
@@ -60,7 +63,34 @@ class ViewController: UIViewController {
     
     // seconds to wait
     let triggerTime = Int64(500000000)
+
+    /*********
+     * View Class Functions
+     *********/
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        
+        initializeNumbers()
+        playBackgroundMusic(ambientSound)
+        
+        // make sure the mute button has text left aligned
+        muteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        
+        answerNumber1Label.userInteractionEnabled = true
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer))
+        answerNumber1Label.addGestureRecognizer(gestureRecognizer)
+        
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
+    /*****************
+     * Sound Functions
+     *****************/
     func playSound(sound: NSURL) {
         if silent == false {
             do {
@@ -94,63 +124,28 @@ class ViewController: UIViewController {
         if silent == true {
             backgroundMusicPlayer.stop()
             backgroundMusicPlayer.currentTime = 0
-            return
-        }
-        if backgroundMusicPlayer.playing {
-            backgroundMusicPlayer.stop()
-            backgroundMusicPlayer.currentTime = 0
         }
         else {
-            backgroundMusicPlayer.numberOfLoops = -1
-            backgroundMusicPlayer.prepareToPlay()
-            backgroundMusicPlayer.play()
+            if backgroundMusicPlayer.playing {
+                backgroundMusicPlayer.stop()
+                backgroundMusicPlayer.currentTime = 0
+            }
+            else {
+                backgroundMusicPlayer.numberOfLoops = -1
+                backgroundMusicPlayer.prepareToPlay()
+                backgroundMusicPlayer.play()
+            }
         }
     }
     
-    @IBAction func turnOnOffAudio(sender: AnyObject) {
-        // if currently not silent
-        if silent == false {
-            // make silent
-            silent = true
-            muteButton.setTitle(" UNMUTE", forState: .Normal)
-            soundIcon.image = UIImage(named: "mute_white")
-        }
-        else {
-            print("turning sound on")
-            silent = false
-            muteButton.setTitle("    MUTE", forState: .Normal)
-            soundIcon.image = UIImage(named: "sound_white")
-        }
-        startStopBackgroundMusic()
-    }
-    
-    
-    // end testing sound
-
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        initializeNumbers()
-        playBackgroundMusic(ambientSound)
-        
-        // make sure the mute button has text left aligned
-        muteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+    /*******
+     * Gameplay Functions
+     *******/
     func initializeNumbers() {
-        numbersLeft = 4
         clearAnswers()
 
         // initalize numbers to random between 1 and 9
-        let numberButtons = [number1Button, number2Button, number3Button, number4Button]
+        numberButtons = [number1Button, number2Button, number3Button, number4Button]
         for button in numberButtons {
             let randomNumber = Int(arc4random_uniform(9) + 1)
             button.setTitle(String(randomNumber), forState: .Normal)
@@ -158,8 +153,103 @@ class ViewController: UIViewController {
             // make sure the button has a background
         button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
         }
+        
+        numbersLeft = 4
     }
     
+    func computeAnswer() {
+        // make calculation for new number
+        let parse1: Double? = parseFromString(answerNumber1Label.text!)
+        let parse2: Double? = parseFromString(answerNumber2Label.text!)
+        
+        if parse1 == nil || parse2 == nil {
+            print("Could not parse answers!")
+            return
+        }
+        
+        var answer: Double = 0.0
+        let number1: Double = parse1!
+        let number2: Double = parse2!
+        if answerOperationLabel.text == "+" {
+            answer = number1 + number2
+        }
+        else if answerOperationLabel.text == "-" {
+            answer = number1 - number2
+        }
+        else if answerOperationLabel.text == "x" {
+            answer = number1 * number2
+        }
+        else if answerOperationLabel.text == "/" {
+            if number2 == 0 {
+                startStopBackgroundMusic()
+                
+                let alert = UIAlertController(title: "Invalid Operation", message: "Division by zero is not allowed! ", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+                self.presentViewController(alert, animated: true, completion: nil)
+                playSound(computerMistake)
+                return clearBoard()
+            }
+            answer = number1 / number2
+        }
+        
+        setNumberButton(answerNumber2Label.tag, text: formatAsString(answer))
+        clearAnswers()
+        
+        // decrement numbers left
+        numbersLeft = numbersLeft - 1
+        
+        // check to see if we won
+        if numbersLeft == 1 {
+            if answer == 24 {
+                congratulations()
+            }
+            else {
+                fails()
+            }
+        }
+        else {
+            // only play sound if not win or lose
+            playSound(glassPing)
+        }
+    }
+    
+    // We can only ever tap the first answer!
+    func tapAnswer() {
+        if answerNumber1Label.text != " "{
+            setNumberButton(answerNumber1Label.tag, text: answerNumber1Label.text!)
+            answerNumber1Label.text = " "
+        }
+    }
+    
+    func tapOperation() {
+        answerOperationLabel.text = " "
+    }
+    
+    func congratulations() {
+        startStopBackgroundMusic()
+        playSound(congrats)
+        let alert = UIAlertController(title: "Congratulations!", message: "You won!! Yays!! ", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Play Again", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        scoreLabel.text = String(Int(scoreLabel.text!)! + 1)
+        initializeNumbers()
+    }
+    
+    func fails() {
+        startStopBackgroundMusic()
+        playSound(fail)
+        
+        let alert = UIAlertController(title: "You Failed", message: "Sorry kid!", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+        reset()
+    }
+    
+    /*********
+     * Graphical Functions
+     **********/
     func clearAnswers(){
         answerNumber1Label.text = " "
         answerNumber2Label.text = " "
@@ -168,8 +258,41 @@ class ViewController: UIViewController {
         answersFilled = 0
     }
     
-    // Helper functions
+    func setNumberButton(index: Int, text: String) {
+        numberButtons[index].setTitle(text, forState: .Normal)
+        numberButtons[index].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
+    }
     
+    func clearNumberButton(index: Int){
+        numberButtons[index].setTitle(" ", forState: .Normal)
+        // sets number button to blank background color
+        numberButtons[index].setBackgroundImage(nil, forState: .Normal)
+    }
+    
+    func clearBoard() {
+        // Move selected numbers back to board
+        if answerNumber1Label.text != " "{
+            setNumberButton(answerNumber1Label.tag, text: answerNumber1Label.text!)
+        }
+        if answerNumber2Label.text != " "{
+            setNumberButton(answerNumber2Label.tag, text: answerNumber2Label.text!)
+        }
+        clearAnswers()
+    }
+    
+    func reset(){
+        numbersLeft = 4
+        for button in numberButtons {
+            let originalNumber = Int(currentNumbers[button.tag]!)
+            button.setTitle(String(originalNumber), forState: .Normal)
+            button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
+        }
+        clearAnswers()
+    }
+    
+    /************
+     * Integer functions
+     ************/
     // LCM for Double using continued fraction approximation for fast convergence.
     // For more about this method, see: https://en.wikipedia.org/wiki/Continued_fraction
     // For code see: http://stackoverflow.com/questions/28349864/algorithm-for-lcm-of-doubles-in-swift/28352004#28352004
@@ -195,10 +318,10 @@ class ViewController: UIViewController {
         return String(format:"%d/%d", res.num, res.den)
     }
     
-    func parseFromString(text: String) -> Double {
+    func parseFromString(text: String) -> Double? {
         let comps = text.componentsSeparatedByString("/")
         if comps.count == 1 {
-            return Double(text)!
+            return Double(text)
         }
         else {
             if comps.count > 2 {
@@ -213,90 +336,34 @@ class ViewController: UIViewController {
             return num / den
         }
     }
-    
-    func computeAnswer() {
-        let numberButtons = [number1Button, number2Button, number3Button, number4Button]
-        
-        // make calculation for new number
-        let number1 = parseFromString(answerNumber1Label.text!)
-        let number2 = parseFromString(answerNumber2Label.text!)
-        
-        var answer: Double = 0.0
-        
-        if answerOperationLabel.text == "+" {
-            answer = number1 + number2
-        }
-        else if answerOperationLabel.text == "-" {
-            answer = number1 - number2
-        }
-        else if answerOperationLabel.text == "x" {
-            answer = number1 * number2
-        }
-        else if answerOperationLabel.text == "/" {
-            if number2 == 0 {
-                startStopBackgroundMusic()
-                let alert = UIAlertController(title: "Invalid Operation", message: "Division by zero is not allowed! ", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
-                self.presentViewController(alert, animated: true, completion: nil)
-                playSound(computerMistake)
-                return clearBoard("")
-            }
-            answer = number1 / number2
-        }
-        
-        numberButtons[Int(answerNumber2Label.tag)].setTitle(formatAsString(answer), forState: .Normal)
-        
-        numberButtons[Int(answerNumber2Label.tag)].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
-    
-        clearAnswers()
-        
-        
-        // decrement numbers left
-        numbersLeft = numbersLeft - 1
-        
-        // check to see if we won
-        if numbersLeft == 1 {
-            if answer == 24 {
-                congratulations()
-            }
-            else {
-                fails()
-            }
+
+    /******
+     * User Actions
+     ******/
+    @IBAction func turnOnOffAudio(sender: AnyObject) {
+        if !silent {
+            silent = true
+            muteButton.setTitle(" UNMUTE", forState: .Normal)
+            soundIcon.image = UIImage(named: "mute_white")
         }
         else {
-            // only play sound if not win or lose
-            playSound(glassPing)
+            silent = false
+            muteButton.setTitle("    MUTE", forState: .Normal)
+            soundIcon.image = UIImage(named: "sound_white")
         }
+        startStopBackgroundMusic()
     }
     
-    // populate the labels
     @IBAction func populateAnswers(sender: AnyObject) {
-        
-        let numberButtons = [number1Button, number2Button, number3Button, number4Button]
-        
-        if answerNumber1Label.text == " " {
-            answersFilled = answersFilled + 1;
-            answerNumber1Label.text = sender.currentTitle!
-            answerNumber1Label.tag = sender.tag
-            //play pop sound
+        if answerNumber1Label.text == " " || answerNumber2Label.text == " " {
+            let openLabel = answerNumber1Label.text == " " ? answerNumber1Label : answerNumber2Label
+            openLabel.text = sender.currentTitle!
+            openLabel.tag = sender.tag
+            if answersFilled < 3{
+                answersFilled = answersFilled + 1;
+            }
             playSound(pop)
-            
-            // set the number label to blank
-            // tag maps to index of buttons
-            numberButtons[Int(sender.tag)].setTitle(" ", forState: .Normal)
-            // sets number button to blank background color
-            numberButtons[Int(sender.tag)].setBackgroundImage(nil, forState: .Normal)
-        }
-        else if answerNumber2Label.text == " " {
-            //play pop sound
-            playSound(pop)
-            answersFilled = answersFilled + 1
-            answerNumber2Label.tag = sender.tag
-            answerNumber2Label.text = sender.currentTitle!;
-            // set number label to blank
-            numberButtons[Int(sender.tag)].setTitle(" ", forState: .Normal)
-            // sets number button to blank background color
-            numberButtons[Int(sender.tag)].setBackgroundImage(nil, forState: .Normal)
+            clearNumberButton(sender.tag)
         }
         else {
             // Do nothing
@@ -313,13 +380,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func populateOperation(sender: AnyObject) {
-        if answerOperationLabel.text == " " {
+        if answerOperationLabel.text == " " && answersFilled < 3 {
             answersFilled = answersFilled + 1;
         }
+        
         //play pop sound
         playSound(pop)
         answerOperationLabel.text = sender.currentTitle!;
-        
         
         if answersFilled == 3 {
             // delay so user can see full answers
@@ -329,71 +396,16 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func reset(sender: AnyObject) {
-        numbersLeft = 4
-        
-        let numberButtons = [number1Button, number2Button, number3Button, number4Button]
-        
-        for button in numberButtons {
-            let originalNumber = Int(currentNumbers[button.tag]!)
-            button.setTitle(String(originalNumber), forState: .Normal)
-        button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
-        }
-        
-        clearAnswers()
-        
+    @IBAction func resetButton(sender: AnyObject) {
+        reset()
     }
     
-    
-    @IBAction func clearBoard(sender: AnyObject) {
-        let numberButtons = [number1Button, number2Button, number3Button, number4Button]
-        
-        // Move selected numbers back to board
-        if answerNumber1Label.text != " "{
-            
-            // make the number button reappear
-            numberButtons[answerNumber1Label.tag].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
-            numberButtons[answerNumber1Label.tag].setTitle(answerNumber1Label.text, forState: .Normal)
-            
-        }
-        if answerNumber2Label.text != " "{
-            // make the number button reappear
-            numberButtons[answerNumber2Label.tag].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
-            numberButtons[answerNumber2Label.tag].setTitle(answerNumber2Label.text, forState: .Normal)
-        }
-        
-        clearAnswers()
+    @IBAction func clearBoardButton(sender: AnyObject) {
+        clearBoard()
     }
     
     @IBAction func newSet(sender: AnyObject) {
         initializeNumbers()
     }
-    
-    func congratulations() {
-        startStopBackgroundMusic()
-        playSound(congrats)
-        let alert = UIAlertController(title: "Congratulations!", message: "You won!! Yays!! ", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Play Again", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
-        self.presentViewController(alert, animated: true, completion: nil)
-        
-        scoreLabel.text = String(Int(scoreLabel.text!)! + 1)
-        
-        initializeNumbers()
-    }
-    
-    func fails() {
-        startStopBackgroundMusic()
-        playSound(fail)
-        
-        let alert = UIAlertController(title: "You Failed", message: "Sorry kid!", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
-        self.presentViewController(alert, animated: true, completion: nil)
-        
-        reset("")
-        
-        
-    }
-
-
 }
 

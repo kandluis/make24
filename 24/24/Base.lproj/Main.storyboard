@@ -71,9 +71,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="textColor" red="0.46760147810000002" green="0.43187493090000001" blue="0.39400142430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="E8Z-cR-ImC" appends="YES" id="7EJ-lO-vUL"/>
-                                </connections>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="B" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1mj-oM-g2J">
                                 <rect key="frame" x="206" y="196" width="62" height="74"/>
@@ -82,9 +79,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="textColor" red="0.46760147810000002" green="0.43187493090000001" blue="0.39400142430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="x5I-QL-f2p" appends="YES" id="cWi-Uq-16g"/>
-                                </connections>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LGX-Lg-qek">
                                 <rect key="frame" x="124" y="297" width="72" height="29"/>
@@ -93,7 +87,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="clearBoard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3ug-xd-VjG"/>
+                                    <action selector="clearBoardButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0GX-L5-sW1"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="V2T-hO-iLh">
@@ -103,7 +97,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="31c-6T-1eB"/>
+                                    <action selector="resetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PE0-MH-M7L"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="numbers_background" id="uum-Ix-KXL">
@@ -219,9 +213,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="textColor" red="0.46760147810000002" green="0.43187493090000001" blue="0.39400142430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="hvz-z7-AIP" appends="YES" id="Q2D-kE-CyU"/>
-                                </connections>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BlF-iU-1hW">
                                 <rect key="frame" x="202" y="74" width="103" height="33"/>
@@ -259,15 +250,9 @@
                         <outlet property="resetButton" destination="V2T-hO-iLh" id="ymc-Te-pYZ"/>
                         <outlet property="scoreLabel" destination="fXN-3M-u5F" id="554-mt-f69"/>
                         <outlet property="soundIcon" destination="WKD-S3-q2p" id="Per-FT-VOf"/>
-                        <outlet property="tappedAnswer1" destination="hvz-z7-AIP" id="V0m-6O-tb4"/>
-                        <outlet property="tappedAnswer2" destination="x5I-QL-f2p" id="kvJ-FB-IOL"/>
-                        <outlet property="tappedOperation" destination="E8Z-cR-ImC" id="ymc-qZ-m5c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="hvz-z7-AIP"/>
-                <tapGestureRecognizer id="E8Z-cR-ImC"/>
-                <tapGestureRecognizer id="x5I-QL-f2p"/>
             </objects>
             <point key="canvasLocation" x="24" y="170"/>
         </scene>
