@@ -82,6 +82,9 @@ class ViewController: UIViewController {
     }
     
     // Helper functions
+    
+    // LCM for Double
+    // See for more: http://stackoverflow.com/questions/28349864/algorithm-for-lcm-of-doubles-in-swift/28352004#28352004
     func rationalApproximationOf(x0: Double, withPrecision eps: Double = 1.0E-6) -> Rational {
         var x: Double = x0
         var a: Double = floor(x)
