@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreData
 
 // Rational fractions.
 typealias Rational = (num : Int, den : Int)
@@ -48,7 +49,6 @@ class ViewController: UIViewController {
     var numbersLeft: Int = 4
     var currentNumbers = [Int:Int]()
     
-    
     // sound related variables
     var silent: Bool = false
     var player: AVAudioPlayer? = nil
@@ -63,13 +63,15 @@ class ViewController: UIViewController {
     
     // seconds to wait
     let triggerTime = Int64(500000000)
+    
+    // Persistent storage variables
+    var problems = [NSManagedObject]()
 
     /*********
      * View Class Functions
      *********/
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         initializeNumbers()
         playBackgroundMusic(ambientSound)
@@ -83,6 +85,22 @@ class ViewController: UIViewController {
         answerOperationLabel.userInteractionEnabled = true
         answerOperationLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapOperation)))
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext
+        let fetchRequest = NSFetchRequest(entityName: "Problem")
+        
+        do {
+            let results =
+                try managedContext.executeFetchRequest(fetchRequest)
+            problems = results as! [NSManagedObject]
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -144,6 +162,9 @@ class ViewController: UIViewController {
      * Gameplay Functions
      *******/
     func initializeNumbers() {
+        for problem in problems {
+            print(problem.valueForKey("problem"))
+        }
         clearAnswers()
 
         // initalize numbers to random between 1 and 9

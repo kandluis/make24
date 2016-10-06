@@ -24,6 +24,8 @@
 		101BE0F01DA578B10075E1DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */; };
 		101BE0FB1DA578B10075E1DE /* _4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE0FA1DA578B10075E1DE /* _4Tests.swift */; };
 		101BE1061DA578B10075E1DE /* _4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE1051DA578B10075E1DE /* _4UITests.swift */; };
+		F2F83B571DA662A5006B34B0 /* problems.csv in Resources */ = {isa = PBXBuildFile; fileRef = F2F83B561DA662A5006B34B0 /* problems.csv */; };
+		F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		101BE1011DA578B10075E1DE /* 24UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 24UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		101BE1051DA578B10075E1DE /* _4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _4UITests.swift; sourceTree = "<group>"; };
 		101BE1071DA578B10075E1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F2F83B561DA662A5006B34B0 /* problems.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = problems.csv; path = ../../analysis/problems.csv; sourceTree = "<group>"; };
+		F2F83B591DA66430006B34B0 /* AppData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppData.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,7 @@
 		100C765D1DA640E40097212D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F2F83B551DA66275006B34B0 /* Problems */,
 				100C765E1DA640EC0097212D /* Sounds */,
 			);
 			name = Resources;
@@ -144,6 +149,7 @@
 			children = (
 				100C765D1DA640E40097212D /* Resources */,
 				101BE0E51DA578B10075E1DE /* AppDelegate.swift */,
+				F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */,
 				101BE0E71DA578B10075E1DE /* ViewController.swift */,
 				101BE0E91DA578B10075E1DE /* Main.storyboard */,
 				101BE0EC1DA578B10075E1DE /* Assets.xcassets */,
@@ -169,6 +175,14 @@
 				101BE1071DA578B10075E1DE /* Info.plist */,
 			);
 			path = 24UITests;
+			sourceTree = "<group>";
+		};
+		F2F83B551DA66275006B34B0 /* Problems */ = {
+			isa = PBXGroup;
+			children = (
+				F2F83B561DA662A5006B34B0 /* problems.csv */,
+			);
+			name = Problems;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +292,7 @@
 			files = (
 				101BE0F01DA578B10075E1DE /* LaunchScreen.storyboard in Resources */,
 				101BE0ED1DA578B10075E1DE /* Assets.xcassets in Resources */,
+				F2F83B571DA662A5006B34B0 /* problems.csv in Resources */,
 				100C76721DA6424D0097212D /* pop.mp3 in Resources */,
 				100C76711DA6424D0097212D /* next_level.mp3 in Resources */,
 				100C76691DA6424D0097212D /* background_music.mp3 in Resources */,
@@ -315,6 +330,7 @@
 			files = (
 				101BE0E81DA578B10075E1DE /* ViewController.swift in Sources */,
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
+				F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +582,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F2F83B591DA66430006B34B0 /* AppData.xcdatamodel */,
+			);
+			currentVersion = F2F83B591DA66430006B34B0 /* AppData.xcdatamodel */;
+			path = AppData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 101BE0DA1DA578B10075E1DE /* Project object */;
 }

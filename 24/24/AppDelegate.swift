@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import CoreData
+
+typealias Problem = (id : Int, problem : [Int], difficulty: Double)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        if !hasAppLaunchedBefore() {
+            print("Running app for the first time!")
+            preloadData()
+        }
+        print("Already ran app!")
+        preloadData()
         return true
     }
 
@@ -39,8 +47,164 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        self.saveContext()
     }
+    
+    
+    // MARK: - Core Data stack
+    
+    lazy var applicationDocumentsDirectory: NSURL = {
+        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        return urls[urls.count-1]
+    }()
+    
+    lazy var managedObjectModel: NSManagedObjectModel = {
+        let modelURL = NSBundle.mainBundle().URLForResource("AppData", withExtension: "momd")!
+        return NSManagedObjectModel(contentsOfURL: modelURL)!
+    }()
+    
+    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+        // Create the coordinator and store
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("24.sqlite")
+        var failureReason = "There was an error creating or loading the application's saved data."
+        do {
+            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+        } catch {
+            // Report any error we got.
+            var dict = [String: AnyObject]()
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
+            dict[NSLocalizedFailureReasonErrorKey] = failureReason
+            
+            dict[NSUnderlyingErrorKey] = error as NSError
+            let wrappedError = NSError(domain: "24.error", code: 9999, userInfo: dict)
+            NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
+            // abort()
+        }
+        
+        return coordinator
+    }()
+    
+    lazy var managedObjectContext: NSManagedObjectContext = {
+        let coordinator = self.persistentStoreCoordinator
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = coordinator
+        return managedObjectContext
+    }()
+    
+    // MARK: - Core Data Saving support
+    
+    func saveContext () {
+        if managedObjectContext.hasChanges {
+            do {
+                try managedObjectContext.save()
+            } catch {
+                let nserror = error as NSError
+                NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+                abort()
+            }
+        }
+    }
+    
+    /*******
+     * Helper functions for loading data
+     *******/
+    func preloadData () {
+        // Retrieve data from the source file
+        if let contentsOfURL = NSBundle.mainBundle().URLForResource("problems", withExtension: "csv") {
+            
+            var error:NSError?
+            if let items = parseCSV(contentsOfURL, encoding: NSUTF8StringEncoding, error: &error) {
+                // Preload the problem data!
+                for item in items {
+                    let entity = NSEntityDescription.entityForName("Problem", inManagedObjectContext: managedObjectContext)
+                    let problem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+                    
+                    problem.setValue(item.id, forKey: "id")
+                    problem.setValue(item.problem, forKey: "number")
+                    problem.setValue(item.difficulty, forKey: "difficulty")
+                    
+                    self.saveContext()
+                }
+            }
+        }
+    }
+    
+    func parseCSV(contentsOfURL: NSURL, encoding: NSStringEncoding, error: NSErrorPointer) -> [Problem]? {
+        // Load the CSV file and parse it
+        let delimiter: String = ","
+        var problemData: [Problem]?
+        
+        // Read CSV into array!
+        let content = String(contentsOfURL: contentsOfURL, encoding: encoding, error: error)
+        problemData = []
+        
+        // Ignore the first row as it contains header info
+        let lines = (content.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())).dropFirst()
+        
+        print("Read csv with lines", lines)
+        for line in lines {
+            var values:[String] = []
+            if line != "" {
+                // For a line with double quotes
+                // we use NSScanner to perform the parsing
+                if line.rangeOfString("\"") != nil {
+                    var textToScan:String = line
+                    var value:NSString?
+                    var textScanner:NSScanner = NSScanner(string: textToScan)
+                    while textScanner.string != "" {
+                        
+                        if (textScanner.string as NSString).substringToIndex(1) == "\"" {
+                            textScanner.scanLocation += 1
+                            textScanner.scanUpToString("\"", intoString: &value)
+                            textScanner.scanLocation += 1
+                        } else {
+                            textScanner.scanUpToString(delimiter, intoString: &value)
+                        }
+                        
+                        // Store the value into the values array
+                        values.append(value as! String)
+                        
+                        // Retrieve the unscanned remainder of the string
+                        if textScanner.scanLocation < textScanner.string.characters.count {
+                            textToScan = (textScanner.string as NSString).substringFromIndex(textScanner.scanLocation + 1)
+                        } else {
+                            textToScan = ""
+                        }
+                        textScanner = NSScanner(string: textToScan)
+                    }
+                    
+                    // For a line without double quotes, we can simply separate the string
+                    // by using the delimiter (e.g. comma)
+                } else  {
+                    values = line.componentsSeparatedByString(delimiter)
+                }
+                
+                // Put the values into the tuple and add it to the items array
+                let singleProblem: Problem = (id: Int(values[0]) ?? 0, problem: [Int(values[1]) ?? 1, Int(values[2]) ?? 0, Int(values[3]) ?? 0, Int(values[4]) ?? 0], difficulty: Double(values[5]) ?? 1.0)
+                problemData?.append(singleProblem)
+            }
+        }
+        
+        print("Finised reading csv!")
+        return problemData
+    }
+    
+    func hasAppLaunchedBefore()->Bool{
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if let appVersion = defaults.stringForKey("appVersion"){
+            print("Running App Version : \(appVersion)")
+            return true
+        }
+        else {
+            let nsObject: AnyObject? = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
+            let appVersion = nsObject as! String
 
+            defaults.setObject(appVersion, forKey: "appVersion")
+            return false
+        }
+    }
 
 }
 
