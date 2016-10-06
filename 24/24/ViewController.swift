@@ -1,19 +1,22 @@
 //
-//  GameViewController.swift
-//  Make24
+//  ViewController.swift
+//  24
 //
-//  Created by Luis Perez on 10/4/16.
-//  Copyright (c) 2016 Luis PerezBunnyLemon. All rights reserved.
+//  Created by Luis Perez on 10/5/16.
+//  Copyright © 2016 Luis PerezBunnyLemon. All rights reserved.
 //
 
 import UIKit
-import SpriteKit
 
-class GameViewController: UIViewController {
-
+class ViewController: UIViewController {
+    
     @IBOutlet weak var answerNumber1Label: UILabel!
     @IBOutlet weak var answerOperationLabel: UILabel!
     @IBOutlet weak var answerNumber2Label: UILabel!
+    // if users taps a filled answer
+    @IBOutlet var tappedAnswer1: UITapGestureRecognizer!
+    @IBOutlet var tappedOperation: UITapGestureRecognizer!
+    @IBOutlet var tappedAnswer2: UITapGestureRecognizer!
     
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var clearButton: UIButton!
@@ -37,57 +40,33 @@ class GameViewController: UIViewController {
     var answersFilled = 0
     var numbersLeft = 4
     var currentNumbers = [Int:Int]()
-    
-    let backGroundColor = SKColor(red: 250 / 256, green: 247 / 256, blue: 237 / 256, alpha: 1)
-    
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
         
-        // Set the background color of the Game Scene.
-        let scene = GameScene(size: view.bounds.size)
-        let skView = view as! SKView
-        skView.showsFPS = false
-        skView.showsNodeCount = false
-        skView.ignoresSiblingOrder = true
-        scene.scaleMode = .ResizeFill
-        
-        scene.backgroundColor = backGroundColor
-        skView.presentScene(scene)
-
         initializeNumbers()
-    }
 
-//    override func shouldAutorotate() -> Bool {
-//        return true
-//    }
-//
-//    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-//        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-//            return .AllButUpsideDown
-//        } else {
-//            return .All
-//        }
-//    }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
+        // Dispose of any resources that can be recreated.
     }
-
-//    override func prefersStatusBarHidden() -> Bool {
-//        return true
-//    }
     
     func initializeNumbers() {
         numbersLeft = 4
         clearAnswers()
-        
+
         // initalize numbers to random between 1 and 9
         let numberButtons = [number1Button, number2Button, number3Button, number4Button]
         for button in numberButtons {
             let randomNumber = Int(arc4random_uniform(9) + 1)
             button.setTitle(String(randomNumber), forState: .Normal)
             currentNumbers[button.tag] = randomNumber
+            // make sure the button has a background
+        button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
         }
     }
     
@@ -103,11 +82,11 @@ class GameViewController: UIViewController {
         let numberButtons = [number1Button, number2Button, number3Button, number4Button]
         
         // sleep
-            
+        
         // make calculation for new number
         let number1 = Double(answerNumber1Label.text!)
         let number2 = Double(answerNumber2Label.text!)
-            
+        
         if number1 == nil || number2 == nil {
             print("error occured")
         }
@@ -131,10 +110,12 @@ class GameViewController: UIViewController {
             }
             answer = number1! / number2!
         }
-        numberButtons[Int(answerNumber2Label.tag)].setTitle(String(answer), forState: .Normal)
+        numberButtons[Int(answerNumber2Label.tag)].setTitle(String(format:"%.1f",answer), forState: .Normal)
+        
+            numberButtons[Int(answerNumber2Label.tag)].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
         
         print(answer)
-    
+        
         clearAnswers()
         
         // decrement numbers left
@@ -163,12 +144,17 @@ class GameViewController: UIViewController {
             // set the number label to blank
             // tag maps to index of buttons
             numberButtons[Int(sender.tag)].setTitle(" ", forState: .Normal)
+            // sets number button to blank background color
+            numberButtons[Int(sender.tag)].setBackgroundImage(nil, forState: .Normal)
         }
         else if answerNumber2Label.text == " " {
             answersFilled = answersFilled + 1
             answerNumber2Label.tag = sender.tag
             answerNumber2Label.text = sender.currentTitle!;
+            // set number label to blank
             numberButtons[Int(sender.tag)].setTitle(" ", forState: .Normal)
+            // sets number button to blank background color
+            numberButtons[Int(sender.tag)].setBackgroundImage(nil, forState: .Normal)
         }
         else {
             // Do nothing
@@ -198,20 +184,28 @@ class GameViewController: UIViewController {
         for button in numberButtons {
             let originalNumber = Int(currentNumbers[button.tag]!)
             button.setTitle(String(originalNumber), forState: .Normal)
+        button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
         }
-    
+        
         clearAnswers()
         
     }
+    
     
     @IBAction func clearBoard(sender: AnyObject) {
         let numberButtons = [number1Button, number2Button, number3Button, number4Button]
         
         // Move selected numbers back to board
         if answerNumber1Label.text != " "{
+            
+            // make the number button reappear
+            numberButtons[Int(sender.tag)].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
             numberButtons[answerNumber1Label.tag].setTitle(answerNumber1Label.text, forState: .Normal)
+            
         }
         if answerNumber2Label.text != " "{
+            // make the number button reappear
+            numberButtons[Int(sender.tag)].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
             numberButtons[answerNumber2Label.tag].setTitle(answerNumber2Label.text, forState: .Normal)
         }
         
@@ -228,7 +222,7 @@ class GameViewController: UIViewController {
         self.presentViewController(alert, animated: true, completion: nil)
         print(scoreLabel.text)
         scoreLabel.text = String(Int(scoreLabel.text!)! + 1)
-    
+        
         initializeNumbers()
     }
     
@@ -238,6 +232,9 @@ class GameViewController: UIViewController {
         self.presentViewController(alert, animated: true, completion: nil)
         
         reset("")
-
+        
     }
+
+
 }
+
