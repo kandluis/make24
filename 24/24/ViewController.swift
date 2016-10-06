@@ -77,9 +77,11 @@ class ViewController: UIViewController {
         // make sure the mute button has text left aligned
         muteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         
+        // Tap gesture for answer1 and operation
         answerNumber1Label.userInteractionEnabled = true
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer))
-        answerNumber1Label.addGestureRecognizer(gestureRecognizer)
+        answerNumber1Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer)))
+        answerOperationLabel.userInteractionEnabled = true
+        answerOperationLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapOperation)))
         
     }
 
@@ -215,14 +217,18 @@ class ViewController: UIViewController {
     
     // We can only ever tap the first answer!
     func tapAnswer() {
-        if answerNumber1Label.text != " "{
+        if answerNumber1Label.text != " " {
             setNumberButton(answerNumber1Label.tag, text: answerNumber1Label.text!)
             answerNumber1Label.text = " "
+            playSound(pop)
         }
     }
     
     func tapOperation() {
-        answerOperationLabel.text = " "
+        if answerOperationLabel != " " {
+            answerOperationLabel.text = " "
+            playSound(pop)
+        }
     }
     
     func congratulations() {
