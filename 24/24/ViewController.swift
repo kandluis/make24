@@ -195,31 +195,45 @@ class ViewController: UIViewController {
         return String(format:"%d/%d", res.num, res.den)
     }
     
+    func parseFromString(text: String) -> Double {
+        let comps = text.componentsSeparatedByString("/")
+        if comps.count == 1 {
+            return Double(text)!
+        }
+        else {
+            if comps.count > 2 {
+                // Error! Log it!
+                print("Fraction too large. See", text)
+            }
+        
+            // A fraction, convert to double ourselves
+            let num = Double(comps[0])!
+            let den = Double(comps[1])!
+        
+            return num / den
+        }
+    }
+    
     func computeAnswer() {
         let numberButtons = [number1Button, number2Button, number3Button, number4Button]
         
-        
-        
         // make calculation for new number
-        let number1 = Double(answerNumber1Label.text!)
-        let number2 = Double(answerNumber2Label.text!)
+        let number1 = parseFromString(answerNumber1Label.text!)
+        let number2 = parseFromString(answerNumber2Label.text!)
         
-        if number1 == nil || number2 == nil {
-            print("error occured")
-        }
         var answer: Double = 0.0
         
         if answerOperationLabel.text == "+" {
-            answer = number1! + number2!
+            answer = number1 + number2
         }
         else if answerOperationLabel.text == "-" {
-            answer = number1! - number2!
+            answer = number1 - number2
         }
         else if answerOperationLabel.text == "x" {
-            answer = number1! * number2!
+            answer = number1 * number2
         }
         else if answerOperationLabel.text == "/" {
-            if number2! == 0 {
+            if number2 == 0 {
                 startStopBackgroundMusic()
                 let alert = UIAlertController(title: "Invalid Operation", message: "Division by zero is not allowed! ", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
@@ -227,7 +241,7 @@ class ViewController: UIViewController {
                 playSound(computerMistake)
                 return clearBoard("")
             }
-            answer = number1! / number2!
+            answer = number1 / number2
         }
         
         numberButtons[Int(answerNumber2Label.tag)].setTitle(formatAsString(answer), forState: .Normal)
