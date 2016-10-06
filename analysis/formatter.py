@@ -2,7 +2,7 @@
 # @Author: Luis Perez
 # @Date:   2016-10-04 21:38:28
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-05 18:29:05
+# @Last Modified time: 2016-10-06 00:21:58
 
 
 def __isOperation(char):
@@ -37,7 +37,7 @@ def multiplication(acc, curr):
 
 def subtractFrom(acc, curr):
     # Implicit left-association
-    return "{} + {}".format(acc, curr)
+    return "{} - {}".format(acc, curr)
 
 
 def subtractedFrom(acc, curr):

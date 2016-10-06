@@ -2,7 +2,7 @@
 # @Author: Luis Perez
 # @Date:   2016-10-04 16:14:34
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-05 18:26:27
+# @Last Modified time: 2016-10-06 00:22:38
 
 '''
 Solver for Make 24 Game
@@ -24,6 +24,8 @@ def numberOfSolutions(numbers, returnWays=False):
 
     @param: returnWays [Bool] Specify if list of ways should be returned.
     @param: numbers [Int List] The set of numbers that need to be used.
+    @param: memoizedResults contains a saved dictionary of results as returned
+    # by nubmerOfSolutions
     @return: [Int] The total number of ways to create 24.
     '''
     if len(numbers) != 4:
@@ -38,60 +40,59 @@ def numberOfSolutions(numbers, returnWays=False):
         return len(ways)
 
 
-memoized = {}
+memoizedResults = {}
 
 
 def waysToK(S, k):
     '''
     Calculates the possible ways to make the value k using the list S.
     Solutions are stored in the memoized
-    memoized[(S,k)] = [String List]
+    memoizedResults[(S,k)] = [String List]
     K is a Float
     The list of numbers are treated as floats.
     '''
     # Check for pre-computed solution
     setKey = listHash(S)
-    if (setKey, k) in memoized:
-        return memoized[(setKey, k)]
+    if (setKey, k) in memoizedResults:
+        return memoizedResults[(setKey, k)]
 
     # Base case, when the set is a single number, k must match that value
     if len(S) == 1:
         element = S[0]
         res = [str(element)] if k == float(element) else []
-        memoized[(setKey, k)] = res
+        memoizedResults[(setKey, k)] = res
         return res
 
     ways = []
     for (i, integer) in enumerate(S):
-        number = float(integer)
         newSet = S[:i] + S[i + 1:]
 
         # k = number + X or k = X + number
         ways += [formatter.addition(el, integer)
-                 for el in waysToK(newSet, k - number)]
+                 for el in waysToK(newSet, k - integer)]
         # k = number - X
         ways += [formatter.subtractedFrom(el, integer)
-                 for el in waysToK(newSet, number - k)]
+                 for el in waysToK(newSet, integer - k)]
         # k = X - number
         ways += [formatter.subtractFrom(el, integer)
-                 for el in waysToK(newSet, k + number)]
+                 for el in waysToK(newSet, k + integer)]
 
         # k = X / number
         ways += [formatter.divideBy(el, integer)
-                 for el in waysToK(newSet, k * number)]
+                 for el in waysToK(newSet, k * integer)]
         # k = number / X
         if k != 0:
             ways += [formatter.dividedBy(el, integer)
-                     for el in waysToK(newSet, number / k)]
-        # k = number * X
-        if number != 0:
+                     for el in waysToK(newSet, float(integer) / k)]
+        # k = X * number
+        if integer != 0:
             ways += [formatter.multiplication(el, integer)
-                     for el in waysToK(newSet, k / number)]
+                     for el in waysToK(newSet, k / float(integer))]
 
     # remove duplicates
     ways = list(set(ways))
 
-    memoized[(setKey, k)] = ways
+    memoizedResults[(setKey, k)] = ways
     return ways
 
 
