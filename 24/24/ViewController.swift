@@ -73,6 +73,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadProblems()
         initializeNumbers()
         playBackgroundMusic(ambientSound)
         
@@ -89,23 +90,30 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    /************
+     * Database Functions
+     *************/
+    func loadProblems(){
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         let fetchRequest = NSFetchRequest(entityName: "Problem")
         
         do {
             let results =
-                try managedContext.executeFetchRequest(fetchRequest)
+            try managedContext.executeFetchRequest(fetchRequest)
             problems = results as! [NSManagedObject]
+            print(problems.count)
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     /*****************
@@ -162,8 +170,9 @@ class ViewController: UIViewController {
      * Gameplay Functions
      *******/
     func initializeNumbers() {
+        
         for problem in problems {
-            print(problem.valueForKey("problem"))
+            print(problem.valueForKey("numbers"))
         }
         clearAnswers()
 

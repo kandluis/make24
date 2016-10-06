@@ -19,11 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         if !hasAppLaunchedBefore() {
-            print("Running app for the first time!")
             preloadData()
         }
-        print("Already ran app!")
-        preloadData()
         return true
     }
 
@@ -111,19 +108,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      *******/
     func preloadData () {
         // Retrieve data from the source file
-        if let contentsOfURL = NSBundle.mainBundle().URLForResource("problems", withExtension: "csv") {
+        if let contentsOfFile = NSBundle.mainBundle().URLForResource("problems", withExtension: "csv") {
             
             var error:NSError?
-            if let items = parseCSV(contentsOfURL, encoding: NSUTF8StringEncoding, error: &error) {
+            if let items = parseCSV(contentsOfFile, encoding: NSUTF8StringEncoding, error: &error) {
                 // Preload the problem data!
                 for item in items {
                     let entity = NSEntityDescription.entityForName("Problem", inManagedObjectContext: managedObjectContext)
                     let problem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
                     
                     problem.setValue(item.id, forKey: "id")
-                    problem.setValue(item.problem, forKey: "number")
+                    problem.setValue(item.problem, forKey: "numbers")
                     problem.setValue(item.difficulty, forKey: "difficulty")
-                    
+                
                     self.saveContext()
                 }
             }
@@ -136,13 +133,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var problemData: [Problem]?
         
         // Read CSV into array!
-        let content = String(contentsOfURL: contentsOfURL, encoding: encoding, error: error)
+        var content = ""
+        do {
+            content = try NSString(contentsOfURL: contentsOfURL, encoding: encoding) as String
+        }
+        catch{
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            return nil
+        }
         problemData = []
         
         // Ignore the first row as it contains header info
         let lines = (content.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())).dropFirst()
         
-        print("Read csv with lines", lines)
         for line in lines {
             var values:[String] = []
             if line != "" {
@@ -185,8 +189,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 problemData?.append(singleProblem)
             }
         }
-        
-        print("Finised reading csv!")
         return problemData
     }
     
