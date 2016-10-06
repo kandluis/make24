@@ -41,12 +41,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="LEADERBOARD" backgroundImage="button_grey_large"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BlF-iU-1hW">
-                                <rect key="frame" x="202" y="75" width="103" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="OPTIONS" backgroundImage="button_grey_large"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make 24 using all the given numbers!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HfC-9N-M4Z">
                                 <rect key="frame" x="18" y="130" width="285" height="33"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -229,6 +223,20 @@
                                     <outletCollection property="gestureRecognizers" destination="hvz-z7-AIP" appends="YES" id="Q2D-kE-CyU"/>
                                 </connections>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="BlF-iU-1hW">
+                                <rect key="frame" x="202" y="74" width="103" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="    MUTE            " backgroundImage="button_grey_large"/>
+                                <connections>
+                                    <action selector="turnOnOffAudio:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jZS-5o-iQL"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sound_white" id="WKD-S3-q2p">
+                                <rect key="frame" x="274.5" y="82" width="18" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.97690433259999998" green="0.96155852080000004" blue="0.91550403830000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.97690433259999998" green="0.96155852080000004" blue="0.91550403830000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -241,15 +249,16 @@
                         <outlet property="leaderboardButton" destination="ssI-i1-DKN" id="3SX-dC-iCd"/>
                         <outlet property="minusButton" destination="VV7-jJ-qQc" id="AHp-Vf-bvr"/>
                         <outlet property="multiplyButton" destination="Voi-Bu-K7o" id="PTS-f4-HWA"/>
+                        <outlet property="muteButton" destination="BlF-iU-1hW" id="8xJ-Tk-Stn"/>
                         <outlet property="newSetButton" destination="QJF-3P-yFv" id="ngF-Mn-IjB"/>
                         <outlet property="number1Button" destination="uo7-Kx-JRG" id="FuO-7l-WmE"/>
                         <outlet property="number2Button" destination="TSS-Ak-cSB" id="Ve8-X5-Ou7"/>
                         <outlet property="number3Button" destination="P0L-VQ-GwZ" id="mLe-vv-z4H"/>
                         <outlet property="number4Button" destination="Meb-0g-Jdc" id="UEQ-ae-6Jf"/>
-                        <outlet property="optionsButton" destination="BlF-iU-1hW" id="QKi-7S-glz"/>
                         <outlet property="plusButton" destination="1Os-nF-zNz" id="fJY-64-LO1"/>
                         <outlet property="resetButton" destination="V2T-hO-iLh" id="ymc-Te-pYZ"/>
                         <outlet property="scoreLabel" destination="fXN-3M-u5F" id="554-mt-f69"/>
+                        <outlet property="soundIcon" destination="WKD-S3-q2p" id="Per-FT-VOf"/>
                         <outlet property="tappedAnswer1" destination="hvz-z7-AIP" id="V0m-6O-tb4"/>
                         <outlet property="tappedAnswer2" destination="x5I-QL-f2p" id="kvJ-FB-IOL"/>
                         <outlet property="tappedOperation" destination="E8Z-cR-ImC" id="ymc-qZ-m5c"/>
@@ -270,7 +279,9 @@
         <image name="button_grey_small" width="146" height="43"/>
         <image name="numbers_background" width="582" height="188"/>
         <image name="score_background" width="167" height="165"/>
+        <image name="sound_white" width="43" height="44"/>
         <image name="tile_large" width="124" height="151"/>
         <image name="tile_small" width="124" height="124"/>
     </resources>
+    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
 </document>
