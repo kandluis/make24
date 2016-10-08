@@ -13,16 +13,60 @@ typealias Problem = (id : Int, problem : [Int], difficulty: Double)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    //for force touch
+    enum ShortcutIdentifier: String {
+        case ShareApp
+        
+        init?(fullIdentifier: String) {
+            guard let shortIdentifier = fullIdentifier.componentsSeparatedByString(".").last else {
+                return nil
+            }
+            self.init(rawValue: shortIdentifier)
+        }
+    }
+    var vc = OptionsViewController()
+    
     var window: UIWindow?
-
+    
+    // for shortcuts
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        
+        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    print(mainStoryboard)
+    let initialViewController : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("OptionsViewController") as UIViewController
+    self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+    self.window?.rootViewController = initialViewController
+    self.window?.makeKeyAndVisible()
+    
+//        window!.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+        
+        
+        completionHandler( handleShortcut(shortcutItem) )
+        
+    }
+    
+    func handleShortcut( shortcutItem:UIApplicationShortcutItem ) -> Bool {
+        print("Handling shortcut")
+        
+        let shortcutType = shortcutItem.type
+        print(shortcutType)
+        guard let shortcutIdentifier = ShortcutIdentifier(fullIdentifier: shortcutType) else {
+            return false
+        }
+        print(shortcutIdentifier)
+        return true
+    }
+    
+    // end for shortcut
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         if !hasAppLaunchedBefore() {
             preloadData()
         }
+        
         return true
     }
+    
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

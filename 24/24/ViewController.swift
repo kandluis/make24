@@ -10,11 +10,12 @@ import UIKit
 import AVFoundation
 import CoreData
 import GameplayKit
+import GameKit
 
 // Rational fractions.
 typealias Rational = (num : Int, den : Int)
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     // Answer board area.
     @IBOutlet weak var answerNumber1Label: UILabel!
@@ -40,11 +41,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var divideButton: UIButton!
     
     // Game options
+    @IBOutlet weak var optionsButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var leaderboardButton: UIButton!
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var soundIcon: UIImageView!
     @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var saveScoreButton: UIButton!
     
     // Gameplay related variables
     var answersFilled: Int = 0
@@ -66,7 +69,7 @@ class ViewController: UIViewController {
     
     // seconds to wait
     let triggerTime = Int64(500000000)
-    
+    let triggerTime2 = Int64(1000000000)
     // Persistent storage variables
     var problems = [NSManagedObject]()
 
@@ -87,6 +90,8 @@ class ViewController: UIViewController {
         
         setAnswerTouchTargets()
         
+        // authenticate player to enable game center
+        authenticateLocalPlayer()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -490,6 +495,38 @@ class ViewController: UIViewController {
     // check on device, if need to explicitly add text, Twitter, FB http://nshipster.com/uiactivityviewcontroller/
     
     // verify on device
+    
+    func shareApp() {
+        print("TEST")
+        loadView()
+        
+        if (self.isViewLoaded()) {
+//            viewDidLoad()
+//            
+//            congratulations()
+//            
+//            let textToShare = "Swift is awesome!  Check out this website about it!"
+//            
+//            if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
+//                let objectsToShare = [textToShare, myWebsite]
+//                // could create own custom share function (instead of setting nil)
+//                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+//                
+//                //New Excluded Activities Code
+//                activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
+//                
+//                // for ipad
+//                //            activityVC.popoverPresentationController?.sourceView = sender as! UIView
+//                self.presentViewController(activityVC, animated: true, completion: nil)
+//            }
+
+        }
+        else {
+            print("view hasn't loaded")
+        }
+        
+    }
+    
     @IBAction func share(sender: AnyObject) {
         let textToShare = "Swift is awesome!  Check out this website about it!"
         
@@ -502,11 +539,80 @@ class ViewController: UIViewController {
             activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
             
             // for ipad
-            activityVC.popoverPresentationController?.sourceView = sender as! UIView
+            activityVC.popoverPresentationController?.sourceView = sender as? UIView
             self.presentViewController(activityVC, animated: true, completion: nil)
         }
+
     }
     
     // end share code
+    
+    // authenticate the player
+    func authenticateLocalPlayer() {
+        let localPlayer = GKLocalPlayer.localPlayer()
+        localPlayer.authenticateHandler = {(viewController, error) -> Void in
+            
+            if (viewController != nil) {
+                self.presentViewController(viewController!, animated: true, completion: nil)
+            }
+
+        }
+    }
+    
+    @IBAction func showLeader(sender: AnyObject) {
+        let viewControllerVar = self.view?.window?.rootViewController
+        let gKGCViewController = GKGameCenterViewController()
+        gKGCViewController.gameCenterDelegate = self
+        viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
+    }
+    
+    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    @IBAction func saveScore(sender: AnyObject) {
+        let gameScore = Int(scoreLabel.text!)!
+        saveHighscore(gameScore)
+    }
+    
+    //sends the highest score to leaderboard
+    func saveHighscore(gameScore: Int) {
+        let my_leaderboard_id = "Overall"
+        let scoreReporter = GKScore(leaderboardIdentifier: my_leaderboard_id)
+        
+        scoreReporter.value = Int64(gameScore)
+        print("starting score")
+        print(scoreReporter.value)
+        print("ending score")
+        let scoreArray: [GKScore] = [scoreReporter]
+        
+        GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
+            if error != nil {
+                print("An error has occured:")
+                print("\n \(error) \n")
+            }
+        })
+        
+//        if GKLocalPlayer.localPlayer().authenticated {
+//            print("Player has actually been.")
+//            let scoreReporter = GKScore(leaderboardIdentifier: "Overall")
+//            scoreReporter.value = Int64(gameScore)
+//            let scoreArray: [GKScore] = [scoreReporter]
+//            
+//            GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
+//                if error != nil {
+//                    print("An error has occured: \(error)")
+//                }
+//            })
+//        }
+//        else {
+//            print(GKLocalPlayer.localPlayer().authenticated)
+//        }
+    }
+    // code for multiplayer mode //
+
+    
+    
 }
 

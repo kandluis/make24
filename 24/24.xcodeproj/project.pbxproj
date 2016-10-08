@@ -17,6 +17,7 @@
 		100C76701DA6424D0097212D /* medal_short.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 100C76661DA6424D0097212D /* medal_short.mp3 */; };
 		100C76711DA6424D0097212D /* next_level.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 100C76671DA6424D0097212D /* next_level.mp3 */; };
 		100C76721DA6424D0097212D /* pop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 100C76681DA6424D0097212D /* pop.mp3 */; };
+		100C76761DA904F10097212D /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100C76751DA904F10097212D /* OptionsViewController.swift */; };
 		101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE0E51DA578B10075E1DE /* AppDelegate.swift */; };
 		101BE0E81DA578B10075E1DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE0E71DA578B10075E1DE /* ViewController.swift */; };
 		101BE0EB1DA578B10075E1DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101BE0E91DA578B10075E1DE /* Main.storyboard */; };
@@ -56,6 +57,7 @@
 		100C76661DA6424D0097212D /* medal_short.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = medal_short.mp3; path = ../../audio/medal_short.mp3; sourceTree = "<group>"; };
 		100C76671DA6424D0097212D /* next_level.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = next_level.mp3; path = ../../audio/next_level.mp3; sourceTree = "<group>"; };
 		100C76681DA6424D0097212D /* pop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pop.mp3; path = ../../audio/pop.mp3; sourceTree = "<group>"; };
+		100C76751DA904F10097212D /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		101BE0E21DA578B10075E1DE /* 24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 24.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		101BE0E51DA578B10075E1DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		101BE0E71DA578B10075E1DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				101BE0EC1DA578B10075E1DE /* Assets.xcassets */,
 				101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */,
 				101BE0F11DA578B10075E1DE /* Info.plist */,
+				100C76751DA904F10097212D /* OptionsViewController.swift */,
 			);
 			path = 24;
 			sourceTree = "<group>";
@@ -253,7 +256,7 @@
 				TargetAttributes = {
 					101BE0E11DA578B10075E1DE = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 6AQU6Q6WHZ;
+						DevelopmentTeam = J87Z56BB74;
 					};
 					101BE0F51DA578B10075E1DE = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -329,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				101BE0E81DA578B10075E1DE /* ViewController.swift in Sources */,
+				100C76761DA904F10097212D /* OptionsViewController.swift in Sources */,
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
 				F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */,
 			);
@@ -476,7 +480,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = 24/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codepath.-4";
+				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -490,7 +494,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = 24/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codepath.-4";
+				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
