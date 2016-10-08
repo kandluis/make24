@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import CoreData
+import GameplayKit
 
 // Rational fractions.
 typealias Rational = (num : Int, den : Int)
@@ -43,11 +44,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var leaderboardButton: UIButton!
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var soundIcon: UIImageView!
+    @IBOutlet weak var shareButton: UIButton!
     
     // Gameplay related variables
     var answersFilled: Int = 0
     var numbersLeft: Int = 4
     var currentNumbers = [Int:Int]()
+    var playerLevel: Int = 0
     
     // sound related variables
     var silent: Bool = false
@@ -72,6 +75,8 @@ class ViewController: UIViewController {
      *********/
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        numberButtons = [number1Button, number2Button, number3Button, number4Button]
         
         loadProblems()
         initializeNumbers()
@@ -80,11 +85,7 @@ class ViewController: UIViewController {
         // make sure the mute button has text left aligned
         muteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         
-        // Tap gesture for answer1 and operation
-        answerNumber1Label.userInteractionEnabled = true
-        answerNumber1Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer)))
-        answerOperationLabel.userInteractionEnabled = true
-        answerOperationLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapOperation)))
+        setAnswerTouchTargets()
         
     }
     
@@ -95,6 +96,18 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    /*****
+     * Touch Targets
+     ******/
+    func setAnswerTouchTargets(){
+        answerNumber1Label.userInteractionEnabled = true
+        answerNumber1Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer1)))
+        answerOperationLabel.userInteractionEnabled = true
+        answerOperationLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapOperation)))
+        answerNumber2Label.userInteractionEnabled = true
+        answerNumber2Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer2)))
     }
     
     /************
@@ -169,23 +182,45 @@ class ViewController: UIViewController {
     /*******
      * Gameplay Functions
      *******/
+    // From database, retrieve all problems suitable for this level.
+    func retrieveSuitableProblems(level: Int) -> [[Int]] {
+        var result = [1, 2, 3, 4]
+        // initalize numbers to random between 1 and 9
+        for index in numberButtons.indices {
+            let randomNumber = Int(arc4random_uniform(9) + 1)
+            result[index] = randomNumber
+        }
+        return [result]
+    }
+    
+    // From a suitable array of problems, select the one to present.
+    func selectProblem(problems: [[Int]]) -> [Int] {
+        if problems.count > 0 {
+            let problem = problems[Int(arc4random_uniform(UInt32(problems.count)))]
+            let shuffled = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(problem)
+            return shuffled as! [Int]
+        }
+        var result = [1, 2, 3, 4]
+        // initalize numbers to random between 1 and 9
+        for index in numberButtons.indices {
+            let randomNumber = Int(arc4random_uniform(9) + 1)
+            result[index] = randomNumber
+        }
+        return result
+    }
+    
     func initializeNumbers() {
         
-        for problem in problems {
-            print(problem.valueForKey("numbers"))
-        }
         clearAnswers()
-
-        // initalize numbers to random between 1 and 9
-        numberButtons = [number1Button, number2Button, number3Button, number4Button]
-        for button in numberButtons {
-            let randomNumber = Int(arc4random_uniform(9) + 1)
-            button.setTitle(String(randomNumber), forState: .Normal)
-            currentNumbers[button.tag] = randomNumber
-            // make sure the button has a background
-        button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
+        let problems: [[Int]] = retrieveSuitableProblems(playerLevel)
+        let problem: [Int] = selectProblem(problems)
+        for index in numberButtons.indices {
+            let selectedNumber = problem[index]
+            setNumberButton(index, text: String(problem[index]))
+            currentNumbers[index] = selectedNumber
         }
-        
+
+        // Numbers used reset!
         numbersLeft = 4
     }
     
@@ -193,8 +228,9 @@ class ViewController: UIViewController {
         // make calculation for new number
         let parse1: Double? = parseFromString(answerNumber1Label.text!)
         let parse2: Double? = parseFromString(answerNumber2Label.text!)
+        let op: String? = answerOperationLabel.text
         
-        if parse1 == nil || parse2 == nil {
+        if parse1 == nil || parse2 == nil || op == nil {
             print("Could not parse answers!")
             return
         }
@@ -202,16 +238,15 @@ class ViewController: UIViewController {
         var answer: Double = 0.0
         let number1: Double = parse1!
         let number2: Double = parse2!
-        if answerOperationLabel.text == "+" {
+        if op == "+" {
             answer = number1 + number2
         }
-        else if answerOperationLabel.text == "-" {
+        else if op == "-" {
             answer = number1 - number2
-        }
-        else if answerOperationLabel.text == "x" {
+        }else if op == "x" {
             answer = number1 * number2
         }
-        else if answerOperationLabel.text == "/" {
+        else if op == "/" {
             if number2 == 0 {
                 startStopBackgroundMusic()
                 
@@ -246,18 +281,26 @@ class ViewController: UIViewController {
     }
     
     // We can only ever tap the first answer!
-    func tapAnswer() {
-        if answerNumber1Label.text != " " {
-            setNumberButton(answerNumber1Label.tag, text: answerNumber1Label.text!)
-            answerNumber1Label.text = " "
+    func tapAnswer(label: UILabel) {
+        if label.text != " " {
+            setNumberButton(label.tag, text: label.text!)
+            label.text = " "
             playSound(pop)
+            answersFilled -= 1
         }
+    }
+    func tapAnswer1(){
+        tapAnswer(answerNumber1Label)
+    }
+    func tapAnswer2(){
+        tapAnswer(answerNumber2Label)
     }
     
     func tapOperation() {
         if answerOperationLabel != " " {
             answerOperationLabel.text = " "
             playSound(pop)
+            answersFilled -= 1
         }
     }
     
@@ -443,5 +486,27 @@ class ViewController: UIViewController {
     @IBAction func newSet(sender: AnyObject) {
         initializeNumbers()
     }
+    
+    // check on device, if need to explicitly add text, Twitter, FB http://nshipster.com/uiactivityviewcontroller/
+    
+    // verify on device
+    @IBAction func share(sender: AnyObject) {
+        let textToShare = "Swift is awesome!  Check out this website about it!"
+        
+        if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
+            let objectsToShare = [textToShare, myWebsite]
+            // could create own custom share function (instead of setting nil)
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            //New Excluded Activities Code
+            activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
+            
+            // for ipad
+            activityVC.popoverPresentationController?.sourceView = sender as! UIView
+            self.presentViewController(activityVC, animated: true, completion: nil)
+        }
+    }
+    
+    // end share code
 }
 
