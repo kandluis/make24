@@ -13,12 +13,14 @@ import csv
 from solver import numberOfSolutions
 
 parser = argparse.ArgumentParser(description='Solver for Make24 Game')
-parser.add_argument('--print-results', dest='print_results', type=bool,
+parser.add_argument('--print-results', dest='print_results', type=bool, default=True,
                     help='specify whether or not to pretty print results')
 parser.add_argument('--solve', dest='solve', nargs='+',
                     help="Solve the specified problem")
 parser.add_argument('--filename', dest='outname', type=str,
                     help='specify a filename for output')
+parser.add_argument('--normalize', type=bool, default=True, help="Normalize the output difficulty")
+parser.add_argument('--only-solvable', dest='filter', type=bool, default=True, help="Only include problems with solutions")
 
 args = parser.parse_args()
 
@@ -29,12 +31,19 @@ if __name__ == '__main__':
         # Note that results is already sorted from easy to hard
         # [(problem, difficulty)]
         results = generateResultSet()
+        totalResults = len(results)
+        solvable = filter(lambda x: x[1] != 1, results)
+
+        if args.filter:
+            results = solvable
+        if args.normalize:
+            results = [(problem, float(i) / len(results)) for (i,  (problem, _)) in enumerate(results)]
+
+        print "Percent with feasible solution {}.".format(
+            100 * len(solvable) / float(totalResults))
+
         if args.print_results:
             pprint(results)
-
-        solvable = len(filter(lambda x: x[1] != 1, results))
-        print "Percent with feasible solution {}.".format(
-            100 * solvable / float(len(results)))
 
         if args.outname:
             with open('{}.csv'.format(args.outname), 'w') as csvfile:
