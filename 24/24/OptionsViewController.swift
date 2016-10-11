@@ -71,8 +71,9 @@ class OptionsViewController: UIViewController {
         let silent = defaults.boolForKey("silent")
         if (silent)
         {
-            
+            // TODO
         }
+    }
 
     /*
     // MARK: - Navigation
