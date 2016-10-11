@@ -111,9 +111,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     var answersFilled: Int = 0
     var numbersLeft: Int = 4
     var currentNumbers = [Int:Int]()
-    var playerLevel: Int = 0
+    var playerLevel: Int = 1
     
-    // sound related variables
+    // user related variables
     var silent: Bool = false
     var player: AVAudioPlayer? = nil
     var backgroundMusicPlayer = AVAudioPlayer()
@@ -125,27 +125,28 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     let ambientSound = NSBundle.mainBundle().URLForResource("background_music", withExtension: "mp3")!
     let fail = NSBundle.mainBundle().URLForResource("fail1", withExtension: "mp3")!
     
+    // user defaults
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     // seconds to wait
     let triggerTime = Int64(500000000)
     let triggerTime2 = Int64(1000000000)
-    // Persistent storage variables
-    var problems = [NSManagedObject]()
+    
+    // Current problem from db
+    var selectedProblem: NSManagedObject?
 
     /*********
      * View Class Functions
      *********/
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadSettings()
     
         numberButtons = [number1Button, number2Button, number3Button, number4Button]
         
-        loadProblems()
         initializeNumbers()
         playBackgroundMusic(ambientSound)
-        
-        // make sure the mute button has text left aligned
-        muteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-        
         setAnswerTouchTargets()
         
         // authenticate player to enable game center
@@ -153,12 +154,24 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
         super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func loadSettings(){
+        // Sound
+        silent = defaults.boolForKey("silent")
+        
     }
     
     /*****
@@ -176,19 +189,29 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     /************
      * Database Functions
      *************/
-    func loadProblems(){
+    func getDifficultyRange(level: Int) -> (Double, Double) {
+        let max = Double(level) / 10.0
+        return (max - 1 / 10, max)
+    }
+    
+    func loadProblems(level: Int) -> [NSManagedObject] {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext
         let fetchRequest = NSFetchRequest(entityName: "Problem")
         
+        // Filter to only include levels not completed
+        let (minDifficulty, maxDifficulty) = getDifficultyRange(level)
+        fetchRequest.predicate = NSPredicate(format: "completed == %@ AND difficulty > %f AND difficulty < %f", false, minDifficulty, maxDifficulty)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "difficulty", ascending: true)]
+        
+        var results: [AnyObject]?
         do {
-            let results =
-            try managedContext.executeFetchRequest(fetchRequest)
-            problems = results as! [NSManagedObject]
-            print(problems.count)
+            results =
+                try managedContext.executeFetchRequest(fetchRequest)
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
+        return results as? [NSManagedObject] ?? []
 
     }
     
@@ -245,39 +268,32 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     /*******
      * Gameplay Functions
      *******/
-    // From database, retrieve all problems suitable for this level.
-    func retrieveSuitableProblems(level: Int) -> [[Int]] {
-        var result = [1, 2, 3, 4]
+    func randomProblem() -> [Int]{
+        var result = [Int]()
         // initalize numbers to random between 1 and 9
-        for index in numberButtons.indices {
+        for _ in 0..<numberButtons.count {
             let randomNumber = Int(arc4random_uniform(9) + 1)
-            result[index] = randomNumber
-        }
-        return [result]
-    }
-    
-    // From a suitable array of problems, select the one to present.
-    func selectProblem(problems: [[Int]]) -> [Int] {
-        if problems.count > 0 {
-            let problem = problems[Int(arc4random_uniform(UInt32(problems.count)))]
-            let shuffled = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(problem)
-            return shuffled as! [Int]
-        }
-        var result = [1, 2, 3, 4]
-        // initalize numbers to random between 1 and 9
-        for index in numberButtons.indices {
-            let randomNumber = Int(arc4random_uniform(9) + 1)
-            result[index] = randomNumber
+            result.append(randomNumber)
         }
         return result
     }
     
+    // From a suitable array of problems, select the one to present.
+    func selectProblem(problems: [NSManagedObject]) -> NSManagedObject? {
+        print("Selecting from \(problems.count) problems!")
+        if problems.count > 0 {
+            selectedProblem = problems[Int(arc4random_uniform(UInt32(problems.count)))]
+            return selectedProblem
+        }
+        return nil
+    }
+
     func initializeNumbers() {
         
         clearAnswers()
-        let problems: [[Int]] = retrieveSuitableProblems(playerLevel)
-        let problem: [Int] = selectProblem(problems)
-        for index in numberButtons.indices {
+        let problem = (selectProblem(loadProblems(playerLevel))?.valueForKey("numbers") as! [Int]?) ?? randomProblem()
+        
+        for index in 0..<numberButtons.count {
             let selectedNumber = problem[index]
             setNumberButton(index, text: String(problem[index]))
             currentNumbers[index] = selectedNumber
@@ -325,10 +341,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         // check to see if we won
         if numbersLeft == 1 {
             if answer == 24 {
-                congratulations()
+                didWin()
             }
             else {
-                fails()
+                didLose()
             }
         }
         else {
@@ -361,6 +377,19 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         }
     }
     
+    func didWin() {
+        selectedProblem?.setValue(true, forKey: "completed")
+        
+        // Sync core data
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        do {
+            try appDelegate.managedObjectContext.save()
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        
+        congratulations()
+    }
     func congratulations() {
         startStopBackgroundMusic()
         playSound(congrats)
@@ -372,6 +401,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         initializeNumbers()
     }
     
+    func didLose() {
+        fails()
+    }
     func fails() {
         startStopBackgroundMusic()
         playSound(fail)
@@ -429,20 +461,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     /******
      * User Actions
      ******/
-    @IBAction func turnOnOffAudio(sender: AnyObject) {
-        if !silent {
-            silent = true
-            muteButton.setTitle(" UNMUTE", forState: .Normal)
-            soundIcon.image = UIImage(named: "mute_white")
-        }
-        else {
-            silent = false
-            muteButton.setTitle("    MUTE", forState: .Normal)
-            soundIcon.image = UIImage(named: "sound_white")
-        }
-        startStopBackgroundMusic()
-    }
-    
     @IBAction func populateAnswers(sender: AnyObject) {
         if answerNumber1Label.text == " " || answerNumber2Label.text == " " {
             let openLabel = answerNumber1Label.text == " " ? answerNumber1Label : answerNumber2Label
@@ -497,6 +515,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         initializeNumbers()
     }
     
+    @IBAction func saveScore(sender: AnyObject) {
+        let gameScore = Int(scoreLabel.text!)!
+        saveHighscore(gameScore)
+    }
+    
+    @IBAction func showLeader(sender: AnyObject) {
+        let viewControllerVar = self.view?.window?.rootViewController
+        let gKGCViewController = GKGameCenterViewController()
+        gKGCViewController.gameCenterDelegate = self
+        viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
+    }
+    
     // check on device, if need to explicitly add text, Twitter, FB http://nshipster.com/uiactivityviewcontroller/
     
     // verify on device
@@ -532,27 +562,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         
     }
     
-    @IBAction func share(sender: AnyObject) {
-        let textToShare = "Swift is awesome!  Check out this website about it!"
-        
-        if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
-            let objectsToShare = [textToShare, myWebsite]
-            // could create own custom share function (instead of setting nil)
-            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            
-            //New Excluded Activities Code
-            activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
-            
-            // for ipad
-            activityVC.popoverPresentationController?.sourceView = sender as? UIView
-            self.presentViewController(activityVC, animated: true, completion: nil)
-        }
-
+    /* GKGameCenterlDelgate Function */
+    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    // end share code
-    
-    // authenticate the player
     func authenticateLocalPlayer() {
         let localPlayer = GKLocalPlayer.localPlayer()
         localPlayer.authenticateHandler = {(viewController, error) -> Void in
@@ -564,24 +578,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         }
     }
     
-    @IBAction func showLeader(sender: AnyObject) {
-        let viewControllerVar = self.view?.window?.rootViewController
-        let gKGCViewController = GKGameCenterViewController()
-        gKGCViewController.gameCenterDelegate = self
-        viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
-    }
-    
-    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-    @IBAction func saveScore(sender: AnyObject) {
-        let gameScore = Int(scoreLabel.text!)!
-        saveHighscore(gameScore)
-    }
-    
-    //sends the highest score to leaderboard
     func saveHighscore(gameScore: Int) {
         let my_leaderboard_id = "Overall"
         let scoreReporter = GKScore(leaderboardIdentifier: my_leaderboard_id)
@@ -615,9 +611,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
 //            print(GKLocalPlayer.localPlayer().authenticated)
 //        }
     }
-    // code for multiplayer mode //
-
     
+    // code for multiplayer mode //
     
 }
 

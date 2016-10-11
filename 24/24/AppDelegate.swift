@@ -164,6 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     problem.setValue(item.id, forKey: "id")
                     problem.setValue(item.problem, forKey: "numbers")
                     problem.setValue(item.difficulty, forKey: "difficulty")
+                    problem.setValue(false, forKey: "completed")
                 
                     self.saveContext()
                 }
