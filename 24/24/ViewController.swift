@@ -547,7 +547,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         if let myAlert = storyboard.instantiateViewControllerWithIdentifier("alert") as? CongratulationsViewController {
             myAlert.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             myAlert.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved, completion: {[unowned self] in self.startStopBackgroundMusic()})
+            myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self] in self.startStopBackgroundMusic()})
             self.presentViewController(myAlert, animated: true, completion: nil)
         }
     }
