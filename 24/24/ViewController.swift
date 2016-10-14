@@ -136,15 +136,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     var puzzlesSolved: Int = 0 {
         didSet(oldValue) {
             if puzzlesSolved >= 0 && puzzlesSolved <= puzzlesPerLevel {
-                // Update score since puzzle is solved
-                playerScore += playerLevel
-                
-                // Check if level is passed
-                if puzzlesSolved == puzzlesPerLevel {
-                    playerLevel += 1
-                    puzzlesSolved = 0
-                }
-                
                 defaults.setInteger(puzzlesSolved, forKey: "puzzles")
             }
             else {
@@ -530,7 +521,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         // Determine type of alert!
         print(getAlertTypeOnWin())
         presentAlert(getAlertTypeOnWin())
+        
+        // Update player info
         puzzlesSolved += 1
+        playerScore += playerLevel
+        // Check if level is passed
+        if puzzlesSolved == puzzlesPerLevel {
+            playerLevel += 1
+            puzzlesSolved = 0
+        }
     }
     
     func didLose() {
