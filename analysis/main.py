@@ -30,7 +30,10 @@ if __name__ == '__main__':
         # We must also modify the printing to csv
         # Note that results is already sorted from easy to hard
         # [(problem, difficulty)]
-        results = generateResultSet()
+        options = {
+            'maxInt': 14
+        }
+        results = generateResultSet(options)
         totalResults = len(results)
         solvable = filter(lambda x: x[1] != 1, results)
 

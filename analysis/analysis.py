@@ -12,13 +12,13 @@ def generateProblem(options={}):
     '''
     A generator for Make24 problems.
 
-    options.maxInt [10] - problems only contain numbers <
-    options.minInt [1] - problems only contain numbers >=
-    options.numInts [4] - the number of integers to consider
+    options['maxInt'] [10] - problems only contain numbers <
+    options['minInt'] [1] - problems only contain numbers >=
+    options['numInts'] [4] - the number of integers to consider
     '''
-    maxInt = options.maxInt if "maxInt" in options else 10
-    minInt = options.minInt if "minInt" in options else 1
-    num = options.numInts if "numInts" in options else 4
+    maxInt = options['maxInt'] if "maxInt" in options else 10
+    minInt = options['minInt'] if "minInt" in options else 1
+    num = options['numInts'] if "numInts" in options else 4
     possible = range(minInt, maxInt)
 
     return combinations(possible, num)
