@@ -29,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    var defaultsToBeClearedOnExit: [String] = []
+    
     // for shortcuts
     func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
         
@@ -88,6 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        for key in defaultsToBeClearedOnExit {
+            defaults.removeObjectForKey(key)
+        }
         self.saveContext()
     }
     

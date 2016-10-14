@@ -9,16 +9,20 @@
 import UIKit
 
 class CongratulationsViewController: UIViewController {
-    
-    // Settings
-    let defaults = NSUserDefaults.standardUserDefaults()
-    
+    // Type of Alerts
+    enum AlertType {
+        case NEXT_PUZZLE
+        case NEXT_LEVEL
+        case RETRY
+    }
+
     // level related variables
-    var level = 0
-    var puzzles = 0
+    private var level: Int = 0
+    private var puzzles: Int = 0
+    private var type: AlertType = AlertType.NEXT_LEVEL
     
-    let PUZZLES_PER_LEVEL = 10
-    // title label
+    // Access to starting/stopping the sound
+    private var completion: (() -> Void)!
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -44,7 +48,6 @@ class CongratulationsViewController: UIViewController {
     @IBOutlet weak var leaderboardButton: UIButton!
     @IBOutlet weak var nextLevelButton: UIButton!
     var beat_level_variables = [UIView]()
-    var alert = "beat_level"
     
     // lose level variables
     @IBOutlet weak var tryAgainButton: UIButton!
@@ -65,42 +68,54 @@ class CongratulationsViewController: UIViewController {
         
         lose_variables = [tryAgainButton, loseImage]
         
-        alert = getScore()
-        
-        if alert == "congratulations" {
-            hideObjects(beat_level_variables + lose_variables)
-        }
-        else if alert == "beat_level" {
+        switch type {
+        case AlertType.NEXT_LEVEL:
             hideObjects(congratulations_variables + lose_variables)
-            
-        }
-        else {
+        case AlertType.NEXT_PUZZLE:
+            hideObjects(beat_level_variables + lose_variables)
+        case AlertType.RETRY:
             hideObjects(congratulations_variables + beat_level_variables)
         }
     }
     
-    func getScore() -> String {
-        if let alert_type = defaults.objectForKey("alert") as? String {
-            if alert_type == "congratulations" {
-                let score = defaults.integerForKey("score")
-                
-                puzzles = score%PUZZLES_PER_LEVEL
-                
-                level = Int((score - puzzles)/PUZZLES_PER_LEVEL)
-                
-                if score%PUZZLES_PER_LEVEL == 0 {
-                    return "beat_level"
-                }
-            
-                return "congratulations"
-            }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // snap the alert to middle of screen
+        animator = UIDynamicAnimator(referenceView:self.view);
+        let x = view.frame.size.width / 2
+        let y = view.frame.size.height / 2
+        let point = CGPoint(x: x, y: y)
+        snapToPoint(point, view: congratulationsView)
+        switch type {
+        case AlertType.NEXT_PUZZLE:
+            congratulations()
+        case AlertType.NEXT_LEVEL:
+            beat_level()
+        case AlertType.RETRY:
+            lose()
         }
-        return "lose"
+    }
+    
+    func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: (() -> Void)) -> () {
+        switch alert_type {
+        case "next_level":
+            type = AlertType.NEXT_LEVEL
+        case "next_puzzle":
+            type = AlertType.NEXT_PUZZLE
+        case "fail":
+            type = AlertType.RETRY
+        default:
+            type = AlertType.RETRY
+        }
+        
+        self.level = level
+        self.puzzles = puzzles
+        self.completion = completion
     }
     
     func lose() {
         titleLabel.text = "Aww snap!"
-        
     }
     
     func beat_level() {
@@ -159,33 +174,6 @@ class CongratulationsViewController: UIViewController {
         let snap = UISnapBehavior(item: view, snapToPoint: point)
         animator?.addBehavior(snap);
     }
-
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        // snap the alert to middle of screen
-        animator = UIDynamicAnimator(referenceView:self.view);
-        let x = view.frame.size.width / 2
-        let y = view.frame.size.height / 2
-        let point = CGPoint(x: x, y: y)
-        snapToPoint(point, view: congratulationsView)
-        if alert == "congratulations" {
-            congratulations()
-        }
-        else if alert == "beat_level" {
-            beat_level()
-        }
-        else {
-            lose()
-        }
-        
-        // old animation
-//        UIView.animateWithDuration(1.5, animations: {
-//            self.congratulationsView.alpha = 1.0
-////            self.myFirstButton.alpha = 1.0
-////            self.mySecondButton.alpha = 1.0
-//        })
-    }
     
     // maybe wait until animation finishes to dismiss view
     
@@ -194,7 +182,7 @@ class CongratulationsViewController: UIViewController {
         gravity.gravityDirection = CGVectorMake(0, 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);
         animator?.addBehavior(gravity)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: self.completion)
     }
     
 }
