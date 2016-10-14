@@ -144,8 +144,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     // Current problem from db
     var selectedProblem: NSManagedObject?
-    
-    
+
     // walkthrough
     @IBOutlet weak var skipWalkthroughButton: UIButton!
     @IBOutlet weak var finishedWalkthroughButton: UIButton!
@@ -162,7 +161,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         
         initializeNumbers()
         playBackgroundMusic(ambientSound)
-        
         loadSettings()
         
         setAnswerTouchTargets()
@@ -375,7 +373,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
             
             // Answer hole
             addHole(holeToAdd: numberButtons[Int(answerNumber2Label.tag)])
-            if numbersLeft == 1 {
+            if numbersLeft ==   1 {
                 // Walkthrough Ended
                 dismissWalkthrough()
                 
@@ -392,7 +390,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
             else {
                 // Do nothing
             }
-            print(numbersLeft)
         }
         else {
             // check to see if we won
@@ -630,11 +627,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         // authenticate player to enable game center
         authenticateLocalPlayer()
         // show leaderboard
+
         let viewControllerVar = self.view?.window?.rootViewController
         let gKGCViewController = GKGameCenterViewController()
         gKGCViewController.gameCenterDelegate = self
         viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
-        
     }
     @IBAction func showLeader(sender: AnyObject) {
         showLeaderboard()
