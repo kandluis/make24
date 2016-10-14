@@ -1,0 +1,6 @@
+framework module SwiftyWalkthrough {
+  umbrella header "SwiftyWalkthrough-umbrella.h"
+
+  export *
+  module * { export * }
+}

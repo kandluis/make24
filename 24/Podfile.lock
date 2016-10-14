@@ -1,0 +1,15 @@
+PODS:
+  - SwiftyWalkthrough (0.0.3)
+  - TKSwarmAlert (0.0.4)
+
+DEPENDENCIES:
+  - SwiftyWalkthrough
+  - TKSwarmAlert
+
+SPEC CHECKSUMS:
+  SwiftyWalkthrough: 57946c3065a49d63f87a562eb0dc932b94a96d7f
+  TKSwarmAlert: 8fe22e7b9beec7e1e5d9506483e8f7c0272767eb
+
+PODFILE CHECKSUM: 082cca498992877c456ae167432dbaa07939cc86
+
+COCOAPODS: 1.0.1
