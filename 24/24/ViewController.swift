@@ -36,14 +36,16 @@ extension Double {
      * @return The parsed double.
      */
     init?(from text: String) {
-        self.init(text)
         let comps = text.componentsSeparatedByString("/")
         if comps.count == 2 {
             // A fraction, convert to double ourselves
             let num = Double(comps[0])!
             let den = Double(comps[1])!
 
-            self = num / den
+            self.init(num / den)
+        }
+        else {
+            self.init(text)
         }
     }
     
@@ -467,7 +469,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         
         scoreLabel.text = String(Int(scoreLabel.text!)! + 1)
         let score = Int(scoreLabel.text!)!
-        print("score on View controller: \(score)")
         defaults.setInteger(score, forKey: "score")
         initializeNumbers()
     
@@ -643,7 +644,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     // verify on device
     
     func shareApp() {
-        print("TEST")
         loadView()
         
         if (self.isViewLoaded()) {
@@ -667,10 +667,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
 //            }
 
         }
-        else {
-            print("view hasn't loaded")
-        }
-        
     }
     
     /* GKGameCenterlDelgate Function */
@@ -694,9 +690,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         let scoreReporter = GKScore(leaderboardIdentifier: my_leaderboard_id)
         
         scoreReporter.value = Int64(gameScore)
-        print("starting score")
-        print(scoreReporter.value)
-        print("ending score")
         let scoreArray: [GKScore] = [scoreReporter]
         
         GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
@@ -733,9 +726,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
 
         
         let newView = SampleDesignView(type: SampleDesignViewType.Bar(icon:UIImage(named: image_name), text:text), frame: frame)
-        
-        print("type")
-        print(self.tapDetected())
         
         viewTapped.numberOfTapsRequired = 1
         newView.userInteractionEnabled = true
@@ -776,9 +766,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         // tutorial option
         
         let newView = SampleDesignView(type: SampleDesignViewType.Bar(icon:UIImage(named: "tutorial_colored"), text:"Tutorial"), frame: f3)
-        
-        print("type")
-        print(self.tapDetected())
         
         
 //        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.tutorial))
