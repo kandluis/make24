@@ -14,6 +14,8 @@ import GameKit
 import TKSwarmAlert
 import SwiftyWalkthrough
 
+let APP_ID = "id959379869"
+
 extension String {
     func trim() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
@@ -157,17 +159,19 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     let maxLevel: Int = 10
     let puzzlesPerLevel: Int = 10
-    
-    // user related variables
     var silent: Bool = false {
         didSet {
+            defaults.setBool(silent, forKey: "silent")
             syncMusic()
             
         }
     }
+    // Current problem from db
+    var selectedProblem: NSManagedObject?
+    
+    // Audio variables
     var player: AVAudioPlayer? = nil
     var backgroundMusicPlayer = AVAudioPlayer()
-    
     let pop = NSBundle.mainBundle().URLForResource("pop", withExtension: "mp3")!
     let glassPing = NSBundle.mainBundle().URLForResource("calculated", withExtension: "mp3")!
     let computerMistake = NSBundle.mainBundle().URLForResource("computer_error", withExtension: "mp3")!
@@ -175,22 +179,23 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     let ambientSound = NSBundle.mainBundle().URLForResource("background_music", withExtension: "mp3")!
     let fail = NSBundle.mainBundle().URLForResource("fail1", withExtension: "mp3")!
     
-    // user defaults
+    // User defaults
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    // seconds to wait
-    let triggerTime = Int64(500000000)
+    // Seconds to wait on  transitions.
+    let TRIGGERTIME = Int64(500000000)
     
-    // Current problem from db
-    var selectedProblem: NSManagedObject?
+    // Views
+    let optionsView = TKSwarmAlert()
 
-    // walkthrough
+    // Walthrough
     @IBOutlet weak var skipWalkthroughButton: UIButton!
     @IBOutlet weak var walkthroughInstructionsView: UIView!
     var currentHoles = [UIView]()
     
-    //leaderboard variables 
+    // Leaderboard
     var localPlayer: GKLocalPlayer?
+    let LEADER_BOARD_ID = "Overall"
 
     /*********
      * View Class Functions
@@ -205,10 +210,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         loadSettings()
         
         setAnswerTouchTargets()
-        // let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        // if !delegate.hasAppLaunchedBefore(){
-        tutorial()
-        // }
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if !delegate.hasAppLaunchedBefore(){
+            tutorial()
+        }
     
     
     }
@@ -228,6 +233,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    /******
+     * Settings Functions
+     ******/
     func loadSettings(){
         // Sound
         silent = defaults.boolForKey("silent")
@@ -407,16 +415,26 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     func initializeNumbers() {
         
         clearAnswers()
-        let problem = (selectProblem(loadProblems(playerLevel))?.valueForKey("numbers") as? [Int]) ?? randomProblem()
-        
-        for index in 0..<numberButtons.count {
-            let selectedNumber = problem[index]
-            setNumberButton(index, text: String(problem[index]))
-            currentNumbers[index] = selectedNumber
-        }
+        if let problem = (selectProblem(loadProblems(playerLevel))?.valueForKey("numbers") as? [Int]) {
+            
+            for index in 0..<numberButtons.count {
+                let selectedNumber = problem[index]
+                setNumberButton(index, text: String(problem[index]))
+                currentNumbers[index] = selectedNumber
+            }
 
-        // Numbers used reset!
-        numbersLeft = 4
+            // Numbers used reset!
+            numbersLeft = 4
+        }
+        else {
+            let alert = UIAlertController(title: "Out of problems!", message: "You've run out of problems! Sending you back to square 1!", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            let delegate = UIApplication.sharedApplication().delegate as!AppDelegate
+            delegate.resetApplication()
+            initializeNumbers()
+        }
     }
     
     // Operations to perform after an answer has been calcuated successfully.
@@ -501,14 +519,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         
     }
     
-    // Function is called before any variables are updated on a win to determine the alert type to show.
+    /***********
+     * Gameplay Display Functions
+     ***********/
+    // Function is called before any variables are updated on a win
     func getAlertTypeOnWin() -> String {
         if puzzlesSolved == puzzlesPerLevel - 1 {
+            if playerLevel == maxLevel {
+                return "finish"
+            }
             return "next_level"
         }
-        else {
-            return "next_puzzle"
-        }
+        return "next_puzzle"
     }
     func didWin() {
         // Core data is synchronized when the application exits!
@@ -551,7 +573,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         if let myAlert = storyboard.instantiateViewControllerWithIdentifier("alert") as? CongratulationsViewController {
             myAlert.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             myAlert.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self] in self.startStopBackgroundMusic()})
+            myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self](buttonText: String?) -> Void in
+                if let text = buttonText {
+                    if text == "Leaderboard" {
+                        self.showLeaderboard()
+                    }
+                }
+                self.startStopBackgroundMusic()
+                })
             self.presentViewController(myAlert, animated: true, completion: nil)
         }
     }
@@ -603,139 +632,90 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         clearAnswers()
     }
 
-    /******
-     * User Actions
-     ******/
-    @IBAction func populateAnswers(sender: AnyObject) {
-        
-        // all else
-        guard let text1 = answerNumber1Label.text else { return }
-        guard let text2 = answerNumber2Label.text else { return }
-        if text1.trim() == "" || text2.trim() == "" {
-            let openLabel = text1.trim() == "" ? answerNumber1Label : answerNumber2Label
-            openLabel.text = (sender as? UIButton)?.currentTitle ?? ""
-            openLabel.tag = ((sender as? UIButton)?.tag)!
-            
-            // for the walkthrough
-            if ongoingWalkthrough {
-                removeHole(numberButtons[openLabel.tag])
-                addHole(holeToAdd: openLabel)
-            }
-            
-            if answersFilled < 3 {
-                answersFilled = answersFilled + 1;
-            }
-            
-            playSound(pop)
-            clearNumberButton(openLabel.tag)
-        }
-        else {
-            // Do nothing
-            playSound(computerMistake)
-        }
-        
-        if answersFilled == 3 {
-            // delay so user can see full answers
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-                self.computeAnswer()
-            })
-        }
-    }
-    
-    @IBAction func populateOperation(sender: AnyObject) {
-        guard let text = answerOperationLabel.text else { return }
-        if text.trim() == "" && answersFilled < 3 {
-            answersFilled = answersFilled + 1
-        }
-        
-        //play pop sound
-        playSound(pop)
-        answerOperationLabel.text = (sender as? UIButton)?.currentTitle ?? ""
-        if ongoingWalkthrough {
-            addHole(holeToAdd: answerOperationLabel)
-            if let operation = sender as? UIView {
-                removeHole(operation)
-            }
-        }
-        
-        if answersFilled == 3 {
-            // delay so user can see full answers
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-                self.computeAnswer()
-            })
-        }
-    }
-    
-    @IBAction func resetButton(sender: AnyObject) {
-        reset()
-    }
-    
-    @IBAction func clearBoardButton(sender: AnyObject) {
-        clearBoard()
-    }
-    
-    @IBAction func newSet(sender: AnyObject) {
-        initializeNumbers()
-    }
-    
-    @IBAction func saveScore(sender: AnyObject) {
-        saveHighscore(playerScore)
-    }
-    
+    /************
+     * Leaderboard Functions
+     ************/
     func showLeaderboard() {
-        let viewControllerVar = self.view?.window?.rootViewController
-        let gKGCViewController = GKGameCenterViewController()
-        gKGCViewController.gameCenterDelegate = self
-        viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
-    }
-    @IBAction func showLeader(sender: AnyObject) {
-        if let localPlayerAuthenticated = localPlayer?.authenticated {
-            if localPlayerAuthenticated == true {
-                showLeaderboard()
-            }
-            print(localPlayerAuthenticated)
+        let show = {[unowned self] in
+            self.reportIfHigher(self.playerScore, afterReport: { [unowned self] in
+                self.showLeaderboardView()
+                })
         }
-            // authenticate player to enable game center
+        if let authenticated = localPlayer?.authenticated {
+            if authenticated {
+                show()
+            }
+            else {
+                // Player dismissed authentication, alert that they
+                // must login through GameCenter
+                let title = "Cannot login!"
+                let message = "Login through the Game Center App to access this feature!"
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .Default) { _ in })
+                self.presentViewController(alert, animated: true, completion: {})
+            }
+        }
         else {
-            authenticateLocalPlayer()
-            print("getting here")
+            authenticateLocalPlayer(onAuthetication: show)
         }
-
-        
-
-//        showLeaderboard()
-        
-        showLeaderboard()
     }
-    
-    // check on device, if need to explicitly add text, Twitter, FB http://nshipster.com/uiactivityviewcontroller/
-    
-    // verify on device
-    
-    func shareApp() {
-        
-        loadView()
-        if (self.isViewLoaded()) {
-            // hide the walkthrough view
-            walkthroughInstructionsView.hidden = true
+    func authenticateLocalPlayer(onAuthetication completion: Closure) {
+        localPlayer = GKLocalPlayer.localPlayer()
+        localPlayer?.authenticateHandler = {(viewController, error) -> Void in
             
-            let textToShare = "Swift is awesome!  Check out this website about it!"
-            
-            if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
-                let objectsToShare = [textToShare, myWebsite]
-                // could create own custom share function (instead of setting nil)
-                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-                
-                //New Excluded Activities Code
-                activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
-                
-                // for ipad
-                //            activityVC.popoverPresentationController?.sourceView = sender as! UIView
-                self.presentViewController(activityVC, animated: true, completion: nil)
+            if (viewController != nil) {
+                self.presentViewController(viewController!, animated: true, completion: completion)
             }
-
         }
-    
+        
+    }
+    // Player must be authenticated.
+    func reportIfHigher(gameScore: Int, afterReport completion: Closure) {
+        if let authenticated = localPlayer?.authenticated {
+            if authenticated {
+                let leaderboardRequest = GKLeaderboard()
+                leaderboardRequest.identifier = LEADER_BOARD_ID
+                leaderboardRequest.loadScoresWithCompletionHandler({[unowned self](scores, error) -> Void in
+                    if let remoteScore = leaderboardRequest.localPlayerScore?.value {
+                        if Int(remoteScore) < gameScore {
+                            self.reportScore(gameScore)
+                        }
+                    }
+                    })
+
+            }
+            else {
+                completion()
+            }
+        }
+    }
+    // Player must be authenticated
+    func reportScore(score: Int) {
+        if let authenticated = localPlayer?.authenticated {
+            if authenticated {
+                let scoreReporter = GKScore(leaderboardIdentifier:LEADER_BOARD_ID)
+                
+                scoreReporter.value = Int64(score)
+                let scoreArray: [GKScore] = [scoreReporter]
+                GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
+                    if error != nil {
+                        print("An error has occured:")
+                        print("\n \(error) \n")
+                    }
+                })
+            }
+        }
+    }
+    // Player must be authenticated
+    func showLeaderboardView() {
+        if let authenticated = localPlayer?.authenticated {
+            if authenticated {
+                let viewControllerVar = self.view?.window?.rootViewController
+                let gKGCViewController = GKGameCenterViewController()
+                gKGCViewController.gameCenterDelegate = self
+                viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
+            }
+        }
     }
     
     /* GKGameCenterlDelgate Function */
@@ -743,140 +723,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func authenticateLocalPlayer() {
-        localPlayer = GKLocalPlayer.localPlayer()
-        localPlayer?.authenticateHandler = {(viewController, error) -> Void in
-            
-            if (viewController != nil) {
-                self.presentViewController(viewController!, animated: true, completion: nil)
-            }
-        }
-        
-    }
-    
-    func saveHighscore(gameScore: Int) {
-        let my_leaderboard_id = "Overall"
-        let scoreReporter = GKScore(leaderboardIdentifier: my_leaderboard_id)
-        
-        scoreReporter.value = Int64(gameScore)
-        let scoreArray: [GKScore] = [scoreReporter]
-        
-        GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
-            if error != nil {
-                print("An error has occured:")
-                print("\n \(error) \n")
-            }
-        })
-        
-//        if GKLocalPlayer.localPlayer().authenticated {
-//            print("Player has actually been.")
-//            let scoreReporter = GKScore(leaderboardIdentifier: "Overall")
-//            scoreReporter.value = Int64(gameScore)
-//            let scoreArray: [GKScore] = [scoreReporter]
-//            
-//            GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
-//                if error != nil {
-//                    print("An error has occured: \(error)")
-//                }
-//            })
-//        }
-//        else {
-//            print(GKLocalPlayer.localPlayer().authenticated)
-//        }
-    }
-    
-    // code for multiplayer mode //
-    
-    
-    // this should probably be in a separate file - thoughts?
-    // code for the new alert options
-    
-    func createOptionsView(viewTapped: UITapGestureRecognizer,  image_name: String, text: String, frame: CGRect)  ->  SampleDesignView{
-
-        
-        let newView = SampleDesignView(type: SampleDesignViewType.Bar(icon:UIImage(named: image_name), text:text), frame: frame)
-        
-        viewTapped.numberOfTapsRequired = 1
-        newView.userInteractionEnabled = true
-        newView.addGestureRecognizer(viewTapped)
-        
-        return newView
-        
-    }
-    
-    /*********
-     * Options Menu Functions
-     *********/
-    
-    func makeSampleViews1()->[UIView] {
-        let height:CGFloat = 64
-        let width:CGFloat = 300
-        let margin:CGFloat = 10
-        let x:CGFloat = self.view.frame.width / 2 - width/2
-        let y:CGFloat = 160//240
-        let f1 = CGRectMake(x, y, width, height)
-        let f2 = CGRectMake(x, y + (height + margin), width, height)
-        let f3 = CGRectMake(x, y + (height + margin) * 2, width, height)
-        let f4 = CGRectMake(x, y + (height + margin) * 3, width, height)
-        let f5 = CGRectMake(x, y + (height + margin) * 4, width, height)
-        
-        var views:[UIView] = []
-        
-        // leadership option
-        var viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.showLeaderboard))
-        let leaderboardView = createOptionsView(viewTapped, image_name: "leaderboard_colored", text: "Leaderboard", frame: f1)
-        views.append(leaderboardView)
-        
-        // more games option
-        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.tapDetected))
-        let gameView = createOptionsView(viewTapped, image_name: "games_colored", text: "More games", frame: f2)
-        views.append(gameView)
-        
-        // tutorial option
-        
-        let newView = SampleDesignView(type: SampleDesignViewType.Bar(icon:UIImage(named: "tutorial_colored"), text:"Tutorial"), frame: f3)
-        
-        
-//        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.tutorial))
-//        let tutorialView = createOptionsView(viewTapped, image_name: "tutorial_colored", text: "Tutorial", frame: f3)
-        views.append(newView)
-        
-        // rate option
-        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.tapDetected))
-        let rateView = createOptionsView(viewTapped, image_name: "star_colored", text: "Rate the app", frame: f4)
-        views.append(rateView)
-        
-        // share option
-        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.shareOptionTapped))
-        let shareView = createOptionsView(viewTapped, image_name: "share_colored", text: "Share with friends", frame: f5
-        )
-        views.append(shareView)
-        
-        return views
-    }
-    
-    func shareOptionTapped() {
-        alert.hide()
-        shareApp()
-    }
-    
-    func tapDetected() {
-        alert.hide()
-    }
-
-    let alert = TKSwarmAlert()
-    
-    @IBAction func showOptions(sender: AnyObject) {
-        let views = makeSampleViews1()
-        alert.show(type: .TransparentBlack(alpha: 0.70), views: views)
-    }
-    
     /*********
      * Tutorial Walkthrough
      *********/
-    
-    var customWalkthroughView: CustomWalkthroughView? { return walkthroughView as? CustomWalkthroughView }
-    
     func tutorial() {
         
         // Turn off music
@@ -894,7 +743,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         numbersLeft = 4
         
         // make sure to unhide walkthrough
-        startWalkthrough(CustomWalkthroughView())
+        startWalkthrough(WalkthroughView())
+        walkthroughInstructionsView.hidden = false
         createHoles(holesToCreate: [walkthroughInstructionsView, number2Button, number3Button, multiplyButton])
         
     }
@@ -936,6 +786,198 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         finishWalkthrough()
         loadSettings()
         initializeNumbers()
+    }
+    
+    /*********
+     * Options Menu Functions
+     *********/
+    func createOptionsView(viewTapped: UITapGestureRecognizer,  image_name: String, text: String, frame: CGRect)  ->  SampleDesignView{
+        
+        
+        let newView = SampleDesignView(type: SampleDesignViewType.Bar(icon:UIImage(named: image_name), text:text), frame: frame)
+        
+        viewTapped.numberOfTapsRequired = 1
+        newView.userInteractionEnabled = true
+        newView.addGestureRecognizer(viewTapped)
+        
+        return newView
+        
+    }
+    typealias ViewInfo = (selector: Selector, image: String, text: String)
+    func makeOptionsViews(viewInfo: [ViewInfo])->[UIView] {
+        let height:CGFloat = 54
+        let width:CGFloat = 300
+        let margin:CGFloat = 10
+        let x:CGFloat = self.view.frame.width / 2 - width/2
+        let y:CGFloat = 160//240
+        
+        return viewInfo.enumerate().map({(i, info) -> UIView in
+            let rect = CGRectMake(x, y + (height + margin) * CGFloat(i), width, height)
+            let tap = UITapGestureRecognizer(target: self, action: info.selector)
+            let view = createOptionsView(tap, image_name: info.image, text: info.text, frame: rect)
+            return view
+
+        })
+    }
+    func leaderBoardOption() {
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.showLeaderboard()
+        }
+        self.optionsView.hide()
+    }
+    func moreGamesOption() {
+        // TODO: Implement ads
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+        }
+        self.optionsView.hide()
+    }
+    func tutorialOption() {
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.tutorial()
+        }
+        self.optionsView.hide()
+    }
+    func rateOption() {
+        // TODO: Test rating!
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
+            if let url = NSURL(string: url_string) {
+                UIApplication.sharedApplication().openURL(url)
+            }
+        }
+        self.optionsView.hide()
+    }
+    func shareOption(){
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.shareApp()
+        }
+        self.optionsView.hide()
+    }
+    func soundToggle(){
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.silent = !self.silent
+        }
+        self.optionsView.hide()
+    }
+    
+    /***********
+     * Share Options
+     ***********/
+    func shareApp() {
+        let textToShare = "I'm playing this new, awesome game! Check it out!"
+        
+        if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
+            let objectsToShare = [textToShare, myWebsite]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            //New Excluded Activities Code
+            activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
+            
+            // TODO: for ipad
+            // activityVC.popoverPresentationController?.sourceView = sender as! UIView
+            self.presentViewController(activityVC, animated: true, completion: nil)
+        }
+    
+    }
+    
+    /******
+     * User Actions
+     ******/
+    @IBAction func populateAnswers(sender: AnyObject) {
+        
+        // all else
+        guard let text1 = answerNumber1Label.text else { return }
+        guard let text2 = answerNumber2Label.text else { return }
+        if text1.trim() == "" || text2.trim() == "" {
+            let openLabel = text1.trim() == "" ? answerNumber1Label : answerNumber2Label
+            openLabel.text = (sender as? UIButton)?.currentTitle ?? ""
+            openLabel.tag = ((sender as? UIButton)?.tag)!
+            
+            // for the walkthrough
+            if ongoingWalkthrough {
+                removeHole(numberButtons[openLabel.tag])
+                addHole(holeToAdd: openLabel)
+            }
+            
+            if answersFilled < 3 {
+                answersFilled = answersFilled + 1;
+            }
+            
+            playSound(pop)
+            clearNumberButton(openLabel.tag)
+        }
+        else {
+            // Do nothing
+            playSound(computerMistake)
+        }
+        
+        if answersFilled == 3 {
+            // delay so user can see full answers
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, TRIGGERTIME), dispatch_get_main_queue(), { () -> Void in
+                self.computeAnswer()
+            })
+        }
+    }
+    
+    @IBAction func populateOperation(sender: AnyObject) {
+        guard let text = answerOperationLabel.text else { return }
+        if text.trim() == "" && answersFilled < 3 {
+            answersFilled = answersFilled + 1
+        }
+        
+        //play pop sound
+        playSound(pop)
+        answerOperationLabel.text = (sender as? UIButton)?.currentTitle ?? ""
+        if ongoingWalkthrough {
+            addHole(holeToAdd: answerOperationLabel)
+            if let operation = sender as? UIView {
+                removeHole(operation)
+            }
+        }
+        
+        if answersFilled == 3 {
+            // delay so user can see full answers
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, TRIGGERTIME), dispatch_get_main_queue(), { () -> Void in
+                self.computeAnswer()
+            })
+        }
+    }
+    
+    @IBAction func resetButton(sender: AnyObject) {
+        reset()
+    }
+    
+    @IBAction func clearBoardButton(sender: AnyObject) {
+        clearBoard()
+    }
+    
+    @IBAction func newSet(sender: AnyObject) {
+        initializeNumbers()
+    }
+    
+    @IBAction func showLeader(sender: AnyObject) {
+        showLeaderboard()
+        
+    }
+    @IBAction func showOptions(sender: AnyObject) {
+        let muteButtonText = silent ? "Unmute" : "Mute"
+        let soundIcon = silent ? "mute_grey" : "sound_grey"
+        let info = [
+            (selector: #selector(self.leaderBoardOption), image: "leaderboard_colored", text: "Leaderboard"),
+            (selector: #selector(self.soundToggle), image: soundIcon, text: muteButtonText),
+            (selector: #selector(self.tutorialOption), image: "tutorial_colored", text: "Tutorial"),
+            (selector: #selector(self.rateOption), image: "star_colored", text: "Rate the app"),
+            (selector: #selector(self.shareOption), image: "share_colored", text: "Share with friends"),
+            (selector: #selector(self.moreGamesOption), image: "games_colored", text: "More games")
+            ]
+        let views = makeOptionsViews(info)
+        self.optionsView.show(type: .TransparentBlack(alpha: 0.70), views: views)
     }
     
     @IBAction func dismissWalkthrough(sender: AnyObject) {

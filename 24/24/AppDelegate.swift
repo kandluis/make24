@@ -25,12 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    var vc = OptionsViewController()
-    
     var window: UIWindow?
     
     let defaults = NSUserDefaults.standardUserDefaults()
-    var defaultsToBeClearedOnExit: [String] = []
     
     // for shortcuts
     func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
@@ -91,10 +88,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        for key in defaultsToBeClearedOnExit {
+        self.saveContext()
+    }
+    
+    // Functions to clear data
+    func resetApplication() {
+        let defaultsToReset: [String] = ["level", "puzzles", "score"]
+        for key in defaultsToReset {
             defaults.removeObjectForKey(key)
         }
-        self.saveContext()
+        
+        let fetchRequest = NSFetchRequest(entityName: "Problem")
+        var results: [AnyObject]?
+        do {
+            results =
+                try managedObjectContext.executeFetchRequest(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        let problems = results as? [NSManagedObject] ?? []
+        for problem in problems {
+          problem.setValue(false, forKey: "completed")
+        }
     }
     
     

@@ -11,6 +11,7 @@ import UIKit
 class CongratulationsViewController: UIViewController {
     // Type of Alerts
     enum AlertType {
+        case FINISH
         case NEXT_PUZZLE
         case NEXT_LEVEL
         case RETRY
@@ -22,7 +23,7 @@ class CongratulationsViewController: UIViewController {
     private var type: AlertType = AlertType.NEXT_LEVEL
     
     // Access to starting/stopping the sound
-    private var completion: (() -> Void)!
+    private var completion: (String? -> Void)!
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -75,6 +76,9 @@ class CongratulationsViewController: UIViewController {
             hideObjects(beat_level_variables + lose_variables)
         case AlertType.RETRY:
             hideObjects(congratulations_variables + beat_level_variables)
+        case AlertType.FINISH:
+            hideObjects(congratulations_variables + lose_variables)
+            nextLevelButton.setTitle("Reset", forState: .Normal)
         }
     }
     
@@ -94,10 +98,14 @@ class CongratulationsViewController: UIViewController {
             beat_level()
         case AlertType.RETRY:
             lose()
+        case AlertType.FINISH:
+            beat_level()
         }
     }
     
-    func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: (() -> Void)) -> () {
+    // Completion is passed the String corresponding to the
+    // button the user clicked, if any.
+    func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: ((String?) -> Void)) -> () {
         switch alert_type {
         case "next_level":
             type = AlertType.NEXT_LEVEL
@@ -105,6 +113,8 @@ class CongratulationsViewController: UIViewController {
             type = AlertType.NEXT_PUZZLE
         case "fail":
             type = AlertType.RETRY
+        case "finish":
+            type = AlertType.FINISH
         default:
             type = AlertType.RETRY
         }
@@ -182,7 +192,13 @@ class CongratulationsViewController: UIViewController {
         gravity.gravityDirection = CGVectorMake(0, 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);
         animator?.addBehavior(gravity)
-        self.dismissViewControllerAnimated(true, completion: self.completion)
+        self.dismissViewControllerAnimated(true, completion: {[unowned self] in
+            if self.type == AlertType.FINISH {
+                let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                delegate.resetApplication()
+            }
+            self.completion!(sender.titleLabel?.text)
+        })
     }
     
 }
