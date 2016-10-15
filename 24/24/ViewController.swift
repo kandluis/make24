@@ -152,6 +152,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     @IBOutlet weak var finishedWalkthroughButton: UIButton!
     @IBOutlet weak var walkthroughInstructionsView: UIView!
     var currentHoles = [UIView]()
+    
+    //leaderboard variables 
+    var localPlayer: GKLocalPlayer?
 
     /*********
      * View Class Functions
@@ -170,6 +173,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         // if !delegate.hasAppLaunchedBefore(){
         tutorial()
         // }
+    
     
     }
     
@@ -625,8 +629,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func showLeaderboard() {
-        // authenticate player to enable game center
-        authenticateLocalPlayer()
+        
         // show leaderboard
 
         let viewControllerVar = self.view?.window?.rootViewController
@@ -635,7 +638,21 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
     }
     @IBAction func showLeader(sender: AnyObject) {
-        showLeaderboard()
+        if let localPlayerAuthenticated = localPlayer?.authenticated {
+            if localPlayerAuthenticated == true {
+                showLeaderboard()
+            }
+            print(localPlayerAuthenticated)
+        }
+            // authenticate player to enable game center
+        else {
+            authenticateLocalPlayer()
+            print("getting here")
+        }
+
+        
+
+//        showLeaderboard()
         
     }
     
@@ -644,29 +661,29 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     // verify on device
     
     func shareApp() {
-        loadView()
         
+        loadView()
         if (self.isViewLoaded()) {
-//            viewDidLoad()
-//            
-//            congratulations()
-//            
-//            let textToShare = "Swift is awesome!  Check out this website about it!"
-//            
-//            if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
-//                let objectsToShare = [textToShare, myWebsite]
-//                // could create own custom share function (instead of setting nil)
-//                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-//                
-//                //New Excluded Activities Code
-//                activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
-//                
-//                // for ipad
-//                //            activityVC.popoverPresentationController?.sourceView = sender as! UIView
-//                self.presentViewController(activityVC, animated: true, completion: nil)
-//            }
+            // hide the walkthrough view
+            walkthroughInstructionsView.hidden = true
+            
+            let textToShare = "Swift is awesome!  Check out this website about it!"
+            
+            if let myWebsite = NSURL(string: "http://www.codingexplorer.com/") {
+                let objectsToShare = [textToShare, myWebsite]
+                // could create own custom share function (instead of setting nil)
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                //New Excluded Activities Code
+                activityVC.excludedActivityTypes = [UIActivityTypeAirDrop, UIActivityTypeAddToReadingList]
+                
+                // for ipad
+                //            activityVC.popoverPresentationController?.sourceView = sender as! UIView
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
 
         }
+    
     }
     
     /* GKGameCenterlDelgate Function */
@@ -675,14 +692,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func authenticateLocalPlayer() {
-        let localPlayer = GKLocalPlayer.localPlayer()
-        localPlayer.authenticateHandler = {(viewController, error) -> Void in
+        localPlayer = GKLocalPlayer.localPlayer()
+        localPlayer?.authenticateHandler = {(viewController, error) -> Void in
             
             if (viewController != nil) {
                 self.presentViewController(viewController!, animated: true, completion: nil)
             }
-
         }
+        
     }
     
     func saveHighscore(gameScore: Int) {
@@ -778,12 +795,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         views.append(rateView)
         
         // share option
-        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.tapDetected))
+        viewTapped = UITapGestureRecognizer(target: self, action:#selector(self.shareOptionTapped))
         let shareView = createOptionsView(viewTapped, image_name: "share_colored", text: "Share with friends", frame: f5
         )
         views.append(shareView)
         
         return views
+    }
+    
+    func shareOptionTapped() {
+        alert.hide()
+        shareApp()
     }
     
     func tapDetected() {
@@ -818,7 +840,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         
         // Numbers used reset!
         numbersLeft = 4
-    
+        
+        // make sure to unhide walkthrough
         startWalkthrough(CustomWalkthroughView())
         createHoles(holesToCreate: [walkthroughInstructionsView, number2Button, number3Button, multiplyButton])
         
@@ -860,6 +883,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         walkthroughInstructionsView.hidden = true
         finishWalkthrough()
         loadSettings()
+        initializeNumbers()
     }
     
     @IBAction func dismissWalkthrough(sender: AnyObject) {
