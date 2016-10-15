@@ -14,6 +14,12 @@ import GameKit
 import TKSwarmAlert
 import SwiftyWalkthrough
 
+extension String {
+    func trim() -> String {
+        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+    }
+}
+
 extension Double {
     private typealias Rational = (num: Int, den: Int)
     
@@ -78,9 +84,7 @@ extension Double {
 }
 
 class ViewController: UIViewController, GKGameCenterControllerDelegate {
-    // Storyboard
-    
-    
+        
     // Answer board area.
     @IBOutlet weak var answerNumber1Label: UILabel!
     @IBOutlet weak var answerOperationLabel: UILabel!
@@ -118,7 +122,41 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     var answersFilled: Int = 0
     var numbersLeft: Int = 4
     var currentNumbers = [Int:Int]()
-    var playerLevel: Int = 1
+    var playerLevel: Int = 1 {
+        didSet(oldValue) {
+            // Safeguards
+            if playerLevel >= 1 && playerLevel <= maxLevel {
+                defaults.setInteger(playerLevel, forKey: "level")
+            }
+            else {
+                playerLevel = oldValue
+            }
+        }
+    }
+    var puzzlesSolved: Int = 0 {
+        didSet(oldValue) {
+            if puzzlesSolved >= 0 && puzzlesSolved <= puzzlesPerLevel {
+                defaults.setInteger(puzzlesSolved, forKey: "puzzles")
+            }
+            else {
+                puzzlesSolved = oldValue
+            }
+        }
+    }
+    var playerScore: Int = 0 {
+        didSet(oldValue) {
+            // Safeguards
+            if playerScore >= 0 {
+                scoreLabel.text = String(playerScore)
+                defaults.setInteger(playerScore, forKey: "score")
+            }
+            else {
+                playerScore = oldValue
+            }
+        }
+    }
+    let maxLevel: Int = 10
+    let puzzlesPerLevel: Int = 10
     
     // user related variables
     var silent: Bool = false {
@@ -142,14 +180,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     // seconds to wait
     let triggerTime = Int64(500000000)
-    let triggerTime2 = Int64(1000000000)
     
     // Current problem from db
     var selectedProblem: NSManagedObject?
 
     // walkthrough
     @IBOutlet weak var skipWalkthroughButton: UIButton!
-    @IBOutlet weak var finishedWalkthroughButton: UIButton!
     @IBOutlet weak var walkthroughInstructionsView: UIView!
     var currentHoles = [UIView]()
     
@@ -195,6 +231,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     func loadSettings(){
         // Sound
         silent = defaults.boolForKey("silent")
+        playerLevel = defaults.integerForKey("level")
+        playerScore = defaults.integerForKey("score")
+        puzzlesSolved = defaults.integerForKey("puzzles")
     }
     
     /*****
@@ -208,17 +247,58 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         answerNumber2Label.userInteractionEnabled = true
         answerNumber2Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer2)))
     }
+    // We can only ever tap the first answer!
+    func tapAnswer(label: UILabel) {
+        if let text = label.text {
+            if text.trim() != "" {
+                setNumberButton(label.tag, text: text)
+                label.text = " "
+                playSound(pop)
+                answersFilled -= 1
+                
+                if ongoingWalkthrough {
+                    removeHole(label)
+                    addHole(holeToAdd: numberButtons[label.tag])
+                }
+            }
+        }
+    }
+    func tapAnswer1(){
+        tapAnswer(answerNumber1Label)
+    }
+    func tapAnswer2(){
+        tapAnswer(answerNumber2Label)
+    }
+    
+    func tapOperation() {
+        if let text = answerOperationLabel.text {
+            if text.trim() != "" {
+                answerOperationLabel.text = " "
+                playSound(pop)
+                answersFilled -= 1
+                
+                if ongoingWalkthrough {
+                    removeHole(answerOperationLabel)
+                    addHole(holeToAdd: multiplyButton)
+                }
+            }
+        }
+    }
     
     /************
      * Database Functions
      *************/
     func getDifficultyRange(level: Int) -> (Double, Double) {
-        let max = Double(level) / 10.0
-        return (max - 1 / 10, max)
+        let maxLevel = Double(self.maxLevel)
+        let level = Double(self.playerLevel)
+        let max = level / maxLevel
+        return (max - 1 / maxLevel, max)
     }
     
     func loadProblems(level: Int) -> [NSManagedObject] {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        guard let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate else {
+            return []
+        }
         let managedContext = appDelegate.managedObjectContext
         let fetchRequest = NSFetchRequest(entityName: "Problem")
         
@@ -242,7 +322,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
      * Sound Functions
      *****************/
     func playSound(sound: NSURL) {
-        if silent == false {
+        if !silent {
             do {
                 player = try AVAudioPlayer(contentsOfURL: sound)
                 guard let player = player else { return }
@@ -256,7 +336,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func playBackgroundMusic(sound: NSURL) {
-        if silent == false {
+        if !silent {
             do {
                 backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: ambientSound)
                 
@@ -271,7 +351,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func syncMusic(){
-        if silent == true {
+        if silent {
             backgroundMusicPlayer.stop()
             backgroundMusicPlayer.currentTime = 0
         }
@@ -283,7 +363,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func startStopBackgroundMusic() {
-        if silent == true {
+        if silent {
             backgroundMusicPlayer.stop()
             backgroundMusicPlayer.currentTime = 0
         }
@@ -303,7 +383,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     /*******
      * Gameplay Functions
      *******/
-    func randomProblem() -> [Int]{
+    func randomProblem() -> [Int] {
+        print("Selecting a random problem. This is not guaranteed to be solvable")
         var result = [Int]()
         // initalize numbers to random between 1 and 9
         for _ in 0..<numberButtons.count {
@@ -316,17 +397,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     // From a suitable array of problems, select the one to present.
     func selectProblem(problems: [NSManagedObject]) -> NSManagedObject? {
         print("Selecting from \(problems.count) problems!")
+        var selectedProblem: NSManagedObject?
         if problems.count > 0 {
             selectedProblem = problems[Int(arc4random_uniform(UInt32(problems.count)))]
-            return selectedProblem
         }
-        return nil
+        return selectedProblem
     }
 
     func initializeNumbers() {
         
         clearAnswers()
-        let problem = (selectProblem(loadProblems(playerLevel))?.valueForKey("numbers") as! [Int]?) ?? randomProblem()
+        let problem = (selectProblem(loadProblems(playerLevel))?.valueForKey("numbers") as? [Int]) ?? randomProblem()
         
         for index in 0..<numberButtons.count {
             let selectedNumber = problem[index]
@@ -338,36 +419,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         numbersLeft = 4
     }
     
-    func computeAnswer() {
-        guard let op = answerOperationLabel?.text else { return }
-        guard let number1 = Double(from: answerNumber1Label.text!) else { return }
-        guard let number2 = Double(from: answerNumber2Label.text!) else { return }
-        var answer: Double = 0
-        
-        switch op {
-        case "+" :
-            answer = number1 + number2
-        case "-" :
-            answer = number1 - number2
-        case "x" :
-            answer = number1 * number2
-        case "/" :
-            if number2 == 0 {
-                startStopBackgroundMusic()
-                
-                let alert = UIAlertController(title: "Invalid Operation", message: "Division by zero is not allowed! ", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
-                self.presentViewController(alert, animated: true, completion: nil)
-                playSound(computerMistake)
-                return clearBoard()
-            }
-            answer = number1 / number2
-        default:
-            return
-        }
-        
-            
-        setNumberButton(answerNumber2Label.tag, text: answer.toString())
+    // Operations to perform after an answer has been calcuated successfully.
+    func calculatedAnswer(answer: Double){
         clearAnswers()
         
         // decrement numbers left
@@ -382,7 +435,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
             if numbersLeft ==   1 {
                 // Walkthrough Ended
                 dismissWalkthrough()
-                
                 initializeNumbers()
             }
             else if numbersLeft == 2 {
@@ -412,76 +464,76 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
                 playSound(glassPing)
             }
         }
+
     }
     
-    // We can only ever tap the first answer!
-    func tapAnswer(label: UILabel) {
-        if label.text != " " {
-            setNumberButton(label.tag, text: label.text!)
-            label.text = " "
-            playSound(pop)
-            answersFilled -= 1
-            
-            if ongoingWalkthrough {
-                removeHole(label)
-                addHole(holeToAdd: numberButtons[label.tag])
+    func computeAnswer(){
+        guard let op = answerOperationLabel?.text else { return }
+        guard let number1 = Double(from: answerNumber1Label.text ?? "") else { return }
+        guard let number2 = Double(from: answerNumber2Label.text ?? "") else { return }
+        var answer: Double = 0
+        
+        switch op {
+        case "+" :
+            answer = number1 + number2
+        case "-" :
+            answer = number1 - number2
+        case "x" :
+            answer = number1 * number2
+        case "/" :
+            if number2 == 0 {
+                startStopBackgroundMusic()
+                
+                let alert = UIAlertController(title: "Invalid Operation", message: "Division by zero is not allowed! ", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+                self.presentViewController(alert, animated: true, completion: nil)
+                playSound(computerMistake)
+                return clearBoard()
             }
+            answer = number1 / number2
+        default:
+            return
+        }
+        
+        // Set the answer
+        setNumberButton(answerNumber2Label.tag, text: answer.toString())
+        calculatedAnswer(answer)
+        
+    }
+    
+    // Function is called before any variables are updated on a win to determine the alert type to show.
+    func getAlertTypeOnWin() -> String {
+        if puzzlesSolved == puzzlesPerLevel - 1 {
+            return "next_level"
+        }
+        else {
+            return "next_puzzle"
         }
     }
-    func tapAnswer1(){
-        tapAnswer(answerNumber1Label)
-    }
-    func tapAnswer2(){
-        tapAnswer(answerNumber2Label)
-    }
-    
-    func tapOperation() {
-        if answerOperationLabel != " " {
-            answerOperationLabel.text = " "
-            playSound(pop)
-            answersFilled -= 1
-            
-            if ongoingWalkthrough {
-                removeHole(answerOperationLabel)
-                addHole(holeToAdd: multiplyButton)
-            }
-        }
-    }
-    
     func didWin() {
+        // Core data is synchronized when the application exits!
         selectedProblem?.setValue(true, forKey: "completed")
-        
-        // Sync core data
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        do {
-            try appDelegate.managedObjectContext.save()
-        } catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
-        
         congratulations()
     }
     func congratulations() {
         startStopBackgroundMusic()
         playSound(congrats)
         
-        defaults.setObject("congratulations", forKey: "alert")
-        // old alert
-//        let alert = UIAlertController(title: "Congratulations!", message: "You won!! Yays!! ", preferredStyle: UIAlertControllerStyle.Alert)
-//        alert.addAction(UIAlertAction(title: "Play Again", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
-//        self.presentViewController(alert, animated: true, completion: nil)
-        
-        scoreLabel.text = String(Int(scoreLabel.text!)! + 1)
-        let score = Int(scoreLabel.text!)!
-        defaults.setInteger(score, forKey: "score")
+        // Start a new game!
         initializeNumbers()
     
-        // new alert 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let myAlert = storyboard.instantiateViewControllerWithIdentifier("alert")
-        myAlert.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        myAlert.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-        self.presentViewController(myAlert, animated: true, completion: nil)
+        // Determine type of alert!
+        print(getAlertTypeOnWin())
+        presentAlert(getAlertTypeOnWin())
+        
+        // Update player info
+        puzzlesSolved += 1
+        playerScore += playerLevel
+        // Check if level is passed
+        if puzzlesSolved == puzzlesPerLevel {
+            playerLevel += 1
+            puzzlesSolved = 0
+        }
     }
     
     func didLose() {
@@ -490,22 +542,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     func fails() {
         startStopBackgroundMusic()
         playSound(fail)
-
-        // new alert
-        defaults.setObject("lost", forKey: "alert")
         
-        // new alert
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let myAlert = storyboard.instantiateViewControllerWithIdentifier("alert")
-        myAlert.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        myAlert.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-        self.presentViewController(myAlert, animated: true, completion: nil)
-        
-//        let alert = UIAlertController(title: "You Failed", message: "Sorry kid!", preferredStyle: UIAlertControllerStyle.Alert)
-//        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
-//        self.presentViewController(alert, animated: true, completion: nil)
-        
+        presentAlert("fail")
         reset()
+    }
+    func presentAlert(alert_type: String){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let myAlert = storyboard.instantiateViewControllerWithIdentifier("alert") as? CongratulationsViewController {
+            myAlert.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            myAlert.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self] in self.startStopBackgroundMusic()})
+            self.presentViewController(myAlert, animated: true, completion: nil)
+        }
     }
     
     /*********
@@ -532,11 +580,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     func clearBoard() {
         // Move selected numbers back to board
-        if answerNumber1Label.text != " "{
-            setNumberButton(answerNumber1Label.tag, text: answerNumber1Label.text!)
+        if let text = answerNumber1Label.text {
+            if text.trim() != "" {
+                setNumberButton(answerNumber1Label.tag, text: text)
+            }
         }
-        if answerNumber2Label.text != " "{
-            setNumberButton(answerNumber2Label.tag, text: answerNumber2Label.text!)
+        if let text = answerNumber2Label.text {
+            if text.trim() != "" {
+                setNumberButton(answerNumber2Label.tag, text: text)
+            }
         }
         clearAnswers()
     }
@@ -557,14 +609,16 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     @IBAction func populateAnswers(sender: AnyObject) {
         
         // all else
-        if answerNumber1Label.text == " " || answerNumber2Label.text == " " {
-            let openLabel = answerNumber1Label.text == " " ? answerNumber1Label : answerNumber2Label
-            openLabel.text = sender.currentTitle!
-            openLabel.tag = sender.tag
+        guard let text1 = answerNumber1Label.text else { return }
+        guard let text2 = answerNumber2Label.text else { return }
+        if text1.trim() == "" || text2.trim() == "" {
+            let openLabel = text1.trim() == "" ? answerNumber1Label : answerNumber2Label
+            openLabel.text = (sender as? UIButton)?.currentTitle ?? ""
+            openLabel.tag = ((sender as? UIButton)?.tag)!
             
             // for the walkthrough
             if ongoingWalkthrough {
-                removeHole(numberButtons[sender.tag])
+                removeHole(numberButtons[openLabel.tag])
                 addHole(holeToAdd: openLabel)
             }
             
@@ -573,7 +627,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
             }
             
             playSound(pop)
-            clearNumberButton(sender.tag)
+            clearNumberButton(openLabel.tag)
         }
         else {
             // Do nothing
@@ -589,13 +643,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     @IBAction func populateOperation(sender: AnyObject) {
-        if answerOperationLabel.text == " " && answersFilled < 3 {
+        guard let text = answerOperationLabel.text else { return }
+        if text.trim() == "" && answersFilled < 3 {
             answersFilled = answersFilled + 1
         }
         
         //play pop sound
         playSound(pop)
-        answerOperationLabel.text = sender.currentTitle!
+        answerOperationLabel.text = (sender as? UIButton)?.currentTitle ?? ""
         if ongoingWalkthrough {
             addHole(holeToAdd: answerOperationLabel)
             if let operation = sender as? UIView {
@@ -624,14 +679,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     @IBAction func saveScore(sender: AnyObject) {
-        let gameScore = Int(scoreLabel.text!)!
-        saveHighscore(gameScore)
+        saveHighscore(playerScore)
     }
     
     func showLeaderboard() {
-        
-        // show leaderboard
-
         let viewControllerVar = self.view?.window?.rootViewController
         let gKGCViewController = GKGameCenterViewController()
         gKGCViewController.gameCenterDelegate = self
@@ -654,6 +705,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
 
 //        showLeaderboard()
         
+        showLeaderboard()
     }
     
     // check on device, if need to explicitly add text, Twitter, FB http://nshipster.com/uiactivityviewcontroller/

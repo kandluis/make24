@@ -24,21 +24,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.init(rawValue: shortIdentifier)
         }
     }
+    
     var vc = OptionsViewController()
     
     var window: UIWindow?
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    var defaultsToBeClearedOnExit: [String] = []
     
     // for shortcuts
     func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
         
         let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-    print(mainStoryboard)
-    let initialViewController : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("OptionsViewController") as UIViewController
-    self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-    self.window?.rootViewController = initialViewController
-    self.window?.makeKeyAndVisible()
-    
-//        window!.rootViewController?.presentViewController(vc, animated: true, completion: nil)
+        let initialViewController : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("OptionsViewController") as UIViewController
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window?.rootViewController = initialViewController
+        self.window?.makeKeyAndVisible()
+        
+    //        window!.rootViewController?.presentViewController(vc, animated: true, completion: nil)
         
         
         completionHandler( handleShortcut(shortcutItem) )
@@ -88,6 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        for key in defaultsToBeClearedOnExit {
+            defaults.removeObjectForKey(key)
+        }
         self.saveContext()
     }
     
