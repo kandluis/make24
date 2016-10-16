@@ -1,46 +1,82 @@
-# -*- coding: utf-8 -*-
+"""
+Problem difficulty generator for 24 Game
 # @Author: Luis Perez
 # @Date:   2016-10-04 17:43:01
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-06 00:47:17
+# @Last Modified time: 2016-10-15 19:56:04
+"""
 
-from analysis import generateResultSet
-from pprint import pprint
 import argparse
-import numpy as np
 import csv
 
-from solver import numberOfSolutions
+from pprint import pprint
 
-parser = argparse.ArgumentParser(description='Solver for Make24 Game')
-parser.add_argument('--print-results', dest='print_results', type=bool, default=True,
-                    help='specify whether or not to pretty print results')
-parser.add_argument('--solve', dest='solve', nargs='+',
-                    help="Solve the specified problem")
-parser.add_argument('--filename', dest='outname', type=str,
-                    help='specify a filename for output')
-parser.add_argument('--normalize', type=bool, default=True, help="Normalize the output difficulty")
-parser.add_argument('--only-solvable', dest='filter', type=bool, default=True, help="Only include problems with solutions")
+from .analysis import localResultSet
+from .online import onlineResultSet
+from .solver import numberOfSolutions
 
-args = parser.parse_args()
 
-if __name__ == '__main__':
+def generateParser():
+    """Generates argument parser"""
+    parser = argparse.ArgumentParser(description='Solver for Make24 Game')
+    parser.add_argument('--print-results', dest='print_results', type=bool,
+                        default=True,
+                        help='specify whether or not to pretty print results')
+    parser.add_argument('--solve', dest='solve', nargs='+',
+                        help="Solve the specified problem")
+    parser.add_argument('--filename', dest='outname', type=str,
+                        help='specify a filename for output')
+    parser.add_argument('--normalize', type=bool, default=True,
+                        help="Normalize the output difficulty")
+    parser.add_argument('--only-solvable', dest='filter', type=bool,
+                        default=True, help="Only include problems with \
+                        solutions")
+    parser.add_argument('--min-integer', type=int, default=1, dest="min",
+                        help="Problems generated containing an integer less \
+                        than the specified value are thrown out from the \
+                        analysis and results.")
+    parser.add_argument('--max_integer', type=int, default=10, dest="max",
+                        help="Problems generated containing an integer greater \
+                        than the specified value are thrown out from the \
+                        analysis and results.")
+    # TODO: Add ability to mix local and online results.
+    # If both or only online: take online
+    # If only local: Figure out a way to inject into online results based on
+    # local ranking.
+    parser.add_argument('--local', type=bool, dest="local",
+                        help="If true, difficulty analysis is performed using our \
+                        in-house problem generation and difficulty scoring \
+                        system found in analysis.py. Otherwise, problems are \
+                        queried remotely from \
+                        http://www.4nums.com/game/difficulties/. Note that \
+                        such remote querying will necessarily limit pro")
+
+    return parser
+
+
+def main(args):
+    """Main function"""
     if not args.solve:
         # TODO -- modify so that we can add more complexity to the result set.
         # We must also modify the printing to csv
         # Note that results is already sorted from easy to hard
         # [(problem, difficulty)]
         options = {
-            'maxInt': 14
+            'maxInt': args.max + 1,
+            'minInt': args.min
         }
-        results = generateResultSet(options)
+        if args.local:
+            results = localResultSet(options)
+        else:
+            results = onlineResultSet(options)
         totalResults = len(results)
-        solvable = filter(lambda x: x[1] != 1, results)
+        solvable = [result for result in results if result[1] != 1]
 
         if args.filter:
             results = solvable
         if args.normalize:
-            results = [(problem, float(i) / len(results)) for (i,  (problem, _)) in enumerate(results)]
+            results = [(problem, float(i) / len(results))
+                       for (i, (problem, _)) in enumerate(results)]
 
         print "Percent with feasible solution {}.".format(
             100 * len(solvable) / float(totalResults))
@@ -61,6 +97,10 @@ if __name__ == '__main__':
                     writer.writerow(row)
 
     else:
-        _, ways = numberOfSolutions([int(x)
-                                     for x in args.solve], returnWays=True)
+        _, ways = numberOfSolutions([int(num)
+                                     for num in args.solve], returnWays=True)
         pprint(ways)
+
+
+if __name__ == '__main__':
+    main(generateParser().parse_args())

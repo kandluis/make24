@@ -1,8 +1,11 @@
-# -*- coding: utf-8 -*-
-# @Author: Luis Perez
-# @Date:   2016-10-04 21:38:28
-# @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-06 00:21:58
+"""
+Formatter for arithmetic operations.
+
+@Author: Luis Perez
+@Date:   2016-10-04 21:38:28
+@Last Modified by:   Luis Perez
+@Last Modified time: 2016-10-15 19:34:20
+"""
 
 
 def __isOperation(char):
@@ -24,11 +27,12 @@ def __tightBinding(ops):
 
 
 def addition(acc, curr):
-    # Implicit left-association
+    """Addition formatter"""
     return "{} + {}".format(acc, curr)
 
 
 def multiplication(acc, curr):
+    """Multiplication formatter"""
     if __tightBinding(__getOperations(acc)):
         return "{} * {}".format(acc, curr)
     else:
@@ -36,11 +40,12 @@ def multiplication(acc, curr):
 
 
 def subtractFrom(acc, curr):
-    # Implicit left-association
+    """Subtraction formatter"""
     return "{} - {}".format(acc, curr)
 
 
 def subtractedFrom(acc, curr):
+    """Subtraction formatter"""
     if __tightBinding(__getOperations(acc)):
         return "{} - {}".format(curr, acc)
     else:
@@ -48,6 +53,7 @@ def subtractedFrom(acc, curr):
 
 
 def divideBy(acc, curr):
+    """Division formatter"""
     if __tightBinding(__getOperations(acc)):
         return "{} / {}".format(acc, curr)
     else:
@@ -55,7 +61,7 @@ def divideBy(acc, curr):
 
 
 def dividedBy(acc, curr):
-    # Single value
+    """Division formatter"""
     if len(__getOperations(acc)) == 0:
         return "{} / {}".format(curr, acc)
     else:
