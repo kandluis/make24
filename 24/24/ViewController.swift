@@ -156,9 +156,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     let puzzlesPerLevel: Int = 10
     var silent: Bool = false {
         didSet {
-            if !ongoingWalkthrough {
-                defaults.setBool(silent, forKey: "silent")
-            }
             syncMusic()
             
         }
@@ -880,6 +877,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             self.silent = !self.silent
+            self.defaults.setBool(self.silent, forKey: "silent")
         }
         self.optionsView.hide()
     }
