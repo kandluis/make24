@@ -3,7 +3,7 @@ Problem difficulty generator for 24 Game
 # @Author: Luis Perez
 # @Date:   2016-10-04 17:43:01
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-15 21:59:31
+# @Last Modified time: 2016-10-15 23:05:45
 """
 
 import argparse
@@ -85,6 +85,8 @@ def main(args):
             results = [(problem, float(i) / len(results))
                        for (i, (problem, _)) in enumerate(results)]
 
+        print "Total problems processed {}.".format(totalResults)
+        print "Problems with solutions {}.".format(len(solvable))
         print "Percent with feasible solution {}.".format(
             100 * len(solvable) / float(totalResults))
 
