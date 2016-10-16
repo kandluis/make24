@@ -197,7 +197,9 @@ class CongratulationsViewController: UIViewController {
                 let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 delegate.resetApplication()
             }
-            self.completion!(sender.titleLabel?.text)
+            if let code = self.completion {
+                code(sender.titleLabel?.text)
+            }
         })
     }
     

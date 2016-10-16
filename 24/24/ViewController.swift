@@ -114,11 +114,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     // Game options
     @IBOutlet weak var optionsButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var leaderboardButton: UIButton!
-    @IBOutlet weak var muteButton: UIButton!
-    @IBOutlet weak var soundIcon: UIImageView!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var saveScoreButton: UIButton!
     
     // Gameplay related variables
     var answersFilled: Int = 0
@@ -161,7 +156,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     let puzzlesPerLevel: Int = 10
     var silent: Bool = false {
         didSet {
-            defaults.setBool(silent, forKey: "silent")
+            if !ongoingWalkthrough {
+                defaults.setBool(silent, forKey: "silent")
+            }
             syncMusic()
             
         }
@@ -255,7 +252,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         answerNumber2Label.userInteractionEnabled = true
         answerNumber2Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer2)))
     }
-    // We can only ever tap the first answer!
+    // We can only ever tap the first answer! f
     func tapAnswer(label: UILabel) {
         if let text = label.text {
             if text.trim() != "" {
@@ -545,12 +542,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         initializeNumbers()
     
         // Determine type of alert!
-        print(getAlertTypeOnWin())
         presentAlert(getAlertTypeOnWin())
         
         // Update player info
         puzzlesSolved += 1
-        playerScore += playerLevel
+        playerScore += 1
         // Check if level is passed
         if puzzlesSolved == puzzlesPerLevel {
             playerLevel += 1
@@ -588,6 +584,35 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     /*********
      * Graphical Functions
      **********/
+    weak var defaultFont: UIFont?
+    lazy var fractionFont: UIFont = {
+        let size: CGFloat = 60.0
+        let defaultFont = UIFont.systemFontOfSize(size, weight: UIFontWeightLight)
+        let systemFontDesc = defaultFont.fontDescriptor()
+        let fractionFontDesc = systemFontDesc.fontDescriptorByAddingAttributes(
+            [
+                UIFontDescriptorFeatureSettingsAttribute: [
+                    [
+                        UIFontFeatureTypeIdentifierKey: kFractionsType,
+                        UIFontFeatureSelectorIdentifierKey: kDiagonalFractionsSelector,
+                    ],
+                ]
+            ]
+        )
+        return UIFont(descriptor: fractionFontDesc, size: size)
+    }()
+    func getFont(text: String?, currentFont: UIFont?) -> UIFont {
+        if defaultFont == nil {
+            defaultFont = currentFont
+        }
+        if text?.characters.count > 2 {
+            return fractionFont
+        }
+        else {
+            return defaultFont ?? fractionFont
+        }
+    }
+    
     func clearAnswers(){
         answerNumber1Label.text = " "
         answerNumber2Label.text = " "
@@ -595,10 +620,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         
         answersFilled = 0
     }
-    
     func setNumberButton(index: Int, text: String) {
-        numberButtons[index].setTitle(text, forState: .Normal)
-        numberButtons[index].setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
+        let button = numberButtons[index]
+        button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
+        button.titleLabel?.font = getFont(text, currentFont: button.titleLabel?.font)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
+        button.titleLabel?.textAlignment = .Center
+        button.setTitle(text, forState: .Normal)
     }
     
     func clearNumberButton(index: Int){
@@ -624,10 +653,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     func reset(){
         numbersLeft = 4
-        for button in numberButtons {
-            let originalNumber = Int(currentNumbers[button.tag]!)
-            button.setTitle(String(originalNumber), forState: .Normal)
-            button.setBackgroundImage(UIImage(named:"tile_large")!, forState: .Normal)
+        for (i, button) in numberButtons.enumerate() {
+            setNumberButton(i, text: String(currentNumbers[button.tag]!))
+            
         }
         clearAnswers()
     }
@@ -635,87 +663,77 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     /************
      * Leaderboard Functions
      ************/
+    func alertUserAboutLogin(after completion: Closure?) {
+        let title = "Fail Login!"
+        let message = "You have declined to login. Please login through the Game Center App or restart the application to be asked to login."
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default) { _ in })
+        self.presentViewController(alert, animated: true, completion: completion)
+    }
     func showLeaderboard() {
-        let show = {[unowned self] in
-            self.reportIfHigher(self.playerScore, afterReport: { [unowned self] in
-                self.showLeaderboardView()
-                })
-        }
         if let authenticated = localPlayer?.authenticated {
             if authenticated {
-                show()
+                self.reportIfHigher(self.playerScore, afterReport: { [unowned self] in
+                    self.showLeaderboardView()
+                    })
             }
             else {
-                // Player dismissed authentication, alert that they
-                // must login through GameCenter
-                let title = "Cannot login!"
-                let message = "Login through the Game Center App to access this feature!"
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .Default) { _ in })
-                self.presentViewController(alert, animated: true, completion: {})
+                self.alertUserAboutLogin(after: nil)
             }
         }
         else {
-            authenticateLocalPlayer(onAuthetication: show)
+            authenticateLocalPlayer(afterAuthScreen: nil)
         }
     }
-    func authenticateLocalPlayer(onAuthetication completion: Closure) {
+    func authenticateLocalPlayer(afterAuthScreen completion: Closure?) {
         localPlayer = GKLocalPlayer.localPlayer()
         localPlayer?.authenticateHandler = {(viewController, error) -> Void in
-            
             if (viewController != nil) {
                 self.presentViewController(viewController!, animated: true, completion: completion)
+            }
+            if let error = error {
+                print("Error authenticating player \(error)")
+                if error.code == 2 {
+                    self.alertUserAboutLogin(after: completion)
+                }
             }
         }
         
     }
-    // Player must be authenticated.
-    func reportIfHigher(gameScore: Int, afterReport completion: Closure) {
-        if let authenticated = localPlayer?.authenticated {
-            if authenticated {
-                let leaderboardRequest = GKLeaderboard()
-                leaderboardRequest.identifier = LEADER_BOARD_ID
-                leaderboardRequest.loadScoresWithCompletionHandler({[unowned self](scores, error) -> Void in
-                    if let remoteScore = leaderboardRequest.localPlayerScore?.value {
-                        if Int(remoteScore) < gameScore {
-                            self.reportScore(gameScore)
-                        }
-                    }
-                    })
-
+    func reportIfHigher(gameScore: Int, afterReport completion: Closure?) {
+        let leaderboardRequest = GKLeaderboard()
+        leaderboardRequest.identifier = LEADER_BOARD_ID
+        leaderboardRequest.loadScoresWithCompletionHandler({[unowned self](scores, error) -> Void in
+            if let remoteScore = leaderboardRequest.localPlayerScore?.value {
+                if Int(remoteScore) < gameScore {
+                    return self.reportScore(gameScore, afterReport: completion)
+                }
             }
-            else {
-                completion()
+            if let code = completion {
+                code()
             }
-        }
+        })
     }
-    // Player must be authenticated
-    func reportScore(score: Int) {
-        if let authenticated = localPlayer?.authenticated {
-            if authenticated {
-                let scoreReporter = GKScore(leaderboardIdentifier:LEADER_BOARD_ID)
-                
-                scoreReporter.value = Int64(score)
-                let scoreArray: [GKScore] = [scoreReporter]
-                GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
-                    if error != nil {
-                        print("An error has occured:")
-                        print("\n \(error) \n")
-                    }
-                })
+    func reportScore(score: Int, afterReport completion: Closure?) {
+        let scoreReporter = GKScore(leaderboardIdentifier:LEADER_BOARD_ID)
+        
+        scoreReporter.value = Int64(score)
+        let scoreArray: [GKScore] = [scoreReporter]
+        GKScore.reportScores(scoreArray, withCompletionHandler: {error -> Void in
+            if error != nil {
+                print("An error has occured:")
+                print("\n \(error) \n")
             }
-        }
+            if let code = completion{
+                code()
+            }
+        })
     }
-    // Player must be authenticated
     func showLeaderboardView() {
-        if let authenticated = localPlayer?.authenticated {
-            if authenticated {
-                let viewControllerVar = self.view?.window?.rootViewController
-                let gKGCViewController = GKGameCenterViewController()
-                gKGCViewController.gameCenterDelegate = self
-                viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
-            }
-        }
+        let viewControllerVar = self.view?.window?.rootViewController
+        let gKGCViewController = GKGameCenterViewController()
+        gKGCViewController.gameCenterDelegate = self
+        viewControllerVar?.presentViewController(gKGCViewController, animated: true, completion: nil)
     }
     
     /* GKGameCenterlDelgate Function */
@@ -896,9 +914,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         guard let text2 = answerNumber2Label.text else { return }
         if text1.trim() == "" || text2.trim() == "" {
             let openLabel = text1.trim() == "" ? answerNumber1Label : answerNumber2Label
-            openLabel.text = (sender as? UIButton)?.currentTitle ?? ""
+            let text = (sender as? UIButton)?.currentTitle ?? ""
+            openLabel.font = getFont(text, currentFont: openLabel.font)
+            openLabel.adjustsFontSizeToFitWidth = true
+            openLabel.text = text
             openLabel.tag = ((sender as? UIButton)?.tag)!
-            
+
             // for the walkthrough
             if ongoingWalkthrough {
                 removeHole(numberButtons[openLabel.tag])
@@ -955,6 +976,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     @IBAction func clearBoardButton(sender: AnyObject) {
         clearBoard()
+        
     }
     
     @IBAction func newSet(sender: AnyObject) {

@@ -13,9 +13,11 @@ typealias Problem = (id : Int, problem : [Int], difficulty: Double)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    //for force touch
+    // For 3D Touch
     enum ShortcutIdentifier: String {
         case ShareApp
+        case Leaderboard
+        case GameModes
         
         init?(fullIdentifier: String) {
             guard let shortIdentifier = fullIdentifier.componentsSeparatedByString(".").last else {
@@ -23,6 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             self.init(rawValue: shortIdentifier)
         }
+        
+        var type: String {
+            return NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
+        }
+    }
+    
+    func handleShortcut( shortcutItem:UIApplicationShortcutItem ) -> Bool {
+        guard let shortcutIdentifier = ShortcutIdentifier(fullIdentifier: shortcutItem.type) else {
+            return false
+        }
+        print(shortcutIdentifier)
+        return true
     }
     
     var window: UIWindow?
@@ -44,26 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler( handleShortcut(shortcutItem) )
         
     }
-    
-    func handleShortcut( shortcutItem:UIApplicationShortcutItem ) -> Bool {
-        print("Handling shortcut")
-        
-        let shortcutType = shortcutItem.type
-        print(shortcutType)
-        guard let shortcutIdentifier = ShortcutIdentifier(fullIdentifier: shortcutType) else {
-            return false
-        }
-        print(shortcutIdentifier)
-        return true
-    }
-    
-    // end for shortcut
+
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         if !hasAppLaunchedBefore() {
             preloadData()
         }
-        
+        // Disable sleep
+        UIApplication.sharedApplication().idleTimerDisabled = true
         return true
     }
     
