@@ -3,7 +3,7 @@ Problem difficulty generator for 24 Game
 # @Author: Luis Perez
 # @Date:   2016-10-04 17:43:01
 # @Last Modified by:   Luis Perez
-# @Last Modified time: 2016-10-15 19:56:04
+# @Last Modified time: 2016-10-15 21:59:31
 """
 
 import argparse
@@ -19,37 +19,44 @@ from .solver import numberOfSolutions
 def generateParser():
     """Generates argument parser"""
     parser = argparse.ArgumentParser(description='Solver for Make24 Game')
-    parser.add_argument('--print-results', dest='print_results', type=bool,
-                        default=True,
-                        help='specify whether or not to pretty print results')
+    parser.add_argument('--hide-results', dest='print_results',
+                        default=True, action="store_false",
+                        help='Hide the results from stdout.')
     parser.add_argument('--solve', dest='solve', nargs='+',
-                        help="Solve the specified problem")
+                        help="Solve the specified problem.")
     parser.add_argument('--filename', dest='outname', type=str,
-                        help='specify a filename for output')
-    parser.add_argument('--normalize', type=bool, default=True,
-                        help="Normalize the output difficulty")
-    parser.add_argument('--only-solvable', dest='filter', type=bool,
-                        default=True, help="Only include problems with \
-                        solutions")
+                        help='specify a filename for output.')
+    parser.add_argument('--true-rank', dest="normalize",
+                        default=True, action="store_false",
+                        help="Display the true rank returned by ranking \
+                        method")
+    parser.add_argument('--all-problems', dest='filter',
+                        default=True, action="store_false",
+                        help="Report all problems, even unsolvable ones.")
     parser.add_argument('--min-integer', type=int, default=1, dest="min",
                         help="Problems generated containing an integer less \
                         than the specified value are thrown out from the \
-                        analysis and results.")
+                        analysis and results. [1]")
     parser.add_argument('--max_integer', type=int, default=10, dest="max",
                         help="Problems generated containing an integer greater \
                         than the specified value are thrown out from the \
-                        analysis and results.")
+                        analysis and results [10].")
     # TODO: Add ability to mix local and online results.
     # If both or only online: take online
     # If only local: Figure out a way to inject into online results based on
     # local ranking.
-    parser.add_argument('--local', type=bool, dest="local",
-                        help="If true, difficulty analysis is performed using our \
-                        in-house problem generation and difficulty scoring \
-                        system found in analysis.py. Otherwise, problems are \
-                        queried remotely from \
-                        http://www.4nums.com/game/difficulties/. Note that \
-                        such remote querying will necessarily limit pro")
+    parser.add_argument('--local', dest="local", default=True,
+                        action="store_true", help="Performed difficulty \
+                        analysis using our in-house problem generation and \
+                        difficulty scoring system found in analysis.py.")
+    parser.add_argument('--online', dest="local", default=True,
+                        action="store_false", help="If true, difficulty \
+                        analysis is performed using our in-house problem \
+                        generation and difficulty scoring system found in \
+                        analysis.py. Otherwise, problems are queried remotely \
+                        from http://www.4nums.com/game/difficulties/. Note \
+                        that such remote querying will necessarily limit \
+                        problems.")
 
     return parser
 
