@@ -11,19 +11,19 @@ import UIKit
 class CongratulationsViewController: UIViewController {
     // Type of Alerts
     enum AlertType {
-        case FINISH
-        case NEXT_PUZZLE
-        case NEXT_LEVEL
-        case RETRY
+        case finish
+        case next_puzzle
+        case next_level
+        case retry
     }
 
     // level related variables
-    private var level: Int = 0
-    private var puzzles: Int = 0
-    private var type: AlertType = AlertType.NEXT_LEVEL
+    fileprivate var level: Int = 0
+    fileprivate var puzzles: Int = 0
+    fileprivate var type: AlertType = AlertType.next_level
     
     // Access to starting/stopping the sound
-    private var completion: (String? -> Void)!
+    fileprivate var completion: ((String?) -> Void)!
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -70,19 +70,19 @@ class CongratulationsViewController: UIViewController {
         lose_variables = [tryAgainButton, loseImage]
         
         switch type {
-        case AlertType.NEXT_LEVEL:
+        case AlertType.next_level:
             hideObjects(congratulations_variables + lose_variables)
-        case AlertType.NEXT_PUZZLE:
+        case AlertType.next_puzzle:
             hideObjects(beat_level_variables + lose_variables)
-        case AlertType.RETRY:
+        case AlertType.retry:
             hideObjects(congratulations_variables + beat_level_variables)
-        case AlertType.FINISH:
+        case AlertType.finish:
             hideObjects(congratulations_variables + lose_variables)
-            nextLevelButton.setTitle("Reset", forState: .Normal)
+            nextLevelButton.setTitle("Reset", for: UIControlState())
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // snap the alert to middle of screen
@@ -92,31 +92,31 @@ class CongratulationsViewController: UIViewController {
         let point = CGPoint(x: x, y: y)
         snapToPoint(point, view: congratulationsView)
         switch type {
-        case AlertType.NEXT_PUZZLE:
+        case AlertType.next_puzzle:
             congratulations()
-        case AlertType.NEXT_LEVEL:
+        case AlertType.next_level:
             beat_level()
-        case AlertType.RETRY:
+        case AlertType.retry:
             lose()
-        case AlertType.FINISH:
+        case AlertType.finish:
             beat_level()
         }
     }
     
     // Completion is passed the String corresponding to the
     // button the user clicked, if any.
-    func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: ((String?) -> Void)) -> () {
+    func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: @escaping ((String?) -> Void)) -> () {
         switch alert_type {
         case "next_level":
-            type = AlertType.NEXT_LEVEL
+            type = AlertType.next_level
         case "next_puzzle":
-            type = AlertType.NEXT_PUZZLE
+            type = AlertType.next_puzzle
         case "fail":
-            type = AlertType.RETRY
+            type = AlertType.retry
         case "finish":
-            type = AlertType.FINISH
+            type = AlertType.finish
         default:
-            type = AlertType.RETRY
+            type = AlertType.retry
         }
         
         self.level = level
@@ -153,11 +153,11 @@ class CongratulationsViewController: UIViewController {
     
     func showStars() {
         for star in stars {
-            star.hidden=false
+            star.isHidden=false
         }
         
     }
-    func animateImageView(image: UIImageView, filename: String) {
+    func animateImageView(_ image: UIImageView, filename: String) {
         if let new_image = UIImage(named: filename) {
             // animate the new star
             image.animationImages = [new_image]
@@ -168,9 +168,9 @@ class CongratulationsViewController: UIViewController {
         // play sound effect
     }
     
-    func hideObjects(objects: [UIView]) {
+    func hideObjects(_ objects: [UIView]) {
         for el in objects {
-            el.hidden = true
+            el.isHidden = true
         }
     }
     
@@ -180,21 +180,21 @@ class CongratulationsViewController: UIViewController {
         // more code
     }
     
-    func snapToPoint(point: CGPoint, view: UIView) {
-        let snap = UISnapBehavior(item: view, snapToPoint: point)
+    func snapToPoint(_ point: CGPoint, view: UIView) {
+        let snap = UISnapBehavior(item: view, snapTo: point)
         animator?.addBehavior(snap);
     }
     
     // maybe wait until animation finishes to dismiss view
     
-    @IBAction func dismissCongratulations(sender: AnyObject) {
+    @IBAction func dismissCongratulations(_ sender: AnyObject) {
         gravity.addItem(congratulationsView);
-        gravity.gravityDirection = CGVectorMake(0, 0.8)
+        gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);
         animator?.addBehavior(gravity)
-        self.dismissViewControllerAnimated(true, completion: {[unowned self] in
-            if self.type == AlertType.FINISH {
-                let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        self.dismiss(animated: true, completion: {[unowned self] in
+            if self.type == AlertType.finish {
+                let delegate = UIApplication.shared.delegate as! AppDelegate
                 delegate.resetApplication()
             }
             if let code = self.completion {

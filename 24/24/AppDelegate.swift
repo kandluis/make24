@@ -20,18 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case GameModes
         
         init?(fullIdentifier: String) {
-            guard let shortIdentifier = fullIdentifier.componentsSeparatedByString(".").last else {
+            guard let shortIdentifier = fullIdentifier.components(separatedBy: ".").last else {
                 return nil
             }
             self.init(rawValue: shortIdentifier)
         }
         
         var type: String {
-            return NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
+            return Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
         }
     }
     
-    func handleShortcut( shortcutItem:UIApplicationShortcutItem ) -> Bool {
+    func handleShortcut( _ shortcutItem:UIApplicationShortcutItem ) -> Bool {
         guard let shortcutIdentifier = ShortcutIdentifier(fullIdentifier: shortcutItem.type) else {
             return false
         }
@@ -41,14 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     // for shortcuts
-    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         
         let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let initialViewController : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("OptionsViewController") as UIViewController
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        let initialViewController : UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "OptionsViewController") as UIViewController
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
         
@@ -60,35 +60,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if !hasAppLaunchedBefore() {
             preloadData()
         }
         // Disable sleep
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true
         return true
     }
     
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         self.saveContext()
     }
@@ -97,14 +97,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func resetApplication() {
         let defaultsToReset: [String] = ["level", "puzzles", "score"]
         for key in defaultsToReset {
-            defaults.removeObjectForKey(key)
+            defaults.removeObject(forKey: key)
         }
         
-        let fetchRequest = NSFetchRequest(entityName: "Problem")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Problem")
         var results: [AnyObject]?
         do {
             results =
-                try managedObjectContext.executeFetchRequest(fetchRequest)
+                try managedObjectContext.fetch(fetchRequest)
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
@@ -117,28 +117,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Core Data stack
     
-    lazy var applicationDocumentsDirectory: NSURL = {
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+    lazy var applicationDocumentsDirectory: URL = {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1]
     }()
     
     lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = NSBundle.mainBundle().URLForResource("AppData", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+        let modelURL = Bundle.main.url(forResource: "AppData", withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("24.sqlite")
+        let url = self.applicationDocumentsDirectory.appendingPathComponent("24.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         } catch {
             // Report any error we got.
             var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+            dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
             
             dict[NSUnderlyingErrorKey] = error as NSError
             let wrappedError = NSError(domain: "24.error", code: 9999, userInfo: dict)
@@ -151,7 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var managedObjectContext: NSManagedObjectContext = {
         let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
@@ -175,14 +175,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      *******/
     func preloadData () {
         // Retrieve data from the source file
-        if let contentsOfFile = NSBundle.mainBundle().URLForResource("problems", withExtension: "csv") {
+        if let contentsOfFile = Bundle.main.url(forResource: "problems", withExtension: "csv") {
             
             var error:NSError?
-            if let items = parseCSV(contentsOfFile, encoding: NSUTF8StringEncoding, error: &error) {
+            if let items = parseCSV(contentsOfFile, encoding: String.Encoding.utf8, error: &error) {
                 // Preload the problem data!
                 for item in items {
-                    let entity = NSEntityDescription.entityForName("Problem", inManagedObjectContext: managedObjectContext)
-                    let problem = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+                    let entity = NSEntityDescription.entity(forEntityName: "Problem", in: managedObjectContext)
+                    let problem = NSManagedObject(entity: entity!, insertInto: managedObjectContext)
                     
                     problem.setValue(item.id, forKey: "id")
                     problem.setValue(item.problem, forKey: "numbers")
@@ -195,7 +195,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func parseCSV(contentsOfURL: NSURL, encoding: NSStringEncoding, error: NSErrorPointer) -> [Problem]? {
+    func parseCSV(_ contentsOfURL: URL, encoding: String.Encoding, error: NSErrorPointer) -> [Problem]? {
         // Load the CSV file and parse it
         let delimiter: String = ","
         var problemData: [Problem]?
@@ -203,7 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Read CSV into array!
         var content = ""
         do {
-            content = try NSString(contentsOfURL: contentsOfURL, encoding: encoding) as String
+            content = try NSString(contentsOf: contentsOfURL, encoding: encoding.rawValue) as String
         }
         catch{
             let nserror = error as NSError
@@ -213,25 +213,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         problemData = []
         
         // Ignore the first row as it contains header info
-        let lines = (content.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())).dropFirst()
+        let lines = (content.components(separatedBy: CharacterSet.newlines)).dropFirst()
         
         for line in lines {
             var values:[String] = []
             if line != "" {
                 // For a line with double quotes
                 // we use NSScanner to perform the parsing
-                if line.rangeOfString("\"") != nil {
+                if line.range(of: "\"") != nil {
                     var textToScan:String = line
                     var value:NSString?
-                    var textScanner:NSScanner = NSScanner(string: textToScan)
+                    var textScanner:Scanner = Scanner(string: textToScan)
                     while textScanner.string != "" {
                         
-                        if (textScanner.string as NSString).substringToIndex(1) == "\"" {
+                        if (textScanner.string as NSString).substring(to: 1) == "\"" {
                             textScanner.scanLocation += 1
-                            textScanner.scanUpToString("\"", intoString: &value)
+                            textScanner.scanUpTo("\"", into: &value)
                             textScanner.scanLocation += 1
                         } else {
-                            textScanner.scanUpToString(delimiter, intoString: &value)
+                            textScanner.scanUpTo(delimiter, into: &value)
                         }
                         
                         // Store the value into the values array
@@ -239,17 +239,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         // Retrieve the unscanned remainder of the string
                         if textScanner.scanLocation < textScanner.string.characters.count {
-                            textToScan = (textScanner.string as NSString).substringFromIndex(textScanner.scanLocation + 1)
+                            textToScan = (textScanner.string as NSString).substring(from: textScanner.scanLocation + 1)
                         } else {
                             textToScan = ""
                         }
-                        textScanner = NSScanner(string: textToScan)
+                        textScanner = Scanner(string: textToScan)
                     }
                     
                     // For a line without double quotes, we can simply separate the string
                     // by using the delimiter (e.g. comma)
                 } else  {
-                    values = line.componentsSeparatedByString(delimiter)
+                    values = line.components(separatedBy: delimiter)
                 }
                 
                 // Put the values into the tuple and add it to the items array
@@ -261,17 +261,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func hasAppLaunchedBefore()->Bool{
-        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = UserDefaults.standard
         
-        if let appVersion = defaults.stringForKey("appVersion"){
+        if let appVersion = defaults.string(forKey: "appVersion"){
             print("Running App Version : \(appVersion)")
             return true
         }
         else {
-            let nsObject: AnyObject? = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
+            let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
             let appVersion = nsObject as! String
 
-            defaults.setObject(appVersion, forKey: "appVersion")
+            defaults.set(appVersion, forKey: "appVersion")
             return false
         }
     }
