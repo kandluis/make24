@@ -13,26 +13,6 @@ import GameplayKit
 import GameKit
 import TKSwarmAlert
 import SwiftyWalkthrough
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 let APP_ID = "id959379869"
 
@@ -618,11 +598,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         )
         return UIFont(descriptor: fractionFontDesc, size: size)
     }()
-    func getFont(_ text: String?, currentFont: UIFont?) -> UIFont {
+    func getFont(_ text: String, currentFont: UIFont?) -> UIFont {
         if defaultFont == nil {
             defaultFont = currentFont
         }
-        if text?.characters.count > 2 {
+        if text.characters.count > 2 {
             return fractionFont
         }
         else {
@@ -670,15 +650,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     func reset(){
         numbersLeft = 4
-        for i in 0 ..< numberButtons.count {
-            if let button = numberButtons[i] {
-                setNumberButton(i, text: String(currentNumbers[button.tag]!))
-            }
+        for button in numberButtons.enumerated() {
+            setNumberButton(button.offset, text: String(currentNumbers[button.element.tag]!))
+            
         }
-//        for (i, button) in numberButtons.enumerated() {
-//            setNumberButton(i, text: String(currentNumbers[button.tag]!))
-//            
-//        }
         clearAnswers()
     }
 
@@ -716,10 +691,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
             if let error = error {
                 print("Error authenticating player \(error)")
                 print(error.localizedDescription)
-                // commented for now
-//                if error.code == 2 {
-//                    self.alertUserAboutLogin(after: completion)
-//                }
+                if error._code == 2 {
+                    self.alertUserAboutLogin(after: completion)
+                }
             }
         }
         
