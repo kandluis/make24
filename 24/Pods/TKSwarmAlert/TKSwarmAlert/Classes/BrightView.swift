@@ -57,7 +57,6 @@ class BrightView: UIView {
             
             path.move(to: CGPoint(x: 0, y: 0))
             path.addArc(center: CGPoint(x:0, y:0), radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
-//            CGPathAddArc(path, nil, 0, 0, radius, startAngle, endAngle, false)
             path.closeSubpath()
         }
         for i in 1...9 {

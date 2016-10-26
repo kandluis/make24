@@ -57,10 +57,9 @@ public class TKSwarmAlert {
             }
             window!.addSubview(blurView!)
             window!.addSubview(animationView!)
-            blurView?.show(duration:showDuration) {
+            blurView?.show(duration: showDuration, didEnd: {[unowned self] () -> Void in
                 self.spawn(views: views)
-            }
-
+            })
             animationView?.willDissmissAllViews = {
                 let fadeOutDuration:TimeInterval = 0.2
                 for v in self.staticViews {

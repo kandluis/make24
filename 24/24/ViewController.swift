@@ -851,12 +851,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     typealias ViewInfo = (selector: Selector, image: String, text: String)
     func makeOptionsViews(_ viewInfo: [ViewInfo])->[UIView] {
-        print("getting here")
         let height:CGFloat = 54
         let width:CGFloat = 300
         let margin:CGFloat = 10
         let x:CGFloat = self.view.frame.width / 2 - width/2
-        let y:CGFloat = 160//240
+        let y:CGFloat = 160
         
         return viewInfo.enumerated().map({(i, info) -> UIView in
             let rect = CGRect(x: x, y: y + (height + margin) * CGFloat(i), width: width, height: height)
