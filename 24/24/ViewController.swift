@@ -695,7 +695,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     func showLeaderboard() {
         if let authenticated = localPlayer?.isAuthenticated {
             if authenticated {
-                self.reportIfHigher(self.playerScore, afterReport: { [unowned self] in
+                self.reportIfHigher(gameScore: self.playerScore, afterReport: { [unowned self] in
                     self.showLeaderboardView()
                     })
             }
@@ -724,13 +724,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         }
         
     }
-    func reportIfHigher(_ gameScore: Int, afterReport completion: Closure?) {
-        let leaderboardRequest = GKLeaderboard()
+
+    func reportIfHigher(gameScore: Int, afterReport completion: Closure?) {
+        let leaderboardRequest = GKLeaderboard(players: [GKLocalPlayer.localPlayer()])
         leaderboardRequest.identifier = LEADER_BOARD_ID
+        leaderboardRequest.timeScope = GKLeaderboardTimeScope.allTime
         leaderboardRequest.loadScores(completionHandler: {[unowned self](scores, error) -> Void in
-            if let remoteScore = leaderboardRequest.localPlayerScore?.value {
-                if Int(remoteScore) < gameScore {
-                    return self.reportScore(gameScore, afterReport: completion)
+            if error == nil {
+                if let remoteScore = (scores?[0])?.value {
+                    if Int(remoteScore) < gameScore {
+                        return self.reportScore(gameScore, afterReport: completion)
+                    }
                 }
             }
             if let code = completion {
