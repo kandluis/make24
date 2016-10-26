@@ -26,6 +26,14 @@
 		101BE1061DA578B10075E1DE /* _4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE1051DA578B10075E1DE /* _4UITests.swift */; };
 		21D6300BF0E20F3BA6BF3955 /* Pods_24UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E32753EDEEFC8F0A7D5D0E81 /* Pods_24UITests.framework */; };
 		46065B3E829D8646F538B115 /* Pods_24Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CBA4D131605A975C8730DF /* Pods_24Tests.framework */; };
+		7F07FCC41DBFEAC40021FC80 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F07FCC21DBFEAC40021FC80 /* Interface.storyboard */; };
+		7F07FCC61DBFEAC40021FC80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F07FCC51DBFEAC40021FC80 /* Assets.xcassets */; };
+		7F07FCCD1DBFEAC50021FC80 /* 24Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7F07FCCC1DBFEAC50021FC80 /* 24Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7F07FCD41DBFEAC50021FC80 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F07FCD31DBFEAC50021FC80 /* InterfaceController.swift */; };
+		7F07FCD61DBFEAC50021FC80 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F07FCD51DBFEAC50021FC80 /* ExtensionDelegate.swift */; };
+		7F07FCD81DBFEAC50021FC80 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F07FCD71DBFEAC50021FC80 /* NotificationController.swift */; };
+		7F07FCDA1DBFEAC50021FC80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F07FCD91DBFEAC50021FC80 /* Assets.xcassets */; };
+		7F07FCDE1DBFEAC50021FC80 /* 24Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7F07FCC01DBFEAC40021FC80 /* 24Watch.app */; };
 		88C2C4C21B4D97B5CC2E7FC8 /* Pods_24.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2E7E290FDA904D561E3915 /* Pods_24.framework */; };
 		F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */; };
 		F27E17AC1DAEC2F3001398EE /* SampleDesignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27E17AB1DAEC2F3001398EE /* SampleDesignView.swift */; };
@@ -48,7 +56,46 @@
 			remoteGlobalIDString = 101BE0E11DA578B10075E1DE;
 			remoteInfo = 24;
 		};
+		7F07FCCE1DBFEAC50021FC80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 101BE0DA1DA578B10075E1DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7F07FCCB1DBFEAC50021FC80;
+			remoteInfo = "24Watch Extension";
+		};
+		7F07FCDC1DBFEAC50021FC80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 101BE0DA1DA578B10075E1DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7F07FCBF1DBFEAC40021FC80;
+			remoteInfo = 24Watch;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7F07FCE21DBFEAC50021FC80 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7F07FCCD1DBFEAC50021FC80 /* 24Watch Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F07FCE61DBFEAC50021FC80 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				7F07FCDE1DBFEAC50021FC80 /* 24Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		100C765F1DA6424D0097212D /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = background_music.mp3; path = ../../audio/background_music.mp3; sourceTree = "<group>"; };
@@ -78,6 +125,23 @@
 		4C9557EBC04B053637DE0B12 /* Pods-24UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-24UITests/Pods-24UITests.release.xcconfig"; sourceTree = "<group>"; };
 		4E907183DA511BE8AC5B8181 /* Pods-24.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24.release.xcconfig"; path = "Pods/Target Support Files/Pods-24/Pods-24.release.xcconfig"; sourceTree = "<group>"; };
 		788D31247F6BADCCB08785C5 /* Pods-24.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24/Pods-24.debug.xcconfig"; sourceTree = "<group>"; };
+		7F07FCC01DBFEAC40021FC80 /* 24Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 24Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F07FCC31DBFEAC40021FC80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		7F07FCC51DBFEAC40021FC80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7F07FCC71DBFEAC40021FC80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F07FCCC1DBFEAC50021FC80 /* 24Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "24Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F07FCD21DBFEAC50021FC80 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		7F07FCD31DBFEAC50021FC80 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		7F07FCD51DBFEAC50021FC80 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		7F07FCD71DBFEAC50021FC80 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		7F07FCD91DBFEAC50021FC80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7F07FCDB1DBFEAC50021FC80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F07FCE71DC0241E0021FC80 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		7F07FCE81DC0241E0021FC80 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		7F07FCE91DC0241E0021FC80 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Interface.strings"; sourceTree = "<group>"; };
+		7F07FCEA1DC0242B0021FC80 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/Main.strings"; sourceTree = "<group>"; };
+		7F07FCEB1DC0242B0021FC80 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		7F07FCEC1DC0242B0021FC80 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/Interface.strings"; sourceTree = "<group>"; };
 		9C91AF561247EF01FE1FB5DC /* Pods-24UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24UITests/Pods-24UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9D25BDD1AD69AEC155237345 /* Pods-24Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24Tests/Pods-24Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A1CBA4D131605A975C8730DF /* Pods_24Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +175,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				21D6300BF0E20F3BA6BF3955 /* Pods_24UITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F07FCC91DBFEAC50021FC80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +220,8 @@
 				101BE0E41DA578B10075E1DE /* 24 */,
 				101BE0F91DA578B10075E1DE /* 24Tests */,
 				101BE1041DA578B10075E1DE /* 24UITests */,
+				7F07FCC11DBFEAC40021FC80 /* 24Watch */,
+				7F07FCD01DBFEAC50021FC80 /* 24Watch Extension */,
 				101BE0E31DA578B10075E1DE /* Products */,
 				3721F2B56E854B945F103F18 /* Pods */,
 				D608955D3BBC77B6792EC6FA /* Frameworks */,
@@ -161,6 +234,8 @@
 				101BE0E21DA578B10075E1DE /* 24.app */,
 				101BE0F61DA578B10075E1DE /* 24Tests.xctest */,
 				101BE1011DA578B10075E1DE /* 24UITests.xctest */,
+				7F07FCC01DBFEAC40021FC80 /* 24Watch.app */,
+				7F07FCCC1DBFEAC50021FC80 /* 24Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,6 +288,37 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7F07FCC11DBFEAC40021FC80 /* 24Watch */ = {
+			isa = PBXGroup;
+			children = (
+				7F07FCC21DBFEAC40021FC80 /* Interface.storyboard */,
+				7F07FCC51DBFEAC40021FC80 /* Assets.xcassets */,
+				7F07FCC71DBFEAC40021FC80 /* Info.plist */,
+			);
+			path = 24Watch;
+			sourceTree = "<group>";
+		};
+		7F07FCD01DBFEAC50021FC80 /* 24Watch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				7F07FCD31DBFEAC50021FC80 /* InterfaceController.swift */,
+				7F07FCD51DBFEAC50021FC80 /* ExtensionDelegate.swift */,
+				7F07FCD71DBFEAC50021FC80 /* NotificationController.swift */,
+				7F07FCD91DBFEAC50021FC80 /* Assets.xcassets */,
+				7F07FCDB1DBFEAC50021FC80 /* Info.plist */,
+				7F07FCD11DBFEAC50021FC80 /* Supporting Files */,
+			);
+			path = "24Watch Extension";
+			sourceTree = "<group>";
+		};
+		7F07FCD11DBFEAC50021FC80 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7F07FCD21DBFEAC50021FC80 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D608955D3BBC77B6792EC6FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,10 +350,12 @@
 				101BE0E01DA578B10075E1DE /* Resources */,
 				5F93EAD09548AA1837E93DFE /* [CP] Embed Pods Frameworks */,
 				00FCBE7823BDDD4A236D56AD /* [CP] Copy Pods Resources */,
+				7F07FCE61DBFEAC50021FC80 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7F07FCDD1DBFEAC50021FC80 /* PBXTargetDependency */,
 			);
 			name = 24;
 			productName = 24;
@@ -284,6 +392,7 @@
 				101BE0FE1DA578B10075E1DE /* Frameworks */,
 				101BE0FF1DA578B10075E1DE /* Resources */,
 				6977BAEE311F89ABA6E6742D /* [CP] Copy Pods Resources */,
+				81A61F13DE71817C8AE846AA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -295,14 +404,48 @@
 			productReference = 101BE1011DA578B10075E1DE /* 24UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		7F07FCBF1DBFEAC40021FC80 /* 24Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F07FCE31DBFEAC50021FC80 /* Build configuration list for PBXNativeTarget "24Watch" */;
+			buildPhases = (
+				7F07FCBE1DBFEAC40021FC80 /* Resources */,
+				7F07FCE21DBFEAC50021FC80 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7F07FCCF1DBFEAC50021FC80 /* PBXTargetDependency */,
+			);
+			name = 24Watch;
+			productName = 24Watch;
+			productReference = 7F07FCC01DBFEAC40021FC80 /* 24Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		7F07FCCB1DBFEAC50021FC80 /* 24Watch Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F07FCDF1DBFEAC50021FC80 /* Build configuration list for PBXNativeTarget "24Watch Extension" */;
+			buildPhases = (
+				7F07FCC81DBFEAC50021FC80 /* Sources */,
+				7F07FCC91DBFEAC50021FC80 /* Frameworks */,
+				7F07FCCA1DBFEAC50021FC80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "24Watch Extension";
+			productName = "24Watch Extension";
+			productReference = 7F07FCCC1DBFEAC50021FC80 /* 24Watch Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		101BE0DA1DA578B10075E1DE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Luis PerezBunnyLemon";
 				TargetAttributes = {
 					101BE0E11DA578B10075E1DE = {
@@ -319,6 +462,14 @@
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 0810;
 						TestTargetID = 101BE0E11DA578B10075E1DE;
+					};
+					7F07FCBF1DBFEAC40021FC80 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
+					7F07FCCB1DBFEAC50021FC80 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -338,6 +489,8 @@
 				101BE0E11DA578B10075E1DE /* 24 */,
 				101BE0F51DA578B10075E1DE /* 24Tests */,
 				101BE1001DA578B10075E1DE /* 24UITests */,
+				7F07FCBF1DBFEAC40021FC80 /* 24Watch */,
+				7F07FCCB1DBFEAC50021FC80 /* 24Watch Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -378,6 +531,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7F07FCBE1DBFEAC40021FC80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F07FCC61DBFEAC40021FC80 /* Assets.xcassets in Resources */,
+				7F07FCC41DBFEAC40021FC80 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F07FCCA1DBFEAC50021FC80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F07FCDA1DBFEAC50021FC80 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -408,7 +578,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		5F93EAD09548AA1837E93DFE /* [CP] Embed Pods Frameworks */ = {
@@ -441,6 +611,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-24UITests/Pods-24UITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		81A61F13DE71817C8AE846AA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-24UITests/Pods-24UITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		82AB83E2677169B0BCE58B14 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -468,7 +653,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B66F88FD4C9810A367F8727F /* [CP] Check Pods Manifest.lock */ = {
@@ -483,7 +668,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C1C66A9964C117F0BFB60772 /* [CP] Embed Pods Frameworks */ = {
@@ -532,6 +717,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7F07FCC81DBFEAC50021FC80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F07FCD81DBFEAC50021FC80 /* NotificationController.swift in Sources */,
+				7F07FCD61DBFEAC50021FC80 /* ExtensionDelegate.swift in Sources */,
+				7F07FCD41DBFEAC50021FC80 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -545,6 +740,16 @@
 			target = 101BE0E11DA578B10075E1DE /* 24 */;
 			targetProxy = 101BE1021DA578B10075E1DE /* PBXContainerItemProxy */;
 		};
+		7F07FCCF1DBFEAC50021FC80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7F07FCCB1DBFEAC50021FC80 /* 24Watch Extension */;
+			targetProxy = 7F07FCCE1DBFEAC50021FC80 /* PBXContainerItemProxy */;
+		};
+		7F07FCDD1DBFEAC50021FC80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7F07FCBF1DBFEAC40021FC80 /* 24Watch */;
+			targetProxy = 7F07FCDC1DBFEAC50021FC80 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -552,6 +757,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				101BE0EA1DA578B10075E1DE /* Base */,
+				7F07FCE71DC0241E0021FC80 /* zh-Hans */,
+				7F07FCEA1DC0242B0021FC80 /* es-MX */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -560,8 +767,20 @@
 			isa = PBXVariantGroup;
 			children = (
 				101BE0EF1DA578B10075E1DE /* Base */,
+				7F07FCE81DC0241E0021FC80 /* zh-Hans */,
+				7F07FCEB1DC0242B0021FC80 /* es-MX */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		7F07FCC21DBFEAC40021FC80 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F07FCC31DBFEAC40021FC80 /* Base */,
+				7F07FCE91DC0241E0021FC80 /* zh-Hans */,
+				7F07FCEC1DC0242B0021FC80 /* es-MX */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -571,6 +790,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -581,8 +801,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -616,6 +838,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -626,8 +849,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -646,6 +871,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -654,6 +880,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 788D31247F6BADCCB08785C5 /* Pods-24.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -671,6 +898,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E907183DA511BE8AC5B8181 /* Pods-24.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -738,6 +966,86 @@
 			};
 			name = Release;
 		};
+		7F07FCE01DBFEAC50021FC80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				INFOPLIST_FILE = "24Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		7F07FCE11DBFEAC50021FC80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				INFOPLIST_FILE = "24Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
+		7F07FCE41DBFEAC50021FC80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				IBSC_MODULE = _4Watch_Extension;
+				INFOPLIST_FILE = 24Watch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		7F07FCE51DBFEAC50021FC80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				IBSC_MODULE = _4Watch_Extension;
+				INFOPLIST_FILE = 24Watch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -776,6 +1084,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		7F07FCDF1DBFEAC50021FC80 /* Build configuration list for PBXNativeTarget "24Watch Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F07FCE01DBFEAC50021FC80 /* Debug */,
+				7F07FCE11DBFEAC50021FC80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		7F07FCE31DBFEAC50021FC80 /* Build configuration list for PBXNativeTarget "24Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F07FCE41DBFEAC50021FC80 /* Debug */,
+				7F07FCE51DBFEAC50021FC80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

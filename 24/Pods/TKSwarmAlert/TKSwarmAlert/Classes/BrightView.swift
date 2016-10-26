@@ -7,6 +7,15 @@
 //
 
 import UIKit
+//
+//  BrightView.swift
+//  blurTest
+//
+//  Created by Takuya Okamoto on 2015/08/17.
+//  Copyright (c) 2015年 Uniface. All rights reserved.
+//
+
+import UIKit
 
 
 class BrightView: UIView {
@@ -18,7 +27,7 @@ class BrightView: UIView {
     
     init(
         frame:CGRect,
-        color:UIColor = UIColor.whiteColor().colorWithAlphaComponent(0.2),
+        color:UIColor = UIColor.white.withAlphaComponent(0.2),
         center: CGPoint? = nil,
         rotateDuration:CFTimeInterval = 30
         )
@@ -29,28 +38,30 @@ class BrightView: UIView {
         self.rotateDuration = rotateDuration
         super.init(frame:frame)
         addBrightLayer()
-        self.hidden = true
+        self.isHidden = true
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func addBrightLayer() {
         let radius:CGFloat = self.frame.height + self.frame.width
-        let path:CGMutablePath = CGPathCreateMutable()
-        func makeFanShapedPathDeviedBy18(var i:Int) {
-            i = i % 18
+        let path:CGMutablePath = CGMutablePath()
+        func makeFanShapedPathDeviedBy18(i:Int) {
+            let i = i % 18
             let oneAngle = CGFloat(M_PI) / 9
             let startAngle = oneAngle * CGFloat(i)
             let endAngle = startAngle + oneAngle
             // make arc
-            CGPathMoveToPoint(path, nil, 0, 0)
-            CGPathAddArc(path, nil, 0, 0, radius, startAngle, endAngle, false)
-            CGPathCloseSubpath(path)
+            
+            path.move(to: CGPoint(x: 0, y: 0))
+            path.addArc(center: CGPoint(x:0, y:0), radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+//            CGPathAddArc(path, nil, 0, 0, radius, startAngle, endAngle, false)
+            path.closeSubpath()
         }
         for i in 1...9 {
-            makeFanShapedPathDeviedBy18((i * 2) - 1)//1,3,5,..,17
+            makeFanShapedPathDeviedBy18(i: (i * 2) - 1)//1,3,5,..,17
         }
         
         if circleCenter != nil {
@@ -60,12 +71,12 @@ class BrightView: UIView {
             shapeLayer.position = self.center
         }
         shapeLayer.path = path
-        shapeLayer.fillColor = self.color.CGColor
+        shapeLayer.fillColor = self.color.cgColor
         self.layer.addSublayer(shapeLayer)
     }
     
     func rotateAnimation() {
-        self.hidden = false
+        self.isHidden = false
         let rotate = CABasicAnimation(keyPath: "transform.rotation.z")
         rotate.fromValue = 0
         rotate.toValue = M_PI * 2
@@ -73,7 +84,8 @@ class BrightView: UIView {
         rotate.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         rotate.repeatCount = HUGE
         rotate.fillMode = kCAFillModeForwards
-        rotate.removedOnCompletion = false
-        self.shapeLayer.addAnimation(rotate, forKey: rotate.keyPath)
+        rotate.isRemovedOnCompletion
+            = false
+        self.shapeLayer.add(rotate, forKey: rotate.keyPath)
     }
 }

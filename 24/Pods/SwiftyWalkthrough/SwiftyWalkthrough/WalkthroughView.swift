@@ -5,26 +5,33 @@
 //  Created by Rui Costa on 28/09/2015.
 //  Copyright © 2015 Rui Costa. All rights reserved.
 //
+//
+//  WalkthroughView.swift
+//  SwiftyWalkthrough
+//
+//  Created by Rui Costa on 28/09/2015.
+//  Copyright © 2015 Rui Costa. All rights reserved.
+//
 
 import Foundation
 
-private let defaultDimColor = UIColor.blackColor().colorWithAlphaComponent(0.7).CGColor
+private let defaultDimColor = UIColor.black.withAlphaComponent(0.7).cgColor
 
 @objc public protocol WalkthroughViewDelegate {
-    optional func willInteractWithView(view: UIView)
+    @objc optional func willInteractWithView(_ view: UIView)
 }
 
-@objc public class WalkthroughView: UIView {
+@objc open class WalkthroughView: UIView {
     
-    public var availableViews: [ViewDescriptor] = []
+    open var availableViews: [ViewDescriptor] = []
     
-    public var dimColor: CGColor = defaultDimColor {
+    open var dimColor: CGColor = defaultDimColor {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    public weak var delegate: WalkthroughViewDelegate?
+    open weak var delegate: WalkthroughViewDelegate?
     
     lazy var overlayView: UIView = self.makeOverlay()
     
@@ -42,9 +49,9 @@ private let defaultDimColor = UIColor.blackColor().colorWithAlphaComponent(0.7).
         unregisterFromOrientationChanges()
     }
     
-    override public func drawRect(rect: CGRect) {
-        super.drawRect(rect)
-        superview?.bringSubviewToFront(self)
+    override open func draw(_ rect: CGRect) {
+        super.draw(rect)
+        superview?.bringSubview(toFront: self)
         
         removeOverlaySublayers()
         
@@ -53,42 +60,42 @@ private let defaultDimColor = UIColor.blackColor().colorWithAlphaComponent(0.7).
         
         for descriptor in availableViews {
             let currentView = descriptor.view
-            let convertedFrame = descriptor.view.superview?.convertRect(currentView.frame, toView: overlayView)
+            let convertedFrame = descriptor.view.superview?.convert(currentView.frame, to: overlayView)
             
             if let cf = convertedFrame {
-                let highlightedFrame = CGRectInset(cf, -descriptor.extraPaddingX, -descriptor.extraPaddingY)
+                let highlightedFrame = cf.insetBy(dx: -descriptor.extraPaddingX, dy: -descriptor.extraPaddingY)
                 let transparentPath =  UIBezierPath(roundedRect: highlightedFrame, cornerRadius: descriptor.cornerRadius)
-                overlayPath.appendPath(transparentPath)
+                overlayPath.append(transparentPath)
             }
         }
         
         let fillLayer = CAShapeLayer()
-        fillLayer.path = overlayPath.CGPath
+        fillLayer.path = overlayPath.cgPath
         fillLayer.fillRule = kCAFillRuleEvenOdd
         fillLayer.fillColor = dimColor
         
         overlayView.layer.addSublayer(fillLayer)
     }
     
-    override public func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         for descriptor in availableViews {
             let currentView = descriptor.view
-            let convertedPoint = currentView.convertPoint(point, fromView: self)
+            let convertedPoint = currentView.convert(point, from: self)
             
-            if currentView.pointInside(convertedPoint, withEvent: event) {
+            if currentView.point(inside: convertedPoint, with: event) {
                 delegate?.willInteractWithView?(currentView)
-                return currentView.hitTest(convertedPoint, withEvent: event)
+                return currentView.hitTest(convertedPoint, with: event)
             }
         }
         
-        return super.hitTest(point, withEvent: event)
+        return super.hitTest(point, with: event)
     }
     
     func setup() {
         setupSubviews()
         setupConstraints()
         
-        opaque = false
+        isOpaque = false
         
         registerForOrientationChanges()
     }
@@ -100,8 +107,8 @@ private let defaultDimColor = UIColor.blackColor().colorWithAlphaComponent(0.7).
     func setupConstraints() {
         let views = ["overlayView": overlayView]
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[overlayView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[overlayView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[overlayView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[overlayView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
     }
     
     func makeOverlay() -> UIView {
@@ -112,13 +119,13 @@ private let defaultDimColor = UIColor.blackColor().colorWithAlphaComponent(0.7).
     }
     
     func registerForOrientationChanges() {
-        UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationChanged", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(self, selector: #selector(WalkthroughView.orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
     func unregisterFromOrientationChanges() {
-        UIDevice.currentDevice().endGeneratingDeviceOrientationNotifications()
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
+        UIDevice.current.endGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
     func orientationChanged() {
@@ -126,23 +133,22 @@ private let defaultDimColor = UIColor.blackColor().colorWithAlphaComponent(0.7).
     }
     
     func removeOverlaySublayers() {
-        if let overlaySublayers = overlayView.layer.sublayers {
-            for l in overlaySublayers {
-                l.removeFromSuperlayer()
-            }
-        }
+        guard let overlaySublayers = overlayView.layer.sublayers else { return }
+        
+        overlaySublayers.forEach { $0.removeFromSuperlayer() }
     }
     
-    public func cutHolesForViews(views: [UIView]) {
-        cutHolesForViewDescriptors(views.map { ViewDescriptor(view: $0) })
+    open func cutHolesForViews(_ views: [UIView]) {
+        let descriptors = views.map(ViewDescriptor.init)
+        cutHolesForViewDescriptors(descriptors)
     }
     
-    public func cutHolesForViewDescriptors(views: [ViewDescriptor]) {
+    open func cutHolesForViewDescriptors(_ views: [ViewDescriptor]) {
         availableViews = views
         setNeedsDisplay()
     }
     
-    public func removeAllHoles() {
+    open func removeAllHoles() {
         cutHolesForViewDescriptors([])
     }
     

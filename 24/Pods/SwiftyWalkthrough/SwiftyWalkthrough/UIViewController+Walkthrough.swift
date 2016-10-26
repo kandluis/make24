@@ -10,11 +10,11 @@ import UIKit
 
 extension UIViewController: WalkthroughViewDelegate {
 
-    public var rootController: UIViewController? { return UIApplication.sharedApplication().delegate?.window??.rootViewController }
+    public var rootController: UIViewController? { return UIApplication.shared.delegate?.window??.rootViewController }
     
     public var walkthroughView: WalkthroughView? { return attachToWalkthrough() }
     
-    public var ongoingWalkthrough: Bool { return walkthroughView != .None }
+    public var ongoingWalkthrough: Bool { return walkthroughView != .none }
     
     public func makeWalkthroughView() -> WalkthroughView {
         let v = WalkthroughView()
@@ -32,10 +32,10 @@ extension UIViewController: WalkthroughViewDelegate {
         let views = ["walkthroughView": walkthroughView]
         
         rootController?.view.addSubview(walkthroughView)
-        rootController?.view.bringSubviewToFront(walkthroughView)
+        rootController?.view.bringSubview(toFront: walkthroughView)
         
-        rootController?.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
-        rootController?.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        rootController?.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        rootController?.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
         rootController?.view.setNeedsLayout()
     }
     
@@ -48,7 +48,7 @@ extension UIViewController: WalkthroughViewDelegate {
                 }
             }
         }
-        return .None
+        return .none
     }
     
     public func finishWalkthrough() {

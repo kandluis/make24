@@ -34,40 +34,41 @@ public class TKSwarmAlert {
     public func hide(){
         // A little hacky, but we pretend that the superView has been tapped.
         self.animationView?.onTapSuperView()
+        print("hiding")
     }
     
-    public func show(type type:TKSWBackgroundType ,views:[UIView]) {
-        let window:UIWindow? = UIApplication.sharedApplication().keyWindow
+    public func show(type:TKSWBackgroundType, views:[UIView]) {
+        let window:UIWindow? = UIApplication.shared.keyWindow
         if window != nil {
             let frame:CGRect = window!.bounds
-            blurView = TKSWBackgroundView(frame: frame)
+            blurView = TKSWBackgroundView(frame: frame, type: type)
             animationView = FallingAnimationView(frame: frame)
             
             
-            let showDuration:NSTimeInterval = 0.2
+            let showDuration:TimeInterval = 0.2
 
             for staticView in staticViews {
                 let originalAlpha = staticView.alpha
                 staticView.alpha = 0
                 animationView?.addSubview(staticView)
-                UIView.animateWithDuration(showDuration) {
+                UIView.animate(withDuration: showDuration) {
                     staticView.alpha = originalAlpha
                 }
             }
             window!.addSubview(blurView!)
             window!.addSubview(animationView!)
-            blurView?.show(type: type, duration:showDuration) {
-                self.spawn(views)
+            blurView?.show(duration:showDuration) {
+                self.spawn(views: views)
             }
 
             animationView?.willDissmissAllViews = {
-                let fadeOutDuration:NSTimeInterval = 0.2
+                let fadeOutDuration:TimeInterval = 0.2
                 for v in self.staticViews {
-                    UIView.animateWithDuration(fadeOutDuration) {
+                    UIView.animate(withDuration: fadeOutDuration) {
                         v.alpha = 0
                     }
                 }
-                UIView.animateWithDuration(fadeOutDuration) {
+                UIView.animate(withDuration: fadeOutDuration) {
                     self.blurView?.alpha = 0
                 }
             }
@@ -83,6 +84,6 @@ public class TKSwarmAlert {
     }
     
     public func spawn(views:[UIView]) {
-        self.animationView?.spawn(views)
+        self.animationView?.spawn(views: views)
     }
 }

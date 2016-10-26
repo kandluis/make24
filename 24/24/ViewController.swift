@@ -670,10 +670,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     
     func reset(){
         numbersLeft = 4
-        for (i, button) in numberButtons.enumerated() {
-            setNumberButton(i, text: String(currentNumbers[button.tag]!))
-            
+        for i in 0 ..< numberButtons.count {
+            if let button = numberButtons[i] {
+                setNumberButton(i, text: String(currentNumbers[button.tag]!))
+            }
         }
+//        for (i, button) in numberButtons.enumerated() {
+//            setNumberButton(i, text: String(currentNumbers[button.tag]!))
+//            
+//        }
         clearAnswers()
     }
 
@@ -685,7 +690,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         let message = "You have declined to login. Please login through the Game Center App or restart the application to be asked to login."
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
-        self.presentViewController(alert, animated: true, completion: completion)
+        self.present(alert, animated: true, completion: completion)
     }
     func showLeaderboard() {
         if let authenticated = localPlayer?.isAuthenticated {
@@ -706,13 +711,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         localPlayer = GKLocalPlayer.localPlayer()
         localPlayer?.authenticateHandler = {(viewController, error) -> Void in
             if (viewController != nil) {
-                self.presentViewController(viewController!, animated: true, completion: completion)
+                self.present(viewController!, animated: true, completion: completion)
             }
             if let error = error {
                 print("Error authenticating player \(error)")
-                if error.code == 2 {
-                    self.alertUserAboutLogin(after: completion)
-                }
+                print(error.localizedDescription)
+                // commented for now
+//                if error.code == 2 {
+//                    self.alertUserAboutLogin(after: completion)
+//                }
             }
         }
         
@@ -778,7 +785,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         numbersLeft = 4
         
         // make sure to unhide walkthrough
-        startWalkthrough(WalkthroughView())
+        startWalkthrough(walkthroughView: WalkthroughView())
         walkthroughInstructionsView.isHidden = false
         createHoles(holesToCreate: [walkthroughInstructionsView, number2Button, number3Button, multiplyButton])
         
@@ -840,6 +847,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     typealias ViewInfo = (selector: Selector, image: String, text: String)
     func makeOptionsViews(_ viewInfo: [ViewInfo])->[UIView] {
+        print("getting here")
         let height:CGFloat = 54
         let width:CGFloat = 300
         let margin:CGFloat = 10
@@ -881,7 +889,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
             self.optionsView.didDissmissAllViews = {}
             let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
             if let url = NSURL(string: url_string) {
-                UIApplication.sharedApplication().openURL(url)
+                UIApplication.shared.openURL(url as URL)
             }
         }
         self.optionsView.hide()
@@ -897,7 +905,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             self.silent = !self.silent
-            self.defaults.setBool(self.silent, forKey: "silent")
+            self.defaults.set(self.silent, forKey: "silent")
         }
         self.optionsView.hide()
     }
