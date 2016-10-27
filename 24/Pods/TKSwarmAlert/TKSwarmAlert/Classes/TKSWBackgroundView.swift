@@ -86,9 +86,9 @@ class TKSWBackgroundView: UIView {
         UIView.animate(withDuration: blurDuration) {
             self.transparentBlackView.alpha = self.blackAlphaForBlur
         }
-//        Timer.schedule(delay: blurDuration + 0.1) { timer in
-//            didEnd?()
-//        }
+        Timer.schedule(delay: blurDuration + 0.1) { timer in
+            didEnd?()
+        }
     }
     
     func showBlur(didEnd:(()->Void)? = nil) {
@@ -98,9 +98,9 @@ class TKSWBackgroundView: UIView {
             self.blurView?.alpha = 1
             self.transparentBlackView.alpha = 0.15
         }
-//        Timer.schedule(delay: blurDuration + 0.1) { timer in
-//            didEnd?()
-//        }
+        Timer.schedule(delay: blurDuration + 0.1) { timer in
+            didEnd?()
+        }
     }
     
     func showBrightBlur(didEnd:(()->Void)? = nil) {

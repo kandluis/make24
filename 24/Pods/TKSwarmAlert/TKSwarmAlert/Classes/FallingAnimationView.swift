@@ -60,8 +60,7 @@ class FallingAnimationView: UIView {
     var allViews: [UIView] {
         get {
             return animationView.subviews.filter({ (view: AnyObject) -> Bool in
-//                view.dynamicType === UIView.self
-                view is UIView
+                return type(of: view) === UIView.self
             }) 
         }
     }
@@ -105,13 +104,13 @@ class FallingAnimationView: UIView {
     }
 
     
-//    func fadeOutStaticViews(#duration:NSTimeInterval) {
-//        for v in self.staticViews {
-//            UIView.animateWithDuration(duration) {
-//                v.alpha = 0
-//            }
-//        }
-//    }
+    func fadeOutStaticViews(duration:TimeInterval) {
+        for v in self.staticViews {
+            UIView.animate(withDuration: duration) {
+                v.alpha = 0
+            }
+        }
+    }
     
     override init(frame:CGRect) {
         self.animationView = UIView()
@@ -144,7 +143,7 @@ class FallingAnimationView: UIView {
         }
         // make it draggable
         for v in views {
-//            dev_makeLine(v)
+            dev_makeLine(v: v)
             v.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "didDrag:"))
             v.tag = startPoints.count
             startPoints.append(v.center)
@@ -315,9 +314,9 @@ class FallingAnimationView: UIView {
             }
         }
 
-//        Timer.schedule(delay: 0.5) { [weak self] (timer) in
-//            self?.enableTapGesture()
-//        }
+        Timer.schedule(delay: 0.5) { [weak self] (timer) in
+            self?.enableTapGesture()
+        }
     }
 
     func dev_makeLine(v: UIView) {

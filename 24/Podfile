@@ -6,8 +6,8 @@ target '24' do
   use_frameworks!
 
   # Pods for 24
-	pod 'TKSwarmAlert'
-    pod 'SwiftyWalkthrough'
+  pod 'TKSwarmAlert'
+  pod 'SwiftyWalkthrough'
 
   target '24Tests' do
     inherit! :search_paths

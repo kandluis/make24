@@ -15,27 +15,6 @@ import TKSwarmAlert
 import SwiftyWalkthrough
 import WatchConnectivity
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 let APP_ID = "id959379869"
 
 extension String {
@@ -630,11 +609,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         )
         return UIFont(descriptor: fractionFontDesc, size: size)
     }()
-    func getFont(_ text: String?, currentFont: UIFont?) -> UIFont {
+    func getFont(_ text: String, currentFont: UIFont?) -> UIFont {
         if defaultFont == nil {
             defaultFont = currentFont
         }
-        if text?.characters.count > 2 {
+        if text.characters.count > 2 {
             return fractionFont
         }
         else {
@@ -682,15 +661,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     
     func reset(){
         numbersLeft = 4
-        for i in 0 ..< numberButtons.count {
-            if let button = numberButtons[i] {
-                setNumberButton(i, text: String(currentNumbers[button.tag]!))
-            }
+        for button in numberButtons.enumerated() {
+            setNumberButton(button.offset, text: String(currentNumbers[button.element.tag]!))
+            
         }
-//        for (i, button) in numberButtons.enumerated() {
-//            setNumberButton(i, text: String(currentNumbers[button.tag]!))
-//            
-//        }
         clearAnswers()
     }
 
@@ -728,10 +702,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             if let error = error {
                 print("Error authenticating player \(error)")
                 print(error.localizedDescription)
-                // commented for now
-//                if error.code == 2 {
-//                    self.alertUserAboutLogin(after: completion)
-//                }
+                if error._code == 2 {
+                    self.alertUserAboutLogin(after: completion)
+                }
             }
         }
         
@@ -863,12 +836,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     typealias ViewInfo = (selector: Selector, image: String, text: String)
     func makeOptionsViews(_ viewInfo: [ViewInfo])->[UIView] {
-        print("getting here")
         let height:CGFloat = 54
         let width:CGFloat = 300
         let margin:CGFloat = 10
         let x:CGFloat = self.view.frame.width / 2 - width/2
-        let y:CGFloat = 160//240
+        let y:CGFloat = 160
         
         return viewInfo.enumerated().map({(i, info) -> UIView in
             let rect = CGRect(x: x, y: y + (height + margin) * CGFloat(i), width: width, height: height)
