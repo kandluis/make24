@@ -60,7 +60,7 @@ class FallingAnimationView: UIView {
     var allViews: [UIView] {
         get {
             return animationView.subviews.filter({ (view: AnyObject) -> Bool in
-                return type(of: view) === UIView.self
+                return view is UIView
             }) 
         }
     }
