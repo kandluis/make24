@@ -27,6 +27,10 @@ class CongratulationsViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     
+    // buttons in common
+    @IBOutlet weak var secondaryButton: UIButton!
+    @IBOutlet weak var primaryButton: UIButton!
+    
     // congratulations view variables
     @IBOutlet weak var congratulationsView: UIView!
     @IBOutlet weak var star1: UIImageView!
@@ -40,18 +44,14 @@ class CongratulationsViewController: UIViewController {
     @IBOutlet weak var star9: UIImageView!
     @IBOutlet weak var star10: UIImageView!
     var stars = [UIImageView]()
-    @IBOutlet weak var congratulationsButton: UIButton!
     var congratulations_variables = [UIView]()
     
     // beat level view variables
     @IBOutlet weak var trophyImage: UIImageView!
     @IBOutlet weak var levelLabel: UILabel!
-    @IBOutlet weak var leaderboardButton: UIButton!
-    @IBOutlet weak var nextLevelButton: UIButton!
     var beat_level_variables = [UIView]()
     
     // lose level variables
-    @IBOutlet weak var tryAgainButton: UIButton!
     @IBOutlet weak var loseImage: UIImageView!
     var lose_variables = [UIView]()
     
@@ -63,11 +63,11 @@ class CongratulationsViewController: UIViewController {
         super.viewDidLoad()
         // create the stars array
         stars = [star1, star2, star3, star4, star5, star6, star7, star8, star9, star10]
-        congratulations_variables = [congratulationsButton] + stars
+        congratulations_variables = stars
         
-        beat_level_variables = [trophyImage, levelLabel, leaderboardButton, nextLevelButton]
+        beat_level_variables = [trophyImage, levelLabel]
         
-        lose_variables = [tryAgainButton, loseImage]
+        lose_variables = [loseImage]
         
         switch type {
         case AlertType.next_level:
@@ -78,7 +78,7 @@ class CongratulationsViewController: UIViewController {
             hideObjects(congratulations_variables + beat_level_variables)
         case AlertType.finish:
             hideObjects(congratulations_variables + lose_variables)
-            nextLevelButton.setTitle("Reset", for: UIControlState())
+            primaryButton.setTitle("Reset", for: UIControlState())
         }
     }
     
@@ -125,20 +125,29 @@ class CongratulationsViewController: UIViewController {
     }
     
     func lose() {
-        titleLabel.text = "Aww snap!"
+        let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
+        titleLabel.text = loseMessage
+        primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert"), for: UIControlState())
     }
     
     func beat_level() {
-        titleLabel.text = "You beat level " + String(level) + "!"
+        let winMessage = NSLocalizedString("You beat level ", comment: "friendly beat level message in alert")
+        titleLabel.text = winMessage + String(level) + "!"
 //        animateImageView(trophyImage)
         levelLabel.text = String(level)
 //        levelLabel.hidden = false
-        
+        primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Leaderboard", comment: "beat level alert"), for:UIControlState())
+
         
     }
     
     func congratulations() {
-        titleLabel.text = "Congrats!"
+        let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
+
+        titleLabel.text = congratsMessage
+        
         showStars()
         
         for star_index in 0..<puzzles {
@@ -148,7 +157,8 @@ class CongratulationsViewController: UIViewController {
         }
         
         
-//        congratulationsButton.titleLabel?.text = "Keep Going"
+        primaryButton.setTitle(NSLocalizedString("Keep Going", comment: "congrats alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Challenge", comment: "congrats alert"), for: UIControlState())
     }
     
     func showStars() {
@@ -197,10 +207,46 @@ class CongratulationsViewController: UIViewController {
                 let delegate = UIApplication.shared.delegate as! AppDelegate
                 delegate.resetApplication()
             }
+            // what does this do?
             if let code = self.completion {
                 code(sender.titleLabel?.text)
             }
         })
+    }
+    
+    func dismissView() {
+        gravity.addItem(congratulationsView);
+        gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
+        animator = UIDynamicAnimator(referenceView:self.view);
+        animator?.addBehavior(gravity)
+        self.dismiss(animated: true, completion: {[unowned self] in
+            if self.type == AlertType.finish {
+                let delegate = UIApplication.shared.delegate as! AppDelegate
+                delegate.resetApplication()
+            }
+        })
+    }
+    
+    @IBAction func secondaryAction(_ sender: Any) {
+        shareApp()
+        // needs to hide view after
+    }
+    // share function again
+    func shareApp() {
+        let textToShare = "I challenge you to solve this puzzle! Use all four numbers and any operation to make 24."
+        
+        if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
+            let objectsToShare = [textToShare, myWebsite] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            //New Excluded Activities Code
+            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+            
+            // TODO: for ipad
+            // activityVC.popoverPresentationController?.sourceView = sender as! UIView
+            self.present(activityVC, animated: true, completion: nil)
+        }
+        
     }
     
 }

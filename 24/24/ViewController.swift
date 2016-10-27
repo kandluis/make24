@@ -13,6 +13,8 @@ import GameplayKit
 import GameKit
 import TKSwarmAlert
 import SwiftyWalkthrough
+import WatchConnectivity
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -105,8 +107,8 @@ extension Double {
     }
 }
 
-class ViewController: UIViewController, GKGameCenterControllerDelegate {
-        
+class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessionDelegate {
+    
     // Answer board area.
     @IBOutlet weak var answerNumber1Label: UILabel!
     @IBOutlet weak var answerOperationLabel: UILabel!
@@ -228,7 +230,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         if !delegate.hasAppLaunchedBefore(){
             tutorial()
         }
-    
     
     }
     
@@ -436,7 +437,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
                 setNumberButton(index, text: String(problem[index]))
                 currentNumbers[index] = selectedNumber
             }
-
+            print("foxy")
+            
+            // send data to watch if watch is supported
+            if WCSession.isSupported() {
+                let msg = ["puzzle": currentNumbers]
+                print(msg)
+                print(session ?? "")
+                self.session?.sendMessage(msg, replyHandler: { (reply)->Void in }, errorHandler: { (reply)->Void in })
+                
+                
+            }
+            
             // Numbers used reset!
             numbersLeft = 4
         }
@@ -1036,5 +1048,32 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate {
         dismissWalkthrough()
         
     }
+    
+    // Apple watch stuff
+    private let session: WCSession? = WCSession.isSupported() ? WCSession.default() : nil
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        configureWCSession()
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+        configureWCSession()
+    }
+    
+    private func configureWCSession() {
+        session?.delegate = self;
+        session?.activate()
+    }
+    
+
+    //Handlers in case the watch and phone watch connectivity session becomes disconnected
+    func sessionDidDeactivate(_ session: WCSession) {}
+    func sessionDidBecomeInactive(_ session: WCSession) {}
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
+    
 }
 

@@ -58,12 +58,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler( handleShortcut(shortcutItem) )
         
     }
+    
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if !hasAppLaunchedBefore() {
             preloadData()
         }
+        
+        
         // Disable sleep
         UIApplication.shared.isIdleTimerDisabled = true
         return true
