@@ -10,11 +10,13 @@ import UIKit
 
 extension UIViewController: WalkthroughViewDelegate {
 
-    public var rootController: UIViewController? { return UIApplication.shared.delegate?.window??.rootViewController }
+    public var walkthroughView: WalkthroughView? {
+        return attachToWalkthrough()
+    }
     
-    public var walkthroughView: WalkthroughView? { return attachToWalkthrough() }
-    
-    public var ongoingWalkthrough: Bool { return walkthroughView != .none }
+    public var ongoingWalkthrough: Bool {
+        return walkthroughView != .none
+    }
     
     public func makeWalkthroughView() -> WalkthroughView {
         let v = WalkthroughView()
@@ -22,32 +24,35 @@ extension UIViewController: WalkthroughViewDelegate {
         return v
     }
     
-    public func startWalkthrough(walkthroughView: WalkthroughView) {
+    public func startWalkthrough(_ walkthroughView: WalkthroughView) {
         if ongoingWalkthrough {
             finishWalkthrough()
         }
+        
+        guard let window = UIApplication.shared.keyWindow else { return }
         
         walkthroughView.translatesAutoresizingMaskIntoConstraints = false
         
         let views = ["walkthroughView": walkthroughView]
         
-        rootController?.view.addSubview(walkthroughView)
-        rootController?.view.bringSubview(toFront: walkthroughView)
+        window.addSubview(walkthroughView)
+        window.bringSubview(toFront: walkthroughView)
         
-        rootController?.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
-        rootController?.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
-        rootController?.view.setNeedsLayout()
+        window.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        window.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[walkthroughView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        window.setNeedsLayout()
     }
     
     public func attachToWalkthrough() -> WalkthroughView? {
-        if let rootSubviews = rootController?.view.subviews {
-            for rootSubview in rootSubviews {
-                if let walkthrough = rootSubview as? WalkthroughView {
-                    walkthrough.delegate = self
-                    return walkthrough
-                }
+        guard let window = UIApplication.shared.keyWindow else { return .none }
+        
+        for rootSubview in window.subviews {
+            if let walkthrough = rootSubview as? WalkthroughView {
+                walkthrough.delegate = self
+                return walkthrough
             }
         }
+        
         return .none
     }
     

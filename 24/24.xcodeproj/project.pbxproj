@@ -36,7 +36,7 @@
 		7F07FCDE1DBFEAC50021FC80 /* 24Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7F07FCC01DBFEAC40021FC80 /* 24Watch.app */; };
 		88C2C4C21B4D97B5CC2E7FC8 /* Pods_24.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2E7E290FDA904D561E3915 /* Pods_24.framework */; };
 		F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */; };
-		F27E17AC1DAEC2F3001398EE /* SampleDesignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27E17AB1DAEC2F3001398EE /* SampleDesignView.swift */; };
+		F27E17AC1DAEC2F3001398EE /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27E17AB1DAEC2F3001398EE /* OptionView.swift */; };
 		F2F83B571DA662A5006B34B0 /* problems.csv in Resources */ = {isa = PBXBuildFile; fileRef = F2F83B561DA662A5006B34B0 /* problems.csv */; };
 		F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -148,7 +148,7 @@
 		BD2E7E290FDA904D561E3915 /* Pods_24.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E32753EDEEFC8F0A7D5D0E81 /* Pods_24UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CongratulationsViewController.swift; sourceTree = "<group>"; };
-		F27E17AB1DAEC2F3001398EE /* SampleDesignView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleDesignView.swift; sourceTree = "<group>"; };
+		F27E17AB1DAEC2F3001398EE /* OptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
 		F2F83B561DA662A5006B34B0 /* problems.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = problems.csv; path = ../../analysis/problems.csv; sourceTree = "<group>"; };
 		F2F83B591DA66430006B34B0 /* AppData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppData.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,6 +175,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				21D6300BF0E20F3BA6BF3955 /* Pods_24UITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45B10FE21C1927D50887FFD3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +254,7 @@
 				101BE0E51DA578B10075E1DE /* AppDelegate.swift */,
 				F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */,
 				101BE0E71DA578B10075E1DE /* ViewController.swift */,
-				F27E17AB1DAEC2F3001398EE /* SampleDesignView.swift */,
+				F27E17AB1DAEC2F3001398EE /* OptionView.swift */,
 				101BE0E91DA578B10075E1DE /* Main.storyboard */,
 				101BE0EC1DA578B10075E1DE /* Assets.xcassets */,
 				101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */,
@@ -410,6 +417,7 @@
 			buildPhases = (
 				7F07FCBE1DBFEAC40021FC80 /* Resources */,
 				7F07FCE21DBFEAC50021FC80 /* Embed App Extensions */,
+				45B10FE21C1927D50887FFD3 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -694,7 +702,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				101BE0E81DA578B10075E1DE /* ViewController.swift in Sources */,
-				F27E17AC1DAEC2F3001398EE /* SampleDesignView.swift in Sources */,
+				F27E17AC1DAEC2F3001398EE /* OptionView.swift in Sources */,
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
 				F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */,
 				F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */,
@@ -880,7 +888,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 788D31247F6BADCCB08785C5 /* Pods-24.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -898,7 +906,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E907183DA511BE8AC5B8181 /* Pods-24.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1092,6 +1100,7 @@
 				7F07FCE11DBFEAC50021FC80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7F07FCE31DBFEAC50021FC80 /* Build configuration list for PBXNativeTarget "24Watch" */ = {
 			isa = XCConfigurationList;
@@ -1100,6 +1109,7 @@
 				7F07FCE51DBFEAC50021FC80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

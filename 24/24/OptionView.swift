@@ -9,14 +9,14 @@
 import UIKit
 
 
-enum SampleDesignViewType {
+enum OptionViewType {
     case bar(icon:UIImage?, text:String)
 }
 
 
-class SampleDesignView: UIView {
+class OptionView: UIView {
     
-    init(type:SampleDesignViewType, frame:CGRect) {
+    init(type:OptionViewType, frame:CGRect) {
         super.init(frame:frame)
         
         switch type {

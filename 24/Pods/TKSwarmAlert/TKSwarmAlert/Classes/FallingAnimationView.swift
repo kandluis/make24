@@ -46,7 +46,7 @@ class FallingAnimationView: UIView {
     var didDissmissAllViews: Closure?
 
     
-    let gravityMagniture:CGFloat = 3
+    let gravityMagnitude:CGFloat = 3
     let snapBackDistance:CGFloat = 30
     let fieldMargin:CGFloat = 300
 
@@ -56,6 +56,8 @@ class FallingAnimationView: UIView {
     var startPoints: [CGPoint] = []
     var currentAnimationViewTags: [Int] = []
     var nextViewsList: [[UIView]] = []
+    
+    var enableToTapSuperView: Bool = true
     
     var allViews: [UIView] {
         get {
@@ -143,8 +145,8 @@ class FallingAnimationView: UIView {
         }
         // make it draggable
         for v in views {
-            dev_makeLine(v: v)
-            v.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "didDrag:"))
+            // dev_makeLine(v: v)
+            v.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(FallingAnimationView.didDrag)))
             v.tag = startPoints.count
             startPoints.append(v.center)
             currentAnimationViewTags.append(v.tag)
@@ -219,14 +221,16 @@ class FallingAnimationView: UIView {
     }
     
     func onTapSuperView() {
-        animator.removeAllBehaviors()
-        disableTapGesture()
-        if nextViewsList.count != 0 {//next
-            spawnNextViews()
-        }
-        else {
-            disableDragGesture()
-            fallAndRemoveAll()
+        if (enableToTapSuperView) {
+            animator.removeAllBehaviors()
+            disableTapGesture()
+            if nextViewsList.count != 0 {//next
+                spawnNextViews()
+            }
+            else {
+                disableDragGesture()
+                fallAndRemoveAll()
+            }
         }
     }
     
@@ -260,7 +264,7 @@ class FallingAnimationView: UIView {
     
     func fallAndRemove(views:[UIView]) {
         let gravity = UIGravityBehavior(items: views)
-        gravity.magnitude = gravityMagniture
+        gravity.magnitude = gravityMagnitude
         gravity.action = { [weak self] in
             if self != nil {
                 if self!.animatedViews.count == 0 {
@@ -303,7 +307,7 @@ class FallingAnimationView: UIView {
     }
     
     func enableTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: "onTapSuperView")
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FallingAnimationView.onTapSuperView))
         self.addGestureRecognizer(tapGesture)
     }
     

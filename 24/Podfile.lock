@@ -1,15 +1,31 @@
 PODS:
-  - SwiftyWalkthrough (0.0.3)
-  - TKSwarmAlert (0.0.4)
+  - SwiftyWalkthrough (0.0.4)
+  - TKSwarmAlert (1.0.4)
 
 DEPENDENCIES:
-  - SwiftyWalkthrough
-  - TKSwarmAlert
+  - SwiftyWalkthrough (from `https://github.com/kandluis/SwiftyWalkthrough.git`, branch `master`)
+  - TKSwarmAlert (from `https://github.com/kandluis/TKSwarmAlert.git`, branch `master`)
+
+EXTERNAL SOURCES:
+  SwiftyWalkthrough:
+    :branch: master
+    :git: https://github.com/kandluis/SwiftyWalkthrough.git
+  TKSwarmAlert:
+    :branch: master
+    :git: https://github.com/kandluis/TKSwarmAlert.git
+
+CHECKOUT OPTIONS:
+  SwiftyWalkthrough:
+    :commit: 209009bb53ef16f575b7d36ddc0da450b88781da
+    :git: https://github.com/kandluis/SwiftyWalkthrough.git
+  TKSwarmAlert:
+    :commit: bbf4bfd47b4732e964a20f81b581695c4e805551
+    :git: https://github.com/kandluis/TKSwarmAlert.git
 
 SPEC CHECKSUMS:
-  SwiftyWalkthrough: 57946c3065a49d63f87a562eb0dc932b94a96d7f
-  TKSwarmAlert: 8fe22e7b9beec7e1e5d9506483e8f7c0272767eb
+  SwiftyWalkthrough: ab797ec56b250257ae330aa5cb25e9a14980181a
+  TKSwarmAlert: ab34152af48391d8aa80b2386b5e6fe9f335ace7
 
-PODFILE CHECKSUM: 082cca498992877c456ae167432dbaa07939cc86
+PODFILE CHECKSUM: 244957de680dd84ba7b2894b89beaca180c63766
 
 COCOAPODS: 1.1.1

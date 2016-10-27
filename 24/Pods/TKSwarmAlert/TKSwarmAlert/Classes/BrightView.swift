@@ -7,15 +7,6 @@
 //
 
 import UIKit
-//
-//  BrightView.swift
-//  blurTest
-//
-//  Created by Takuya Okamoto on 2015/08/17.
-//  Copyright (c) 2015年 Uniface. All rights reserved.
-//
-
-import UIKit
 
 
 class BrightView: UIView {
@@ -48,7 +39,7 @@ class BrightView: UIView {
     func addBrightLayer() {
         let radius:CGFloat = self.frame.height + self.frame.width
         let path:CGMutablePath = CGMutablePath()
-        func makeFanShapedPathDeviedBy18(i:Int) {
+        func makeFanShapedPathDeviedBy18(_ i:Int) {
             let i = i % 18
             let oneAngle = CGFloat(M_PI) / 9
             let startAngle = oneAngle * CGFloat(i)
@@ -60,7 +51,7 @@ class BrightView: UIView {
             path.closeSubpath()
         }
         for i in 1...9 {
-            makeFanShapedPathDeviedBy18(i: (i * 2) - 1)//1,3,5,..,17
+            makeFanShapedPathDeviedBy18((i * 2) - 1)//1,3,5,..,17
         }
         
         if circleCenter != nil {
