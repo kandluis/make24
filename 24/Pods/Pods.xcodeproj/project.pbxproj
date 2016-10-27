@@ -7,31 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04ECF447B16A34169DD63637B1D121DF /* TKSWBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FA4898E8AAF08F4454AA9D126A152C /* TKSWBackgroundView.swift */; };
 		1287F192BBE36455F7A649D9FF97BC5C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		171C57CCE72766354DBA3FE63D7F85CA /* DynamicBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671ED4EB1F03962E8ADF536155178B9B /* DynamicBlurView.swift */; };
-		17B3D4A593BF16428FFBA6A4CA7AA9D0 /* SwiftyWalkthrough-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 45BC58364FDEDB27B85218D30D4DE735 /* SwiftyWalkthrough-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		17B3D4A593BF16428FFBA6A4CA7AA9D0 /* SwiftyWalkthrough-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = ADBFE7301A5D4FBF28F5353A69238233 /* SwiftyWalkthrough-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27F6A3D2AFA7A9E41ED3F9F70905704E /* BrightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92813C39F688BB386B6EC17E5DD9F175 /* BrightView.swift */; };
 		28220171D9A34FD16DC6610CED7CE1AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		282E98B83E7BAA2FA70DF8BD4CBD312F /* SwiftyWalkthrough-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 38F53FA0D5E4544D76D4DD2979F9750A /* SwiftyWalkthrough-dummy.m */; };
+		282E98B83E7BAA2FA70DF8BD4CBD312F /* SwiftyWalkthrough-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7694555E4E7ABB807F59700C00A603D1 /* SwiftyWalkthrough-dummy.m */; };
 		31D4ADC92D27A5742EB89E0B4018E6D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
 		41168D99410F47AF0DB874578799668A /* Pods-24-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DC729137E9D9D45AFC212DABE2EE563B /* Pods-24-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FB69CBF29770E78D4C4B63402960285 /* ViewDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77D0DF2F0C05B11C7E1DD93FDF5CEE5 /* ViewDescriptor.swift */; };
+		4FB69CBF29770E78D4C4B63402960285 /* ViewDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59332128AD8C52F0A9862AE46E0A7920 /* ViewDescriptor.swift */; };
+		526732EFC99F839698D7DABDA29655B8 /* TKSwarmAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9604E935085C47334EE15F0291A12718 /* TKSwarmAlert.swift */; };
 		5D3C666F8114562BA74A46556ADB1552 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		65F10EF2564ACB58532DA7C44ED5F1AB /* TKSwarmAlert-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E7A9F053D3E6C4C4B753453D25BBC0 /* TKSwarmAlert-dummy.m */; };
 		6C2021C7DB248CA0700AF87E4FE54AA2 /* Pods-24Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3448316435712B31967DBA87EC45C52F /* Pods-24Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7771FBB39DF7CF8519ABDA57EFC5CBDF /* CGRectEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = F398F9C7024ED98AD479427D46FCE21E /* CGRectEx.swift */; };
 		7D8956F0B3018F9BFE789ACBC1C94DAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		814EC39FFDCDEF409212F2BAFE7D9940 /* BrightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CA1CE4C88949E002B531FA7DAEC844 /* BrightView.swift */; };
+		8297769EFBDEEAB70C526532DC461212 /* FallingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C94CFF3B5535F4E7F7C077677FDEBB /* FallingAnimationView.swift */; };
 		86AC800665946CC3EA188EEDEEB43A32 /* Pods-24UITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C8B66396535F1E43E15B61110F95A /* Pods-24UITests-dummy.m */; };
-		9D3DAD33D9FBCA68413235868C45C473 /* FallingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADD2C557EBA076B71641848C72E3D0A /* FallingAnimationView.swift */; };
-		A45474FBFC7BE4740C181C73386E47F8 /* UIViewController+Walkthrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F164B70BE66821591BE36843355DE6 /* UIViewController+Walkthrough.swift */; };
+		A45474FBFC7BE4740C181C73386E47F8 /* UIViewController+Walkthrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0482C2D3FF76C9BCAA4230355C8BC0 /* UIViewController+Walkthrough.swift */; };
 		B37C6C961A35E575781039800AD4F8AB /* Pods-24Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C11E42C7077686AFF9388CBB467849D2 /* Pods-24Tests-dummy.m */; };
 		B7CCCEBC6B928BCD810D9DBF540166B4 /* Pods-24UITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4934E3538719A0E4C295183818644D /* Pods-24UITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BB5EBA7121C286F296AEB9F74C06B44A /* TKSwarmAlert-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C67B42BF03C0DFACE96FDF69E5B7C52B /* TKSwarmAlert-dummy.m */; };
-		BE374EECE16801811310416CC42B5F08 /* TKSwarmAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC97D9F2C7CC8ABBE077860A70A692D /* TKSwarmAlert.swift */; };
-		C932CDB60156C69529F0D475BDAFFC6E /* TKSwarmAlert-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A5E913989E251291297F397F72C9AFC /* TKSwarmAlert-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DD8378C669DC4D820F708A2362DA28EF /* WalkthroughView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CA305A0DB7B8CF4887208B6CA90892 /* WalkthroughView.swift */; };
-		E0AC7AACDDB4E321F858460DBAA675CE /* NSTimerEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2F847F74E70E35E4F833CEA1E823D1 /* NSTimerEx.swift */; };
-		E82C520BD579A234E0C37134653310FA /* TKSWBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9822E4A40CCB48EE69434DB146E0CC82 /* TKSWBackgroundView.swift */; };
-		F83DC7BEC027A8058CB265A5D343C678 /* CGRectEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B214B51A8F6F9878123C3B960FEB4CCB /* CGRectEx.swift */; };
+		C932CDB60156C69529F0D475BDAFFC6E /* TKSwarmAlert-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9917771842D119EE214E52BF57312010 /* TKSwarmAlert-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD8378C669DC4D820F708A2362DA28EF /* WalkthroughView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9E0CC47030B65DF14EA39EB4876058 /* WalkthroughView.swift */; };
 		FA442534902503F3CDEBA62B27603FEF /* Pods-24-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D92BCB2B932CC74BDD83DA7872D49E00 /* Pods-24-dummy.m */; };
+		FE8E4894E643AF164E96ADF2329308FC /* NSTimerEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D01FE16CB7666A7381D69C0D844DF99 /* NSTimerEx.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,62 +52,61 @@
 
 /* Begin PBXFileReference section */
 		070298703B024E0BDC707DAECCE03E5F /* Pods-24UITests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-24UITests-resources.sh"; sourceTree = "<group>"; };
-		0ADD2C557EBA076B71641848C72E3D0A /* FallingAnimationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FallingAnimationView.swift; path = TKSwarmAlert/Classes/FallingAnimationView.swift; sourceTree = "<group>"; };
-		15CA305A0DB7B8CF4887208B6CA90892 /* WalkthroughView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalkthroughView.swift; path = SwiftyWalkthrough/WalkthroughView.swift; sourceTree = "<group>"; };
+		14C94CFF3B5535F4E7F7C077677FDEBB /* FallingAnimationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FallingAnimationView.swift; path = TKSwarmAlert/Classes/FallingAnimationView.swift; sourceTree = "<group>"; };
 		17956EF8EEC5B33561B35BEEB11480CD /* Pods-24Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-24Tests.release.xcconfig"; sourceTree = "<group>"; };
 		1C07F3C102A09ABDACDC44ED4AD7A502 /* Pods-24UITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-24UITests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		30E581FC54E0619DD2BF4D962520A78E /* TKSwarmAlert-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TKSwarmAlert-prefix.pch"; sourceTree = "<group>"; };
 		3448316435712B31967DBA87EC45C52F /* Pods-24Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-24Tests-umbrella.h"; sourceTree = "<group>"; };
-		38F53FA0D5E4544D76D4DD2979F9750A /* SwiftyWalkthrough-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyWalkthrough-dummy.m"; sourceTree = "<group>"; };
-		45BC58364FDEDB27B85218D30D4DE735 /* SwiftyWalkthrough-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyWalkthrough-umbrella.h"; sourceTree = "<group>"; };
+		3B08D58FE5F81ABDFA8459E15B062962 /* SwiftyWalkthrough.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftyWalkthrough.modulemap; sourceTree = "<group>"; };
+		4590A4D918B89634209D95B5A457C7FD /* TKSwarmAlert.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = TKSwarmAlert.modulemap; sourceTree = "<group>"; };
+		47034DC1DF781ADA05FAD89E4F09764C /* SwiftyWalkthrough-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyWalkthrough-prefix.pch"; sourceTree = "<group>"; };
 		479FD6E0AEFCDD8766C9BB1E5026E149 /* Pods-24-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-24-resources.sh"; sourceTree = "<group>"; };
-		488BDB3E3062DDFC3383C1F5B66DEB19 /* SwiftyWalkthrough.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftyWalkthrough.modulemap; sourceTree = "<group>"; };
 		49127B9057E4A9BFF40446786050CDFB /* Pods-24UITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-24UITests-acknowledgements.plist"; sourceTree = "<group>"; };
-		4A5E913989E251291297F397F72C9AFC /* TKSwarmAlert-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TKSwarmAlert-umbrella.h"; sourceTree = "<group>"; };
 		4B7C8B66396535F1E43E15B61110F95A /* Pods-24UITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-24UITests-dummy.m"; sourceTree = "<group>"; };
-		520E807F6DB405C7AACC9CC4F37DD04F /* SwiftyWalkthrough-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyWalkthrough-prefix.pch"; sourceTree = "<group>"; };
+		50FA4898E8AAF08F4454AA9D126A152C /* TKSWBackgroundView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TKSWBackgroundView.swift; path = TKSwarmAlert/Classes/TKSWBackgroundView.swift; sourceTree = "<group>"; };
+		59332128AD8C52F0A9862AE46E0A7920 /* ViewDescriptor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewDescriptor.swift; path = SwiftyWalkthrough/ViewDescriptor.swift; sourceTree = "<group>"; };
+		5D01FE16CB7666A7381D69C0D844DF99 /* NSTimerEx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSTimerEx.swift; path = TKSwarmAlert/Classes/helper/NSTimerEx.swift; sourceTree = "<group>"; };
 		5E0EB2120C35FB9C7A8F8BB24BD656A6 /* Pods_24UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		61ECC9951B95CAA69601CB367C918184 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		64CA1CE4C88949E002B531FA7DAEC844 /* BrightView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BrightView.swift; path = TKSwarmAlert/Classes/BrightView.swift; sourceTree = "<group>"; };
-		66F66FAA63496F0F63F46BB3EFA914DA /* TKSwarmAlert.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = TKSwarmAlert.modulemap; sourceTree = "<group>"; };
-		671ED4EB1F03962E8ADF536155178B9B /* DynamicBlurView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DynamicBlurView.swift; path = TKSwarmAlert/Classes/helper/DynamicBlurView.swift; sourceTree = "<group>"; };
 		67AB959CEE78DDB37662FDDE6F42596C /* Pods-24.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-24.release.xcconfig"; sourceTree = "<group>"; };
 		6DA39826A72008B8C21B1150C3885061 /* Pods-24Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-24Tests.modulemap"; sourceTree = "<group>"; };
-		6EC97D9F2C7CC8ABBE077860A70A692D /* TKSwarmAlert.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TKSwarmAlert.swift; path = TKSwarmAlert/Classes/TKSwarmAlert.swift; sourceTree = "<group>"; };
 		6FD66B579DF6BDC88DE1495F2EF1339A /* Pods-24UITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-24UITests.modulemap"; sourceTree = "<group>"; };
 		74A13B33D48AE0D1D6688817394152F9 /* Pods-24Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-24Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		7601CA9F15B278283B671AF24A668D86 /* Pods-24Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-24Tests-resources.sh"; sourceTree = "<group>"; };
-		7A2F847F74E70E35E4F833CEA1E823D1 /* NSTimerEx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSTimerEx.swift; path = TKSwarmAlert/Classes/helper/NSTimerEx.swift; sourceTree = "<group>"; };
+		7694555E4E7ABB807F59700C00A603D1 /* SwiftyWalkthrough-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyWalkthrough-dummy.m"; sourceTree = "<group>"; };
 		806521EAC971043384BB494948DA38FF /* Pods-24-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-24-acknowledgements.markdown"; sourceTree = "<group>"; };
+		840890BA00716CCDCB95A1CC2624159B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		863EA8CDAA57905157C44E65E1A4BD79 /* TKSwarmAlert.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TKSwarmAlert.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88A403C79C96031D3B06A1954ED5F3BA /* Pods_24.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B7952C29F77748D5014590167935956 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C0482C2D3FF76C9BCAA4230355C8BC0 /* UIViewController+Walkthrough.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIViewController+Walkthrough.swift"; path = "SwiftyWalkthrough/UIViewController+Walkthrough.swift"; sourceTree = "<group>"; };
 		8C31125F67CD5C4454FDB2F14B34227F /* SwiftyWalkthrough.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyWalkthrough.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		92503BD53386FBB95D1E12F9E3463164 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92813C39F688BB386B6EC17E5DD9F175 /* BrightView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BrightView.swift; path = TKSwarmAlert/Classes/BrightView.swift; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		94F164B70BE66821591BE36843355DE6 /* UIViewController+Walkthrough.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIViewController+Walkthrough.swift"; path = "SwiftyWalkthrough/UIViewController+Walkthrough.swift"; sourceTree = "<group>"; };
-		9822E4A40CCB48EE69434DB146E0CC82 /* TKSWBackgroundView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TKSWBackgroundView.swift; path = TKSwarmAlert/Classes/TKSWBackgroundView.swift; sourceTree = "<group>"; };
-		A08500151B9CB481CE0553E9CFEF7DFF /* SwiftyWalkthrough.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyWalkthrough.xcconfig; sourceTree = "<group>"; };
+		94D6367A48F99D2359E61062053F824C /* TKSwarmAlert.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TKSwarmAlert.xcconfig; sourceTree = "<group>"; };
+		9604E935085C47334EE15F0291A12718 /* TKSwarmAlert.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TKSwarmAlert.swift; path = TKSwarmAlert/Classes/TKSwarmAlert.swift; sourceTree = "<group>"; };
+		9917771842D119EE214E52BF57312010 /* TKSwarmAlert-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TKSwarmAlert-umbrella.h"; sourceTree = "<group>"; };
+		9FA76382EBA992D6661FF6B62FE138F0 /* TKSwarmAlert-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TKSwarmAlert-prefix.pch"; sourceTree = "<group>"; };
 		A2429C0B941F8725280BDE5559F1F44D /* Pods-24.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-24.modulemap"; sourceTree = "<group>"; };
+		ADBFE7301A5D4FBF28F5353A69238233 /* SwiftyWalkthrough-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyWalkthrough-umbrella.h"; sourceTree = "<group>"; };
 		AE3E9E5CF5E4B91F35C58EFF929160EF /* Pods-24-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-24-acknowledgements.plist"; sourceTree = "<group>"; };
-		B214B51A8F6F9878123C3B960FEB4CCB /* CGRectEx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CGRectEx.swift; path = TKSwarmAlert/Classes/helper/CGRectEx.swift; sourceTree = "<group>"; };
-		BC4A74AB072ECAEF3EF2F7F252996D30 /* TKSwarmAlert.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TKSwarmAlert.xcconfig; sourceTree = "<group>"; };
 		BC6237FDDEA3C3D92157A72DF27FEEF5 /* Pods-24.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-24.debug.xcconfig"; sourceTree = "<group>"; };
 		BE10B9A44AFE7E9412D1C66A02944D23 /* Pods-24Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-24Tests-frameworks.sh"; sourceTree = "<group>"; };
+		C0E7A9F053D3E6C4C4B753453D25BBC0 /* TKSwarmAlert-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TKSwarmAlert-dummy.m"; sourceTree = "<group>"; };
 		C11E42C7077686AFF9388CBB467849D2 /* Pods-24Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-24Tests-dummy.m"; sourceTree = "<group>"; };
+		C493F0AA09FC39EEB66052D0CBCCD943 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5A5F62024DC854CEA484472FE0CEE88 /* Pods-24Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-24Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		C67B42BF03C0DFACE96FDF69E5B7C52B /* TKSwarmAlert-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TKSwarmAlert-dummy.m"; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D2A4C39395EA9920725F1D41ED628CE5 /* Pods-24UITests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-24UITests-frameworks.sh"; sourceTree = "<group>"; };
 		D46872A3114D367F37F878150D6F67D5 /* Pods-24UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-24UITests.release.xcconfig"; sourceTree = "<group>"; };
-		D77D0DF2F0C05B11C7E1DD93FDF5CEE5 /* ViewDescriptor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewDescriptor.swift; path = SwiftyWalkthrough/ViewDescriptor.swift; sourceTree = "<group>"; };
 		D92BCB2B932CC74BDD83DA7872D49E00 /* Pods-24-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-24-dummy.m"; sourceTree = "<group>"; };
 		D9A9DA8AC74211A22E113353801B09F6 /* Pods_24Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC729137E9D9D45AFC212DABE2EE563B /* Pods-24-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-24-umbrella.h"; sourceTree = "<group>"; };
 		DEF07B9FDFD1D1E8BCAB7D31FD439390 /* Pods-24UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-24UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E18D027D423B9C1316733C11565D4C46 /* Pods-24-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-24-frameworks.sh"; sourceTree = "<group>"; };
-		F130BA07FAD4E886EEB610CA74E5EA68 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EB9E0CC47030B65DF14EA39EB4876058 /* WalkthroughView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalkthroughView.swift; path = SwiftyWalkthrough/WalkthroughView.swift; sourceTree = "<group>"; };
 		F2B3D26F2A1401CB1859CF3E27E7DA1C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F2D10651550388849D98889AE596323C /* SwiftyWalkthrough.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyWalkthrough.xcconfig; sourceTree = "<group>"; };
+		F398F9C7024ED98AD479427D46FCE21E /* CGRectEx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CGRectEx.swift; path = TKSwarmAlert/Classes/helper/CGRectEx.swift; sourceTree = "<group>"; };
 		FC4934E3538719A0E4C295183818644D /* Pods-24UITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-24UITests-umbrella.h"; sourceTree = "<group>"; };
 		FF42AA5EF172926876C067E51EFA00C1 /* Pods-24Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-24Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,27 +155,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		028FFBC225C2E96BF38EACC333F50F96 /* Support Files */ = {
+		061D1942957F6C660AE75C29788E453E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				92503BD53386FBB95D1E12F9E3463164 /* Info.plist */,
-				488BDB3E3062DDFC3383C1F5B66DEB19 /* SwiftyWalkthrough.modulemap */,
-				A08500151B9CB481CE0553E9CFEF7DFF /* SwiftyWalkthrough.xcconfig */,
-				38F53FA0D5E4544D76D4DD2979F9750A /* SwiftyWalkthrough-dummy.m */,
-				520E807F6DB405C7AACC9CC4F37DD04F /* SwiftyWalkthrough-prefix.pch */,
-				45BC58364FDEDB27B85218D30D4DE735 /* SwiftyWalkthrough-umbrella.h */,
+				0857A97870255168CBD373C1342B7CAB /* SwiftyWalkthrough */,
+				7C88C562A6B6BFFF320DA05A80123DCF /* TKSwarmAlert */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/SwiftyWalkthrough";
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		0EAE5B14B5EC5078A0A5D4FDC97DBBF2 /* SwiftyWalkthrough */ = {
+		0857A97870255168CBD373C1342B7CAB /* SwiftyWalkthrough */ = {
 			isa = PBXGroup;
 			children = (
-				94F164B70BE66821591BE36843355DE6 /* UIViewController+Walkthrough.swift */,
-				D77D0DF2F0C05B11C7E1DD93FDF5CEE5 /* ViewDescriptor.swift */,
-				15CA305A0DB7B8CF4887208B6CA90892 /* WalkthroughView.swift */,
-				028FFBC225C2E96BF38EACC333F50F96 /* Support Files */,
+				8C0482C2D3FF76C9BCAA4230355C8BC0 /* UIViewController+Walkthrough.swift */,
+				59332128AD8C52F0A9862AE46E0A7920 /* ViewDescriptor.swift */,
+				EB9E0CC47030B65DF14EA39EB4876058 /* WalkthroughView.swift */,
+				F3B2499D8420A7E259222EB0ED1E464B /* Support Files */,
 			);
 			path = SwiftyWalkthrough;
 			sourceTree = "<group>";
@@ -200,44 +193,6 @@
 			path = "Target Support Files/Pods-24Tests";
 			sourceTree = "<group>";
 		};
-		3F1728A862AE5A32ECD06317729D03B8 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				F130BA07FAD4E886EEB610CA74E5EA68 /* Info.plist */,
-				66F66FAA63496F0F63F46BB3EFA914DA /* TKSwarmAlert.modulemap */,
-				BC4A74AB072ECAEF3EF2F7F252996D30 /* TKSwarmAlert.xcconfig */,
-				C67B42BF03C0DFACE96FDF69E5B7C52B /* TKSwarmAlert-dummy.m */,
-				30E581FC54E0619DD2BF4D962520A78E /* TKSwarmAlert-prefix.pch */,
-				4A5E913989E251291297F397F72C9AFC /* TKSwarmAlert-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/TKSwarmAlert";
-			sourceTree = "<group>";
-		};
-		62EF0BE0E4FD0ECCB6B2FBD78E7DA6D9 /* TKSwarmAlert */ = {
-			isa = PBXGroup;
-			children = (
-				64CA1CE4C88949E002B531FA7DAEC844 /* BrightView.swift */,
-				B214B51A8F6F9878123C3B960FEB4CCB /* CGRectEx.swift */,
-				671ED4EB1F03962E8ADF536155178B9B /* DynamicBlurView.swift */,
-				0ADD2C557EBA076B71641848C72E3D0A /* FallingAnimationView.swift */,
-				7A2F847F74E70E35E4F833CEA1E823D1 /* NSTimerEx.swift */,
-				6EC97D9F2C7CC8ABBE077860A70A692D /* TKSwarmAlert.swift */,
-				9822E4A40CCB48EE69434DB146E0CC82 /* TKSWBackgroundView.swift */,
-				3F1728A862AE5A32ECD06317729D03B8 /* Support Files */,
-			);
-			path = TKSwarmAlert;
-			sourceTree = "<group>";
-		};
-		660C0FBF03E4BA3FB37D884B6D273ECC /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0EAE5B14B5EC5078A0A5D4FDC97DBBF2 /* SwiftyWalkthrough */,
-				62EF0BE0E4FD0ECCB6B2FBD78E7DA6D9 /* TKSwarmAlert */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,12 +201,26 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
+		7C88C562A6B6BFFF320DA05A80123DCF /* TKSwarmAlert */ = {
+			isa = PBXGroup;
+			children = (
+				92813C39F688BB386B6EC17E5DD9F175 /* BrightView.swift */,
+				F398F9C7024ED98AD479427D46FCE21E /* CGRectEx.swift */,
+				14C94CFF3B5535F4E7F7C077677FDEBB /* FallingAnimationView.swift */,
+				5D01FE16CB7666A7381D69C0D844DF99 /* NSTimerEx.swift */,
+				9604E935085C47334EE15F0291A12718 /* TKSwarmAlert.swift */,
+				50FA4898E8AAF08F4454AA9D126A152C /* TKSWBackgroundView.swift */,
+				C50B654920F28FCD25EB172B8CB396C8 /* Support Files */,
+			);
+			path = TKSwarmAlert;
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				660C0FBF03E4BA3FB37D884B6D273ECC /* Pods */,
+				061D1942957F6C660AE75C29788E453E /* Pods */,
 				A76ADE6C0B05E2F813D29BC087161F19 /* Products */,
 				A6F0A9CF0A17312BA375559873814992 /* Targets Support Files */,
 			);
@@ -303,6 +272,34 @@
 				7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C50B654920F28FCD25EB172B8CB396C8 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C493F0AA09FC39EEB66052D0CBCCD943 /* Info.plist */,
+				4590A4D918B89634209D95B5A457C7FD /* TKSwarmAlert.modulemap */,
+				94D6367A48F99D2359E61062053F824C /* TKSwarmAlert.xcconfig */,
+				C0E7A9F053D3E6C4C4B753453D25BBC0 /* TKSwarmAlert-dummy.m */,
+				9FA76382EBA992D6661FF6B62FE138F0 /* TKSwarmAlert-prefix.pch */,
+				9917771842D119EE214E52BF57312010 /* TKSwarmAlert-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/TKSwarmAlert";
+			sourceTree = "<group>";
+		};
+		F3B2499D8420A7E259222EB0ED1E464B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				840890BA00716CCDCB95A1CC2624159B /* Info.plist */,
+				3B08D58FE5F81ABDFA8459E15B062962 /* SwiftyWalkthrough.modulemap */,
+				F2D10651550388849D98889AE596323C /* SwiftyWalkthrough.xcconfig */,
+				7694555E4E7ABB807F59700C00A603D1 /* SwiftyWalkthrough-dummy.m */,
+				47034DC1DF781ADA05FAD89E4F09764C /* SwiftyWalkthrough-prefix.pch */,
+				ADBFE7301A5D4FBF28F5353A69238233 /* SwiftyWalkthrough-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SwiftyWalkthrough";
 			sourceTree = "<group>";
 		};
 		F91CEB14DB1E27E492039CE0FC59E1C9 /* Pods-24UITests */ = {
@@ -409,7 +406,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F9909B30F815E82146BB1F7690004051 /* Build configuration list for PBXNativeTarget "TKSwarmAlert" */;
 			buildPhases = (
-				DB199BF659A9996C5F771B7C509558BB /* Sources */,
+				55741329D93E832074FF1499720FC70E /* Sources */,
 				22B148BBC427D9B5DA926D0D8F4F5125 /* Frameworks */,
 				53B44D26A5C523B9C10D0464684A4DCC /* Headers */,
 			);
@@ -514,26 +511,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55741329D93E832074FF1499720FC70E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27F6A3D2AFA7A9E41ED3F9F70905704E /* BrightView.swift in Sources */,
+				7771FBB39DF7CF8519ABDA57EFC5CBDF /* CGRectEx.swift in Sources */,
+				8297769EFBDEEAB70C526532DC461212 /* FallingAnimationView.swift in Sources */,
+				FE8E4894E643AF164E96ADF2329308FC /* NSTimerEx.swift in Sources */,
+				65F10EF2564ACB58532DA7C44ED5F1AB /* TKSwarmAlert-dummy.m in Sources */,
+				526732EFC99F839698D7DABDA29655B8 /* TKSwarmAlert.swift in Sources */,
+				04ECF447B16A34169DD63637B1D121DF /* TKSWBackgroundView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C3ABE96C3926E2605D8F6184FA9485B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				86AC800665946CC3EA188EEDEEB43A32 /* Pods-24UITests-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB199BF659A9996C5F771B7C509558BB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				814EC39FFDCDEF409212F2BAFE7D9940 /* BrightView.swift in Sources */,
-				F83DC7BEC027A8058CB265A5D343C678 /* CGRectEx.swift in Sources */,
-				171C57CCE72766354DBA3FE63D7F85CA /* DynamicBlurView.swift in Sources */,
-				9D3DAD33D9FBCA68413235868C45C473 /* FallingAnimationView.swift in Sources */,
-				E0AC7AACDDB4E321F858460DBAA675CE /* NSTimerEx.swift in Sources */,
-				BB5EBA7121C286F296AEB9F74C06B44A /* TKSwarmAlert-dummy.m in Sources */,
-				BE374EECE16801811310416CC42B5F08 /* TKSwarmAlert.swift in Sources */,
-				E82C520BD579A234E0C37134653310FA /* TKSWBackgroundView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,7 +553,7 @@
 /* Begin XCBuildConfiguration section */
 		065512ECE8656C11A979BCB09B3A5CA5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC4A74AB072ECAEF3EF2F7F252996D30 /* TKSwarmAlert.xcconfig */;
+			baseConfigurationReference = 94D6367A48F99D2359E61062053F824C /* TKSwarmAlert.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -668,7 +664,7 @@
 		};
 		26F90E61355216849EEC717E7790CB82 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A08500151B9CB481CE0553E9CFEF7DFF /* SwiftyWalkthrough.xcconfig */;
+			baseConfigurationReference = F2D10651550388849D98889AE596323C /* SwiftyWalkthrough.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -735,7 +731,7 @@
 		};
 		50679D56408977690F3B648D2D95D5E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC4A74AB072ECAEF3EF2F7F252996D30 /* TKSwarmAlert.xcconfig */;
+			baseConfigurationReference = 94D6367A48F99D2359E61062053F824C /* TKSwarmAlert.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -914,7 +910,7 @@
 		};
 		C3959D3F083159C11D5547885BA605BF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A08500151B9CB481CE0553E9CFEF7DFF /* SwiftyWalkthrough.xcconfig */;
+			baseConfigurationReference = F2D10651550388849D98889AE596323C /* SwiftyWalkthrough.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";

@@ -181,7 +181,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     let TRIGGERTIME = Int64(500000000)
     
     // Views
-    let optionsView = TKSwarmAlert()
+    let optionsView = TKSwarmAlert(backgroundType: TKSWBackgroundType.transparentBlack(alpha: 0.70))
 
     // Walthrough
     @IBOutlet weak var skipWalkthroughButton: UIButton!
@@ -774,7 +774,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         numbersLeft = 4
         
         // make sure to unhide walkthrough
-        startWalkthrough(walkthroughView: WalkthroughView())
+        startWalkthrough(WalkthroughView())
         walkthroughInstructionsView.isHidden = false
         createHoles(holesToCreate: [walkthroughInstructionsView, number2Button, number3Button, multiplyButton])
         
@@ -822,10 +822,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     /*********
      * Options Menu Functions
      *********/
-    func createOptionsView(_ viewTapped: UITapGestureRecognizer,  image_name: String, text: String, frame: CGRect)  ->  SampleDesignView{
+    func createOptionsView(_ viewTapped: UITapGestureRecognizer,  image_name: String, text: String, frame: CGRect)  ->  OptionView {
         
         
-        let newView = SampleDesignView(type: SampleDesignViewType.bar(icon:UIImage(named: image_name), text:text), frame: frame)
+        let newView = OptionView(type: OptionViewType.bar(icon:UIImage(named: image_name), text:text), frame: frame)
         
         viewTapped.numberOfTapsRequired = 1
         newView.isUserInteractionEnabled = true
@@ -1013,7 +1013,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             (selector: #selector(self.moreGamesOption), image: "games_colored", text: "More games")
             ]
         let views = makeOptionsViews(info)
-        self.optionsView.show(type: .TransparentBlack(alpha: 0.70), views: views)
+        self.optionsView.show(views)
     }
     
     @IBAction func dismissWalkthrough(_ sender: AnyObject) {

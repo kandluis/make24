@@ -5,13 +5,6 @@
 //  Created by Rui Costa on 28/09/2015.
 //  Copyright © 2015 Rui Costa. All rights reserved.
 //
-//
-//  WalkthroughView.swift
-//  SwiftyWalkthrough
-//
-//  Created by Rui Costa on 28/09/2015.
-//  Copyright © 2015 Rui Costa. All rights reserved.
-//
 
 import Foundation
 

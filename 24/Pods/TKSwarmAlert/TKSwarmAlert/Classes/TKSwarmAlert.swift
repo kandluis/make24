@@ -10,40 +10,48 @@ import UIKit
 
 public typealias Closure=()->Void
 
-public class TKSwarmAlert {
+open class TKSwarmAlert: NSObject {
     
-    public var didDissmissAllViews: Closure?
+    open var durationOfPreventingTapBackgroundArea: TimeInterval = 0
+    open var didDissmissAllViews: Closure?
 
-    private var staticViews: [UIView] = []
+    fileprivate var staticViews: [UIView] = []
     var animationView: FallingAnimationView?
     var blurView: TKSWBackgroundView?
-
-    public init() {
-        
+    
+    var type: TKSWBackgroundType!
+    
+    public init(backgroundType: TKSWBackgroundType = .blur) {
+        super.init()
+        self.type = backgroundType
     }
     
-    public func addNextViews(views:[UIView]) {
+    open func addNextViews(_ views:[UIView]) {
         self.animationView?.nextViewsList.append(views)
     }
     
-    public func addSubStaticView(view:UIView) {
+    open func addSubStaticView(_ view:UIView) {
         view.tag = -1
         self.staticViews.append(view)
     }
     
-    public func hide(){
-        // A little hacky, but we pretend that the superView has been tapped.
+    open func hide(){
         self.animationView?.onTapSuperView()
-        print("hiding")
     }
     
-    public func show(type:TKSWBackgroundType, views:[UIView]) {
+    open func show(_ views:[UIView]) {
         let window:UIWindow? = UIApplication.shared.keyWindow
         if window != nil {
             let frame:CGRect = window!.bounds
-            blurView = TKSWBackgroundView(frame: frame, type: type)
+            blurView = TKSWBackgroundView(frame: frame, type: self.type)
             animationView = FallingAnimationView(frame: frame)
             
+            if durationOfPreventingTapBackgroundArea > 0 {
+                animationView?.enableToTapSuperView = false
+                Timer.schedule(delay: durationOfPreventingTapBackgroundArea) { [weak self] _ in
+                    self?.animationView?.enableToTapSuperView = true
+                }
+            }
             
             let showDuration:TimeInterval = 0.2
 
@@ -58,7 +66,7 @@ public class TKSwarmAlert {
             window!.addSubview(blurView!)
             window!.addSubview(animationView!)
             blurView?.show(duration: showDuration, didEnd: {[unowned self] () -> Void in
-                self.spawn(views: views)
+                self.spawn(views)
             })
             animationView?.willDissmissAllViews = {
                 let fadeOutDuration:TimeInterval = 0.2
@@ -82,7 +90,7 @@ public class TKSwarmAlert {
         }
     }
     
-    public func spawn(views:[UIView]) {
+    open func spawn(_ views:[UIView]) {
         self.animationView?.spawn(views: views)
     }
 }
