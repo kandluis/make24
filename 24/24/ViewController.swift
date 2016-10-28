@@ -14,8 +14,9 @@ import GameKit
 import TKSwarmAlert
 import SwiftyWalkthrough
 import WatchConnectivity
+import SAConfettiView
 
-let APP_ID = "id959379869"
+
 
 extension String {
     func trim() -> String {
@@ -92,6 +93,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     @IBOutlet weak var answerNumber1Label: UILabel!
     @IBOutlet weak var answerOperationLabel: UILabel!
     @IBOutlet weak var answerNumber2Label: UILabel!
+    @IBOutlet weak var answerNumber1Background: UIImageView!
+    @IBOutlet weak var answerOperationBackground: UIImageView!
+    @IBOutlet weak var answerNumber2Background: UIImageView!
     
     // Operations below answer board
     @IBOutlet weak var resetButton: UIButton!
@@ -267,9 +271,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func tapAnswer1(){
         tapAnswer(answerNumber1Label)
+        answerNumber1Background.image = UIImage(named: "groove_large")
     }
     func tapAnswer2(){
         tapAnswer(answerNumber2Label)
+        answerNumber2Background.image = UIImage(named: "groove_large")
     }
     
     func tapOperation() {
@@ -278,6 +284,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 answerOperationLabel.text = " "
                 playSound(pop)
                 answersFilled -= 1
+                answerNumber1Background.image = UIImage(named: "groove_small")
                 
                 if ongoingWalkthrough {
                     removeHole(answerOperationLabel)
@@ -406,6 +413,16 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         return selectedProblem
     }
 
+    // format puzzle into strings
+    
+    func formatPuzzleToString (puzzle: [Int:Int]) -> String {
+        var puzzleString = ""
+        for (_, puzzleNumber) in puzzle {
+            puzzleString = puzzleString + " " + String(puzzleNumber) + " "
+        }
+        return puzzleString
+    }
+    //
     func initializeNumbers() {
         
         clearAnswers()
@@ -416,7 +433,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 setNumberButton(index, text: String(problem[index]))
                 currentNumbers[index] = selectedNumber
             }
-            print("foxy")
+            let puzzleString = formatPuzzleToString(puzzle: currentNumbers)
+            defaults.set(puzzleString, forKey: "puzzle")
             
             // send data to watch if watch is supported
             if WCSession.isSupported() {
@@ -424,7 +442,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 print(msg)
                 print(session ?? "")
                 self.session?.sendMessage(msg, replyHandler: { (reply)->Void in }, errorHandler: { (reply)->Void in })
-                
                 
             }
             
@@ -531,7 +548,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func getAlertTypeOnWin() -> String {
         if puzzlesSolved == puzzlesPerLevel - 1 {
             if playerLevel == maxLevel {
-                return "finish"
+                showConfetti()
+                // wait for confetti to finish
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    return "finish"
+                })
             }
             return "next_level"
         }
@@ -626,6 +647,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         answerNumber2Label.text = " "
         answerOperationLabel.text = " "
         
+        answerNumber1Background.image = UIImage(named:"groove_large")
+        answerNumber2Background.image = UIImage(named:"groove_large")
+        answerOperationBackground.image = UIImage(named:"groove_small")
+        
         answersFilled = 0
     }
     func setNumberButton(_ index: Int, text: String) {
@@ -636,12 +661,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         button?.contentVerticalAlignment = UIControlContentVerticalAlignment.fill
         button?.titleLabel?.textAlignment = .center
         button?.setTitle(text, for: UIControlState())
+        button?.isEnabled = true
     }
     
     func clearNumberButton(_ index: Int){
         numberButtons[index].setTitle(" ", for: UIControlState())
         // sets number button to blank background color
-        numberButtons[index].setBackgroundImage(nil, for: UIControlState())
+    numberButtons[index].setBackgroundImage(UIImage(named:"groove_large"), for: UIControlState())
+        numberButtons[index].isEnabled = false
+//        numberButtons[index].setBackgroundImage(nil, for: UIControlState())
     }
     
     func clearBoard() {
@@ -844,12 +872,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
         return viewInfo.enumerated().map({(i, info) -> UIView in
             let rect = CGRect(x: x, y: y + (height + margin) * CGFloat(i), width: width, height: height)
+            
             let tap = UITapGestureRecognizer(target: self, action: info.selector)
             let view = createOptionsView(tap, image_name: info.image, text: info.text, frame: rect)
+            view.backgroundColor = UIColor(red: 247/255, green: 243/255, blue: 228/255, alpha: 1)
             return view
 
         })
     }
+    
     func leaderBoardOption() {
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
@@ -857,10 +888,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         }
         self.optionsView.hide()
     }
-    func moreGamesOption() {
+    func changeModesOption() {
         // TODO: Implement ads
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
+            self.showModes()
         }
         self.optionsView.hide()
     }
@@ -875,17 +907,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         // TODO: Test rating!
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
-            let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
-            if let url = NSURL(string: url_string) {
-                UIApplication.shared.openURL(url as URL)
-            }
+            rateApp()
         }
         self.optionsView.hide()
     }
     func shareOption(){
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
-            self.shareApp()
+            let message = "I'm playing this new, awesome game! Check it out!"
+            shareApp(view: self, message: message)
         }
         self.optionsView.hide()
     }
@@ -901,22 +931,21 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     /***********
      * Share Options
      ***********/
-    func shareApp() {
-        let textToShare = "I'm playing this new, awesome game! Check it out!"
-        
-        if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
-            let objectsToShare = [textToShare, myWebsite] as [Any]
-            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            
-            //New Excluded Activities Code
-            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
-            
-            // TODO: for ipad
-            // activityVC.popoverPresentationController?.sourceView = sender as! UIView
-            self.present(activityVC, animated: true, completion: nil)
-        }
-    
-    }
+//    func shareApp() {
+//        let textToShare = "I'm playing this new, awesome game! Check it out!"
+//        
+//        if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
+//            let objectsToShare = [textToShare, myWebsite] as [Any]
+//            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+//            
+//            //New Excluded Activities Code
+//            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+//            
+//            // TODO: for ipad
+//            // activityVC.popoverPresentationController?.sourceView = sender as! UIView
+//            self.present(activityVC, animated: true, completion: nil)
+//        }
+//    }
     
     /******
      * User Actions
@@ -928,12 +957,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         guard let text2 = answerNumber2Label.text else { return }
         if text1.trim() == "" || text2.trim() == "" {
             let openLabel = text1.trim() == "" ? answerNumber1Label : answerNumber2Label
+            let openBackground = text1.trim() == "" ? answerNumber1Background : answerNumber2Background
+            
+            openBackground?.image = UIImage(named: "tile_large")
             let text = (sender as? UIButton)?.currentTitle ?? ""
             openLabel?.font = getFont(text, currentFont: openLabel?.font)
             openLabel?.adjustsFontSizeToFitWidth = true
             openLabel?.text = text
             openLabel?.tag = ((sender as? UIButton)?.tag)!
-
+            
             // for the walkthrough
             if ongoingWalkthrough {
                 removeHole(numberButtons[(openLabel?.tag)!])
@@ -965,6 +997,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         if text.trim() == "" && answersFilled < 3 {
             answersFilled = answersFilled + 1
         }
+        answerOperationBackground.image = UIImage(named:"tile_small")
         
         //play pop sound
         playSound(pop)
@@ -1003,17 +1036,60 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     @IBAction func showOptions(_ sender: AnyObject) {
         let muteButtonText = silent ? "Unmute" : "Mute"
-        let soundIcon = silent ? "mute_grey" : "sound_grey"
+        let soundIcon = silent ? "mute" : "sound_grey"
+
+        
         let info = [
-            (selector: #selector(self.leaderBoardOption), image: "leaderboard_colored", text: "Leaderboard"),
+            (selector: #selector(self.leaderBoardOption), image: "leaderboard", text: "Leaderboard"),
             (selector: #selector(self.soundToggle), image: soundIcon, text: muteButtonText),
-            (selector: #selector(self.tutorialOption), image: "tutorial_colored", text: "Tutorial"),
-            (selector: #selector(self.rateOption), image: "star_colored", text: "Rate the app"),
-            (selector: #selector(self.shareOption), image: "share_colored", text: "Share with friends"),
-            (selector: #selector(self.moreGamesOption), image: "games_colored", text: "More games")
+            (selector: #selector(self.tutorialOption), image: "tutorial", text: "Tutorial"),
+            (selector: #selector(self.rateOption), image: "rate", text: "Rate the app"),
+            (selector: #selector(self.shareOption), image: "share", text: "Share with friends"),
+            (selector: #selector(self.changeModesOption), image: "modes", text: "Change Difficulty Level")
             ]
         let views = makeOptionsViews(info)
         self.optionsView.show(views)
+    }
+    func showModes() {
+        let info = [
+            (selector: #selector(self.setEasyMode), image: "easy", text: "Easy"),
+            (selector: #selector(self.setMediumMode), image: "medium", text: "Medium"),
+            (selector: #selector(self.setHardMode), image: "hard", text: "Hard")
+        ]
+        let views = makeOptionsViews(info)
+        self.optionsView.show(views)
+
+    }
+    
+    func setEasyMode() {
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.defaults.set("easy", forKey: "mode")
+            print(self.defaults.string(forKey: "mode"))
+        }
+        self.optionsView.hide()
+        
+        // TODO implement actual mode changing
+    }
+    
+    func setMediumMode() {
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.defaults.set("medium", forKey: "mode")
+            print(self.defaults.string(forKey: "mode"))
+        }
+        self.optionsView.hide()
+        
+        // TODO implement actual mode changing
+    }
+    func setHardMode() {
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            self.defaults.set("hard", forKey: "mode")
+            print(self.defaults.string(forKey: "mode"))
+        }
+        self.optionsView.hide()
+        // TODO implement actual mode changing
     }
     
     @IBAction func dismissWalkthrough(_ sender: AnyObject) {
@@ -1046,6 +1122,22 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func sessionDidDeactivate(_ session: WCSession) {}
     func sessionDidBecomeInactive(_ session: WCSession) {}
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
+    
+    func showConfetti() {
+        let confettiView = SAConfettiView(frame: self.view.bounds)
+        confettiView.startConfetti()
+        self.view.addSubview(confettiView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+            confettiView.stopConfetti()
+            // preferrably wait until above is finished
+            confettiView.removeFromSuperview()
+        })
+    }
+    
+    // when player whens the game
+    @IBAction func showConfetti(_ sender: Any) {
+        showConfetti()
+    }
     
 }
 

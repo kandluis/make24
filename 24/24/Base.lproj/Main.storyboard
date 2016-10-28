@@ -64,15 +64,15 @@
                                 <rect key="frame" x="42" y="220" width="292" height="106"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tile_large" id="PPW-JH-yBH">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="groove_large" id="PPW-JH-yBH">
                                 <rect key="frame" x="60" y="232" width="72" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tile_small" id="A7h-c8-FuD">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="groove_small" id="A7h-c8-FuD">
                                 <rect key="frame" x="148" y="240" width="72" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tile_large" id="o12-g2-C0n">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="groove_large" id="o12-g2-C0n">
                                 <rect key="frame" x="241" y="232" width="71" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -270,13 +270,24 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hQm-Su-4sg">
+                                <rect key="frame" x="11" y="182" width="86" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Test confetti"/>
+                                <connections>
+                                    <action selector="showConfetti:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H1N-KT-EoY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97056084871292114" green="0.95320701599121094" blue="0.89487993717193604" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="dl5-zw-Fvs"/>
                     <connections>
+                        <outlet property="answerNumber1Background" destination="PPW-JH-yBH" id="vnY-lY-84A"/>
                         <outlet property="answerNumber1Label" destination="1SG-dY-ORe" id="PE0-1n-iiT"/>
+                        <outlet property="answerNumber2Background" destination="o12-g2-C0n" id="oOG-3Z-lOd"/>
                         <outlet property="answerNumber2Label" destination="1mj-oM-g2J" id="IX7-qr-e0N"/>
+                        <outlet property="answerOperationBackground" destination="A7h-c8-FuD" id="ttU-LZ-zjI"/>
                         <outlet property="answerOperationLabel" destination="jVk-Vn-OFq" id="0oI-jh-exk"/>
                         <outlet property="clearButton" destination="LGX-Lg-qek" id="cok-eY-9CH"/>
                         <outlet property="divideButton" destination="eKP-Lw-cfc" id="G8r-j5-i90"/>
@@ -366,6 +377,10 @@
                                         <rect key="frame" x="70" y="71" width="183" height="104"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bunny_alert" id="msp-BJ-nJs">
+                                        <rect key="frame" x="108" y="71" width="104" height="104"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mbw-H1-fCM">
                                         <rect key="frame" x="154" y="96" width="19" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -409,6 +424,7 @@
                         <outlet property="levelLabel" destination="Mbw-H1-fCM" id="18S-RP-bgh"/>
                         <outlet property="loseImage" destination="BqN-0O-VM8" id="Ait-tx-UyV"/>
                         <outlet property="primaryButton" destination="hlJ-th-oI6" id="eco-iR-ciO"/>
+                        <outlet property="rateImage" destination="msp-BJ-nJs" id="D3q-Wh-DfJ"/>
                         <outlet property="secondaryButton" destination="2xc-SI-y05" id="vBs-O3-b1S"/>
                         <outlet property="star1" destination="WAy-y4-MIZ" id="xW6-8a-6lk"/>
                         <outlet property="star10" destination="gjs-iQ-nMY" id="7Dn-PG-pc9"/>
@@ -426,7 +442,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jc1-iI-DOF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="822" y="161"/>
+            <point key="canvasLocation" x="821.5" y="160.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="9C3-Ro-z1z">
@@ -574,10 +590,13 @@
         <image name="answer_background" width="478" height="188"/>
         <image name="beat_level_screen" width="295" height="523"/>
         <image name="bunny" width="26" height="31"/>
+        <image name="bunny_alert" width="797" height="1018"/>
         <image name="button_grey_large" width="196" height="69"/>
         <image name="button_grey_small" width="146" height="43"/>
         <image name="got_it_button" width="69" height="29"/>
         <image name="grey_star" width="19" height="18"/>
+        <image name="groove_large" width="72" height="84"/>
+        <image name="groove_small" width="72" height="73"/>
         <image name="ice_cream" width="160" height="160"/>
         <image name="menu_background" width="205" height="130"/>
         <image name="menu_design" width="641" height="1136"/>
@@ -585,15 +604,15 @@
         <image name="multiplayer" width="138" height="114"/>
         <image name="mute_grey" width="43" height="44"/>
         <image name="numbers_background" width="582" height="188"/>
-        <image name="rate" width="111" height="112"/>
+        <image name="rate" width="35" height="35"/>
         <image name="score_background" width="167" height="165"/>
-        <image name="share" width="79" height="97"/>
+        <image name="share" width="29" height="36"/>
         <image name="skip_button" width="59" height="29"/>
         <image name="tile_large" width="124" height="151"/>
         <image name="tile_small" width="124" height="124"/>
         <image name="timed_trials" width="117" height="126"/>
         <image name="trophy" width="119" height="84"/>
-        <image name="tutorial" width="112" height="113"/>
+        <image name="tutorial" width="35" height="35"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
