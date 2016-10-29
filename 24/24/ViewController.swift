@@ -634,7 +634,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         if defaultFont == nil {
             defaultFont = currentFont
         }
-        if text.characters.count > 2 {
+        if text.contains("/") {
             return fractionFont
         }
         else {
