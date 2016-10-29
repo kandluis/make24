@@ -23,6 +23,9 @@
                             <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
                         </label>
                     </items>
+                    <connections>
+                        <outlet property="puzzleLabel" destination="y39-37-H0j" id="LlE-m1-qv3"/>
+                    </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="220" y="345"/>

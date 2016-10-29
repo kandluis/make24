@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Mixpanel
 
 typealias Problem = (id : Int, problem : [Int], difficulty: Double)
 
@@ -58,12 +59,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler( handleShortcut(shortcutItem) )
         
     }
+    
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if !hasAppLaunchedBefore() {
             preloadData()
         }
+        // track with mixpanel
+        Mixpanel.initialize(token: "6c198a05a459cdc8eb02366828418caa")
         // Disable sleep
         UIApplication.shared.isIdleTimerDisabled = true
         return true

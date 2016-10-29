@@ -53,6 +53,7 @@ class OptionView: UIView {
         label.frame = CGRect(x: labelLeft, y: 0, width: frame.width - labelLeft - margin, height: frame.height)
         label.numberOfLines = 0
         label.text = text
+        label.textColor = UIColor(red: 100/255, green: 91/255, blue: 82/255, alpha: 1)
         self.addSubview(label)
         
     }

@@ -9,12 +9,16 @@
 import UIKit
 
 class CongratulationsViewController: UIViewController {
+    // User defaults
+    let defaults = UserDefaults.standard
+    
     // Type of Alerts
     enum AlertType {
         case finish
         case next_puzzle
         case next_level
         case retry
+        case rate
     }
 
     // level related variables
@@ -26,6 +30,13 @@ class CongratulationsViewController: UIViewController {
     fileprivate var completion: ((String?) -> Void)!
     
     @IBOutlet weak var titleLabel: UILabel!
+    
+    // buttons in common
+    @IBOutlet weak var secondaryButton: UIButton!
+    @IBOutlet weak var primaryButton: UIButton!
+    // rate variables
+    @IBOutlet weak var rateImage: UIImageView!
+    var rate_variables = [UIView]()
     
     // congratulations view variables
     @IBOutlet weak var congratulationsView: UIView!
@@ -40,18 +51,14 @@ class CongratulationsViewController: UIViewController {
     @IBOutlet weak var star9: UIImageView!
     @IBOutlet weak var star10: UIImageView!
     var stars = [UIImageView]()
-    @IBOutlet weak var congratulationsButton: UIButton!
     var congratulations_variables = [UIView]()
     
     // beat level view variables
     @IBOutlet weak var trophyImage: UIImageView!
     @IBOutlet weak var levelLabel: UILabel!
-    @IBOutlet weak var leaderboardButton: UIButton!
-    @IBOutlet weak var nextLevelButton: UIButton!
     var beat_level_variables = [UIView]()
     
     // lose level variables
-    @IBOutlet weak var tryAgainButton: UIButton!
     @IBOutlet weak var loseImage: UIImageView!
     var lose_variables = [UIView]()
     
@@ -63,22 +70,26 @@ class CongratulationsViewController: UIViewController {
         super.viewDidLoad()
         // create the stars array
         stars = [star1, star2, star3, star4, star5, star6, star7, star8, star9, star10]
-        congratulations_variables = [congratulationsButton] + stars
+        congratulations_variables = stars
         
-        beat_level_variables = [trophyImage, levelLabel, leaderboardButton, nextLevelButton]
+        beat_level_variables = [trophyImage, levelLabel]
         
-        lose_variables = [tryAgainButton, loseImage]
+        lose_variables = [loseImage]
+        
+        rate_variables = [rateImage]
         
         switch type {
         case AlertType.next_level:
-            hideObjects(congratulations_variables + lose_variables)
+            hideObjects(congratulations_variables + lose_variables + rate_variables)
         case AlertType.next_puzzle:
-            hideObjects(beat_level_variables + lose_variables)
+            hideObjects(beat_level_variables + lose_variables + rate_variables)
         case AlertType.retry:
-            hideObjects(congratulations_variables + beat_level_variables)
+            hideObjects(congratulations_variables + beat_level_variables + rate_variables)
         case AlertType.finish:
-            hideObjects(congratulations_variables + lose_variables)
-            nextLevelButton.setTitle("Reset", for: UIControlState())
+            hideObjects(congratulations_variables + lose_variables + rate_variables)
+            primaryButton.setTitle("Reset", for: UIControlState())
+        case AlertType.rate:
+            hideObjects(congratulations_variables + lose_variables + beat_level_variables)
         }
     }
     
@@ -100,6 +111,8 @@ class CongratulationsViewController: UIViewController {
             lose()
         case AlertType.finish:
             beat_level()
+        case AlertType.rate:
+            rate()
         }
     }
     
@@ -115,6 +128,8 @@ class CongratulationsViewController: UIViewController {
             type = AlertType.retry
         case "finish":
             type = AlertType.finish
+        case "rate":
+            type = AlertType.rate
         default:
             type = AlertType.retry
         }
@@ -125,20 +140,29 @@ class CongratulationsViewController: UIViewController {
     }
     
     func lose() {
-        titleLabel.text = "Aww snap!"
+        let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
+        titleLabel.text = loseMessage
+        primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert"), for: UIControlState())
     }
     
     func beat_level() {
-        titleLabel.text = "You beat level " + String(level) + "!"
+        let winMessage = NSLocalizedString("You beat level ", comment: "friendly beat level message in alert")
+        titleLabel.text = winMessage + String(level) + "!"
 //        animateImageView(trophyImage)
         levelLabel.text = String(level)
 //        levelLabel.hidden = false
-        
+        primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Leaderboard", comment: "beat level alert"), for:UIControlState())
+
         
     }
     
     func congratulations() {
-        titleLabel.text = "Congrats!"
+        let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
+
+        titleLabel.text = congratsMessage
+        
         showStars()
         
         for star_index in 0..<puzzles {
@@ -148,7 +172,8 @@ class CongratulationsViewController: UIViewController {
         }
         
         
-//        congratulationsButton.titleLabel?.text = "Keep Going"
+        primaryButton.setTitle(NSLocalizedString("Keep Going", comment: "congrats alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Challenge", comment: "congrats alert"), for: UIControlState())
     }
     
     func showStars() {
@@ -185,9 +210,45 @@ class CongratulationsViewController: UIViewController {
         animator?.addBehavior(snap);
     }
     
+    func rate() {
+        self.type = AlertType.rate
+        hideObjects(congratulations_variables + lose_variables + beat_level_variables)
+        rateImage.isHidden = false
+        let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
+        titleLabel.text = rateMessage
+        primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Rate the App", comment: "rate alert"), for: UIControlState())
+    }
+    
+    
     // maybe wait until animation finishes to dismiss view
     
     @IBAction func dismissCongratulations(_ sender: AnyObject) {
+        if self.type == AlertType.next_level {
+            if !defaults.bool(forKey: "rated") {
+                self.rate()
+                return
+            }
+        }
+        
+        gravity.addItem(congratulationsView);
+        gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
+        animator = UIDynamicAnimator(referenceView:self.view);
+        animator?.addBehavior(gravity)
+        self.dismiss(animated: true, completion: {[unowned self] in
+            
+            if self.type == AlertType.finish {
+                let delegate = UIApplication.shared.delegate as! AppDelegate
+                delegate.resetApplication()
+            }
+            // what does this do?
+            if let code = self.completion {
+                code(sender.titleLabel?.text)
+            }
+        })
+    }
+    
+    func dismissView() {
         gravity.addItem(congratulationsView);
         gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);
@@ -197,10 +258,34 @@ class CongratulationsViewController: UIViewController {
                 let delegate = UIApplication.shared.delegate as! AppDelegate
                 delegate.resetApplication()
             }
-            if let code = self.completion {
-                code(sender.titleLabel?.text)
-            }
         })
+    }
+    
+    
+    @IBAction func secondaryAction(_ sender: Any) {
+        if self.type == AlertType.next_puzzle {
+            if let currentPuzzle = defaults.string(forKey: "puzzle") {
+                let message = "I challenge you to solve this puzzle! Use all four numbers \(currentPuzzle),and any basic operation to make 24."
+                shareApp(view: self, message: message)
+            }
+        }
+        else if self.type == AlertType.retry {
+            if let currentPuzzle = defaults.string(forKey: "puzzle") {
+                let message = "Can you help me solve this puzzle? Use all four numbers \(currentPuzzle),and any basic operation to make 24."
+                shareApp(view: self, message: message)
+            }
+        }
+        else if self.type == AlertType.next_level {
+            // TODO leaderboard functionality
+        }
+        else if self.type == AlertType.rate {
+            rateApp()
+            defaults.set(true, forKey: "rated")
+            self.dismissView()
+            return
+        }
+        // TODO needs to hide view after
+        // TODO test 'finish' -> confetti too
     }
     
 }
