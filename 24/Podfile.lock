@@ -1,8 +1,12 @@
 PODS:
+  - Mixpanel-swift (2.0.1)
+  - SAConfettiView (0.1.8)
   - SwiftyWalkthrough (0.0.4)
   - TKSwarmAlert (1.0.4)
 
 DEPENDENCIES:
+  - Mixpanel-swift
+  - SAConfettiView
   - SwiftyWalkthrough (from `https://github.com/kandluis/SwiftyWalkthrough.git`, branch `master`)
   - TKSwarmAlert (from `https://github.com/kandluis/TKSwarmAlert.git`, branch `master`)
 
@@ -23,9 +27,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/kandluis/TKSwarmAlert.git
 
 SPEC CHECKSUMS:
+  Mixpanel-swift: 9a9ad45161b6fda4a31bcb70d7686236139664fa
+  SAConfettiView: c87031a2280659261b730fce3669fb10e73636ee
   SwiftyWalkthrough: ab797ec56b250257ae330aa5cb25e9a14980181a
   TKSwarmAlert: ab34152af48391d8aa80b2386b5e6fe9f335ace7
 
-PODFILE CHECKSUM: 244957de680dd84ba7b2894b89beaca180c63766
+PODFILE CHECKSUM: a096ac7611c463ad962ac08e34f6123ef3e1944a
 
 COCOAPODS: 1.1.1
