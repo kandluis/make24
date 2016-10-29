@@ -14,7 +14,9 @@ open class TKSwarmAlert: NSObject {
     
     open var durationOfPreventingTapBackgroundArea: TimeInterval = 0
     open var didDissmissAllViews: Closure?
-
+    
+    open var fadeOutDuration: TimeInterval = 0.2
+    
     fileprivate var staticViews: [UIView] = []
     var animationView: FallingAnimationView?
     var blurView: TKSWBackgroundView?
@@ -54,7 +56,7 @@ open class TKSwarmAlert: NSObject {
             }
             
             let showDuration:TimeInterval = 0.2
-
+            
             for staticView in staticViews {
                 let originalAlpha = staticView.alpha
                 staticView.alpha = 0
@@ -69,23 +71,23 @@ open class TKSwarmAlert: NSObject {
                 self.spawn(views)
             })
             animationView?.willDissmissAllViews = {
-                let fadeOutDuration:TimeInterval = 0.2
                 for v in self.staticViews {
-                    UIView.animate(withDuration: fadeOutDuration) {
+                    UIView.animate(withDuration: self.fadeOutDuration, animations: {[unowned self] in
                         v.alpha = 0
-                    }
+                    })
                 }
-                UIView.animate(withDuration: fadeOutDuration) {
+                
+                UIView.animate(withDuration: self.fadeOutDuration, animations: {[unowned self] in
                     self.blurView?.alpha = 0
-                }
+                })
             }
             animationView?.didDissmissAllViews = {
                 self.blurView?.removeFromSuperview()
                 self.animationView?.removeFromSuperview()
-                self.didDissmissAllViews?()
                 for staticView in self.staticViews {
                     staticView.alpha = 1
                 }
+                self.didDissmissAllViews?()
             }
         }
     }

@@ -270,14 +270,6 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hQm-Su-4sg">
-                                <rect key="frame" x="11" y="182" width="86" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Test confetti"/>
-                                <connections>
-                                    <action selector="showConfetti:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H1N-KT-EoY"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97056084871292114" green="0.95320701599121094" blue="0.89487993717193604" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -444,151 +436,10 @@
             </objects>
             <point key="canvasLocation" x="821.5" y="160.5"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="9C3-Ro-z1z">
-            <objects>
-                <viewController id="zeS-aD-1fb" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Jga-rq-F3k">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beat_level_screen" id="CAi-qb-kDV">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dRe-hj-mOE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1201" y="161"/>
-        </scene>
-        <!--Options View Controller-->
-        <scene sceneID="OHY-xv-Biv">
-            <objects>
-                <viewController storyboardIdentifier="OptionsViewController" id="q0S-SE-zZU" customClass="OptionsViewController" customModule="_4" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bbH-de-4cK">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="r8p-Zk-blR">
-                                <rect key="frame" x="41" y="50" width="233" height="94"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="51"/>
-                                <color key="textColor" red="0.3911588191986084" green="0.35708537697792053" blue="0.32031872868537903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Multiplayer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yPW-ml-kIG">
-                                <rect key="frame" x="20" y="265" width="147" height="25"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" red="0.69182538986206055" green="0.6257745623588562" blue="0.56944859027862549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timed Trials" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="guO-x5-202">
-                                <rect key="frame" x="207" y="264" width="148" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" red="0.69182538986206055" green="0.6257745623588562" blue="0.56944859027862549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="multiplayer" id="eyC-Ez-tXg">
-                                <rect key="frame" x="41" y="171" width="88" height="72"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timed_trials" id="TRV-Qr-oDh">
-                                <rect key="frame" x="250" y="171" width="72" height="72"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutorial" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bMz-hb-L5X">
-                                <rect key="frame" x="20" y="429" width="147" height="25"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" red="0.69182538986206055" green="0.6257745623588562" blue="0.56944859027862549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="More Games" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MgJ-qJ-RzE">
-                                <rect key="frame" x="207" y="428" width="148" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" red="0.69182538986206055" green="0.6257745623588562" blue="0.56944859027862549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O67-Ux-osd">
-                                <rect key="frame" x="20" y="594" width="147" height="24"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" red="0.69182538986206055" green="0.6257745623588562" blue="0.56944859027862549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kwr-oI-Jzr">
-                                <rect key="frame" x="207" y="593" width="148" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" red="0.69182538986206055" green="0.6257745623588562" blue="0.56944859027862549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rate" id="mDt-hm-h55">
-                                <rect key="frame" x="250" y="500" width="72" height="71"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="more_games" id="m2M-VR-dyy">
-                                <rect key="frame" x="242" y="349" width="86" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tutorial" id="hA3-Xm-c28">
-                                <rect key="frame" x="54" y="341" width="68" height="66"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share" id="cbc-gh-bCb">
-                                <rect key="frame" x="57" y="500" width="60" height="71"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mute_grey" id="Wr1-7m-kh1">
-                                <rect key="frame" x="292" y="75" width="38" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.97056084871292114" green="0.95320701599121094" blue="0.89487993717193604" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.97542816400527954" green="0.96262514591217041" blue="0.91465413570404053" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="fDJ-6I-hgs"/>
-                    <connections>
-                        <outlet property="shareImage" destination="cbc-gh-bCb" id="0hz-zW-5LC"/>
-                        <outlet property="soundImage" destination="Wr1-7m-kh1" id="3dQ-UF-S0p"/>
-                        <outlet property="soundImages" destination="Wr1-7m-kh1" id="Z8C-xy-qio"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7c6-2P-Qr7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1530" y="161"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="opN-iv-kEl">
-            <objects>
-                <viewController id="1TU-iL-Xuo" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="LN6-of-pPk">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_design" id="oAD-vf-b68">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TvC-XG-tQw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1825" y="161"/>
-        </scene>
     </scenes>
     <resources>
         <image name="24" width="125" height="143"/>
         <image name="answer_background" width="478" height="188"/>
-        <image name="beat_level_screen" width="295" height="523"/>
         <image name="bunny" width="26" height="31"/>
         <image name="bunny_alert" width="797" height="1018"/>
         <image name="button_grey_large" width="196" height="69"/>
@@ -599,20 +450,12 @@
         <image name="groove_small" width="72" height="73"/>
         <image name="ice_cream" width="160" height="160"/>
         <image name="menu_background" width="205" height="130"/>
-        <image name="menu_design" width="641" height="1136"/>
-        <image name="more_games" width="139" height="95"/>
-        <image name="multiplayer" width="138" height="114"/>
-        <image name="mute_grey" width="43" height="44"/>
         <image name="numbers_background" width="582" height="188"/>
-        <image name="rate" width="35" height="35"/>
         <image name="score_background" width="167" height="165"/>
-        <image name="share" width="29" height="36"/>
         <image name="skip_button" width="59" height="29"/>
         <image name="tile_large" width="124" height="151"/>
         <image name="tile_small" width="124" height="124"/>
-        <image name="timed_trials" width="117" height="126"/>
         <image name="trophy" width="119" height="84"/>
-        <image name="tutorial" width="35" height="35"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
