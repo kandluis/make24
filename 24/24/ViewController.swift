@@ -15,7 +15,7 @@ import TKSwarmAlert
 import SwiftyWalkthrough
 import WatchConnectivity
 import SAConfettiView
-
+import Mixpanel
 
 
 extension String {
@@ -213,6 +213,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         if !delegate.hasAppLaunchedBefore(){
             tutorial()
         }
+        
+        
+        Mixpanel.mainInstance().track(event: "Launched App")
     
     }
     
@@ -554,6 +557,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                     return "finish"
                 })
             }
+            Mixpanel.mainInstance().track(event: "Next Level")
             return "next_level"
         }
         return "next_puzzle"
@@ -581,6 +585,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             playerLevel += 1
             puzzlesSolved = 0
         }
+        
+        Mixpanel.mainInstance().track(event: "Won Puzzle")
+        print(Mixpanel.mainInstance())
     }
     
     func didLose() {
@@ -592,6 +599,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
         presentAlert("fail")
         reset()
+        Mixpanel.mainInstance().track(event: "Failed Puzzle")
     }
     func presentAlert(_ alert_type: String){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -1036,7 +1044,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     @IBAction func showOptions(_ sender: AnyObject) {
         let muteButtonText = silent ? "Unmute" : "Mute"
-        let soundIcon = silent ? "mute" : "sound_grey"
+        let soundIcon = silent ? "mute" : "sound"
 
         
         let info = [

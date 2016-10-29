@@ -25,6 +25,7 @@ func shareApp(view: UIViewController, message: String) {
     activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
     // activityVC.popoverPresentationController?.sourceView = sender as! UIView
     view.present(activityVC, animated: true, completion: nil)
+    print ("getting here")
     if let congratulationsView = view as? CongratulationsViewController {
         activityVC.completionWithItemsHandler = { activity, success, items, error in
             congratulationsView.dismissView()

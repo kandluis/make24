@@ -17,13 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // For 3D Touch
     enum ShortcutIdentifier: String {
         case ShareApp
-        case Leaderboard
-        case GameModes
         
         init?(fullIdentifier: String) {
             guard let shortIdentifier = fullIdentifier.components(separatedBy: ".").last else {
                 return nil
             }
+            print(shortIdentifier)
             self.init(rawValue: shortIdentifier)
         }
         
@@ -33,10 +32,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleShortcut( _ shortcutItem:UIApplicationShortcutItem ) -> Bool {
-        guard let shortcutIdentifier = ShortcutIdentifier(fullIdentifier: shortcutItem.type) else {
+        guard let _ = ShortcutIdentifier(fullIdentifier: shortcutItem.type) else {
             return false
         }
-        print(shortcutIdentifier)
+        
+        let message = "Just found this great app -- check it out! "
+        // activitiy view controller stuff
+        if let view = self.window?.rootViewController
+        {
+            shareApp(view: view, message: message)
+        }
         return true
     }
     
@@ -46,16 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // for shortcuts
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        
-        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let initialViewController : UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "OptionsViewController") as UIViewController
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = initialViewController
-        self.window?.makeKeyAndVisible()
-        
-    //        window!.rootViewController?.presentViewController(vc, animated: true, completion: nil)
-        
-        
+
         completionHandler( handleShortcut(shortcutItem) )
         
     }
@@ -68,7 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             preloadData()
         }
         // track with mixpanel
-        Mixpanel.initialize(token: "6c198a05a459cdc8eb02366828418caa")
+        Mixpanel.initialize(token: "426c2e3c58bccfab6acd351efa99c3b6")
+        print(Mixpanel.mainInstance())
         // Disable sleep
         UIApplication.shared.isIdleTimerDisabled = true
         return true

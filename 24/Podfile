@@ -8,7 +8,7 @@ target '24' do
   # Pods for 24
   pod 'TKSwarmAlert', :git => 'https://github.com/kandluis/TKSwarmAlert.git', :branch => 'master'
   pod 'SwiftyWalkthrough', :git => 'https://github.com/kandluis/SwiftyWalkthrough.git', :branch => 'master'
-  pod "SAConfettiView"
+  pod 'SAConfettiView'
   pod 'Mixpanel-swift'
 
 

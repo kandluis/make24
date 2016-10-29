@@ -37,22 +37,6 @@
 				<string>3</string>
 			</dict>
 		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconType</key>
-			<string>UIApplicationShortcutIconTypeLove</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Leaderboard</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER).Leaderboard</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconType</key>
-			<string>UIApplicationShortcutIconTypeUpdate</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Game Modes</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER).GameModes</string>
-		</dict>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
