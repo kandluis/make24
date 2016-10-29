@@ -1,5 +1,5 @@
 PODS:
-  - Mixpanel-swift (2.0.1)
+  - Mixpanel-swift (2.1.0)
   - SAConfettiView (0.1.8)
   - SwiftyWalkthrough (0.0.4)
   - TKSwarmAlert (1.0.4)
@@ -23,11 +23,11 @@ CHECKOUT OPTIONS:
     :commit: 209009bb53ef16f575b7d36ddc0da450b88781da
     :git: https://github.com/kandluis/SwiftyWalkthrough.git
   TKSwarmAlert:
-    :commit: bbf4bfd47b4732e964a20f81b581695c4e805551
+    :commit: 1222a0de0bf9231bb7f1132c193fc54d703e0dad
     :git: https://github.com/kandluis/TKSwarmAlert.git
 
 SPEC CHECKSUMS:
-  Mixpanel-swift: 9a9ad45161b6fda4a31bcb70d7686236139664fa
+  Mixpanel-swift: 8bd335e85ea645dd5eacc1bb61f4b418fb4998d7
   SAConfettiView: c87031a2280659261b730fce3669fb10e73636ee
   SwiftyWalkthrough: ab797ec56b250257ae330aa5cb25e9a14980181a
   TKSwarmAlert: ab34152af48391d8aa80b2386b5e6fe9f335ace7

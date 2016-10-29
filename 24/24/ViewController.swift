@@ -16,8 +16,6 @@ import SwiftyWalkthrough
 import WatchConnectivity
 import SAConfettiView
 
-
-
 extension String {
     func trim() -> String {
         return self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -186,6 +184,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     
     // Views
     let optionsView = TKSwarmAlert(backgroundType: TKSWBackgroundType.transparentBlack(alpha: 0.70))
+    var confettiView: SAConfettiView?
+
 
     // Walthrough
     @IBOutlet weak var skipWalkthroughButton: UIButton!
@@ -203,12 +203,13 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         super.viewDidLoad()
     
         numberButtons = [number1Button, number2Button, number3Button, number4Button]
+        optionsView.fadeOutDuration = 1.3
         
         initializeNumbers()
         playBackgroundMusic(ambientSound)
         loadSettings()
-        
         setAnswerTouchTargets()
+        
         let delegate = UIApplication.shared.delegate as! AppDelegate
         if !delegate.hasAppLaunchedBefore(){
             tutorial()
@@ -548,11 +549,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func getAlertTypeOnWin() -> String {
         if puzzlesSolved == puzzlesPerLevel - 1 {
             if playerLevel == maxLevel {
-                showConfetti()
-                // wait for confetti to finish
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                    return "finish"
-                })
+                return "finish"
             }
             return "next_level"
         }
@@ -571,7 +568,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         initializeNumbers()
     
         // Determine type of alert!
-        presentAlert(getAlertTypeOnWin())
+        let alert_type = getAlertTypeOnWin()
+        presentAlert(alert_type)
         
         // Update player info
         puzzlesSolved += 1
@@ -594,6 +592,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         reset()
     }
     func presentAlert(_ alert_type: String){
+        if alert_type == "finish" {
+            showConfetti()
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let myAlert = storyboard.instantiateViewController(withIdentifier: "alert") as? CongratulationsViewController {
             myAlert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
@@ -604,7 +606,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                         self.showLeaderboard()
                     }
                 }
+                
+                // Things to do after the player has dismissed the presented alert.
                 self.startStopBackgroundMusic()
+                self.dismissConfetti()
+                
                 })
             self.present(myAlert, animated: true, completion: nil)
         }
@@ -863,7 +869,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
     }
     typealias ViewInfo = (selector: Selector, image: String, text: String)
-    func makeOptionsViews(_ viewInfo: [ViewInfo])->[UIView] {
+    func makeOptionViews(_ viewInfo: [ViewInfo])->[UIView] {
         let height:CGFloat = 54
         let width:CGFloat = 300
         let margin:CGFloat = 10
@@ -1047,7 +1053,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             (selector: #selector(self.shareOption), image: "share", text: "Share with friends"),
             (selector: #selector(self.changeModesOption), image: "modes", text: "Change Difficulty Level")
             ]
-        let views = makeOptionsViews(info)
+        let views = makeOptionViews(info)
         self.optionsView.show(views)
     }
     func showModes() {
@@ -1056,7 +1062,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             (selector: #selector(self.setMediumMode), image: "medium", text: "Medium"),
             (selector: #selector(self.setHardMode), image: "hard", text: "Hard")
         ]
-        let views = makeOptionsViews(info)
+        let views = makeOptionViews(info)
         self.optionsView.show(views)
 
     }
@@ -1065,7 +1071,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             self.defaults.set("easy", forKey: "mode")
-            print(self.defaults.string(forKey: "mode"))
         }
         self.optionsView.hide()
         
@@ -1076,7 +1081,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             self.defaults.set("medium", forKey: "mode")
-            print(self.defaults.string(forKey: "mode"))
         }
         self.optionsView.hide()
         
@@ -1086,7 +1090,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             self.defaults.set("hard", forKey: "mode")
-            print(self.defaults.string(forKey: "mode"))
         }
         self.optionsView.hide()
         // TODO implement actual mode changing
@@ -1124,20 +1127,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
     
     func showConfetti() {
-        let confettiView = SAConfettiView(frame: self.view.bounds)
-        confettiView.startConfetti()
-        self.view.addSubview(confettiView)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-            confettiView.stopConfetti()
-            // preferrably wait until above is finished
-            confettiView.removeFromSuperview()
-        })
+        if confettiView == nil {
+            confettiView = SAConfettiView(frame: self.view.bounds)
+        }
+        self.view.addSubview(confettiView!)
+        confettiView!.startConfetti()
     }
-    
-    // when player whens the game
-    @IBAction func showConfetti(_ sender: Any) {
-        showConfetti()
-    }
-    
+    func dismissConfetti() {
+        confettiView?.stopConfetti()
+        confettiView?.removeFromSuperview()
+    }    
 }
 
