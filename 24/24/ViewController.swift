@@ -211,7 +211,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         loadSettings()
         setAnswerTouchTargets()
         
-        if hasAppLaunchedBefore(){
+        if Utilities.firstLaunch(){
             tutorial()
         }
         

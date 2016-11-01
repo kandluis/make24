@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        if !hasAppLaunchedBefore() {
+        if Utilities.firstLaunch() {
             preloadData()
         }
         // track with mixpanel
@@ -172,7 +172,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let contentsOfFile = Bundle.main.url(forResource: "problems", withExtension: "csv") {
             
             var error:NSError?
-            if let items = parseCSV(contentsOfFile, encoding: String.Encoding.utf8, error: &error) {
+            if let items = Utilities.parseCSV(contentsOfFile, encoding: String.Encoding.utf8, error: &error) {
                 // Preload the problem data!
                 for item in items {
                     let entity = NSEntityDescription.entity(forEntityName: "Problem", in: managedObjectContext)
