@@ -9,9 +9,7 @@
 import UIKit
 
 let APP_ID = "id959379869"
-/***********
- * Share Options
- ***********/
+
 func shareApp(view: UIViewController, message: String) {
     var objectsToShare = [Any]()
     if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
@@ -32,9 +30,7 @@ func shareApp(view: UIViewController, message: String) {
         }
     }
 }
-/***********
- * Rate Options
- ***********/
+
 func rateApp() {
     // TODO test this
     let url_string = "https://www.youtube.com/watch?v=6dAL9ztYRqQ"
