@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // activitiy view controller stuff
         if let view = self.window?.rootViewController
         {
-            shareApp(view: view, message: message)
+            Common.shareApp(view: view, message: message)
         }
         return true
     }

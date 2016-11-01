@@ -265,20 +265,20 @@ class CongratulationsViewController: UIViewController {
         if self.type == AlertType.next_puzzle {
             if let currentPuzzle = defaults.string(forKey: "puzzle") {
                 let message = "I challenge you to solve this puzzle! Use all four numbers \(currentPuzzle),and any basic operation to make 24."
-                shareApp(view: self, message: message)
+                Common.shareApp(view: self, message: message)
             }
         }
         else if self.type == AlertType.retry {
             if let currentPuzzle = defaults.string(forKey: "puzzle") {
                 let message = "Can you help me solve this puzzle? Use all four numbers \(currentPuzzle),and any basic operation to make 24."
-                shareApp(view: self, message: message)
+                Common.shareApp(view: self, message: message)
             }
         }
         else if self.type == AlertType.next_level {
             // TODO leaderboard functionality
         }
         else if self.type == AlertType.rate {
-            rateApp()
+            Common.rateApp()
             defaults.set(true, forKey: "rated")
             self.dismissView()
             return

@@ -24,6 +24,8 @@
 		101BE0F01DA578B10075E1DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */; };
 		101BE0FB1DA578B10075E1DE /* _4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE0FA1DA578B10075E1DE /* _4Tests.swift */; };
 		101BE1061DA578B10075E1DE /* _4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE1051DA578B10075E1DE /* _4UITests.swift */; };
+		10B9261F1DC868A5009046FF /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B9261E1DC868A5009046FF /* DoubleExtension.swift */; };
+		10B926211DC868DD009046FF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926201DC868DD009046FF /* StringExtension.swift */; };
 		21D6300BF0E20F3BA6BF3955 /* Pods_24UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E32753EDEEFC8F0A7D5D0E81 /* Pods_24UITests.framework */; };
 		46065B3E829D8646F538B115 /* Pods_24Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CBA4D131605A975C8730DF /* Pods_24Tests.framework */; };
 		7F07FCC41DBFEAC40021FC80 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F07FCC21DBFEAC40021FC80 /* Interface.storyboard */; };
@@ -36,7 +38,7 @@
 		7F07FCDE1DBFEAC50021FC80 /* 24Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7F07FCC01DBFEAC40021FC80 /* 24Watch.app */; };
 		7F083AA01DC46658003259B6 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F083A9F1DC46658003259B6 /* Utilities.swift */; };
 		7F083AA31DC466E9003259B6 /* Problem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F083AA21DC466E9003259B6 /* Problem.swift */; };
-		7FCFA79B1DC3CE2100AC58E2 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */; };
+		7FCFA79B1DC3CE2100AC58E2 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFA79A1DC3CE2100AC58E2 /* Common.swift */; };
 		88C2C4C21B4D97B5CC2E7FC8 /* Pods_24.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2E7E290FDA904D561E3915 /* Pods_24.framework */; };
 		F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */; };
 		F27E17AC1DAEC2F3001398EE /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27E17AB1DAEC2F3001398EE /* OptionView.swift */; };
@@ -124,6 +126,8 @@
 		101BE1011DA578B10075E1DE /* 24UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 24UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		101BE1051DA578B10075E1DE /* _4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _4UITests.swift; sourceTree = "<group>"; };
 		101BE1071DA578B10075E1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		10B9261E1DC868A5009046FF /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
+		10B926201DC868DD009046FF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		2342A36B5A89F1CE3B251324 /* Pods-24Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-24Tests/Pods-24Tests.release.xcconfig"; sourceTree = "<group>"; };
 		4C9557EBC04B053637DE0B12 /* Pods-24UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-24UITests/Pods-24UITests.release.xcconfig"; sourceTree = "<group>"; };
 		4E907183DA511BE8AC5B8181 /* Pods-24.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24.release.xcconfig"; path = "Pods/Target Support Files/Pods-24/Pods-24.release.xcconfig"; sourceTree = "<group>"; };
@@ -148,7 +152,7 @@
 		7F083A9F1DC46658003259B6 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		7F083AA21DC466E9003259B6 /* Problem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Problem.swift; sourceTree = "<group>"; };
 		7F083AA41DC472C4003259B6 /* 24-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "24-Bridging-Header.h"; sourceTree = "<group>"; };
-		7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
+		7FCFA79A1DC3CE2100AC58E2 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		9C91AF561247EF01FE1FB5DC /* Pods-24UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24UITests/Pods-24UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9D25BDD1AD69AEC155237345 /* Pods-24Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24Tests/Pods-24Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A1CBA4D131605A975C8730DF /* Pods_24Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_24Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -364,8 +368,10 @@
 		7F083A9C1DC4651B003259B6 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */,
+				10B9261E1DC868A5009046FF /* DoubleExtension.swift */,
+				7FCFA79A1DC3CE2100AC58E2 /* Common.swift */,
 				7F083A9F1DC46658003259B6 /* Utilities.swift */,
+				10B926201DC868DD009046FF /* StringExtension.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -755,9 +761,11 @@
 			files = (
 				101BE0E81DA578B10075E1DE /* ViewController.swift in Sources */,
 				7F083AA31DC466E9003259B6 /* Problem.swift in Sources */,
+				10B926211DC868DD009046FF /* StringExtension.swift in Sources */,
 				F27E17AC1DAEC2F3001398EE /* OptionView.swift in Sources */,
+				10B9261F1DC868A5009046FF /* DoubleExtension.swift in Sources */,
 				7F083AA01DC46658003259B6 /* Utilities.swift in Sources */,
-				7FCFA79B1DC3CE2100AC58E2 /* CommonFunctions.swift in Sources */,
+				7FCFA79B1DC3CE2100AC58E2 /* Common.swift in Sources */,
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
 				F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */,
 				F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */,
