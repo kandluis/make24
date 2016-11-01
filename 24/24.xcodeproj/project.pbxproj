@@ -34,6 +34,8 @@
 		7F07FCD81DBFEAC50021FC80 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F07FCD71DBFEAC50021FC80 /* NotificationController.swift */; };
 		7F07FCDA1DBFEAC50021FC80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F07FCD91DBFEAC50021FC80 /* Assets.xcassets */; };
 		7F07FCDE1DBFEAC50021FC80 /* 24Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7F07FCC01DBFEAC40021FC80 /* 24Watch.app */; };
+		7F083AA01DC46658003259B6 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F083A9F1DC46658003259B6 /* Utilities.swift */; };
+		7F083AA31DC466E9003259B6 /* Problem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F083AA21DC466E9003259B6 /* Problem.swift */; };
 		7FCFA79B1DC3CE2100AC58E2 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */; };
 		88C2C4C21B4D97B5CC2E7FC8 /* Pods_24.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2E7E290FDA904D561E3915 /* Pods_24.framework */; };
 		F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */; };
@@ -143,7 +145,9 @@
 		7F07FCEA1DC0242B0021FC80 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/Main.strings"; sourceTree = "<group>"; };
 		7F07FCEB1DC0242B0021FC80 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		7F07FCEC1DC0242B0021FC80 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/Interface.strings"; sourceTree = "<group>"; };
-		7FCFA7971DC2B93700AC58E2 /* 24-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "24-Bridging-Header.h"; sourceTree = "<group>"; };
+		7F083A9F1DC46658003259B6 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		7F083AA21DC466E9003259B6 /* Problem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Problem.swift; sourceTree = "<group>"; };
+		7F083AA41DC472C4003259B6 /* 24-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "24-Bridging-Header.h"; sourceTree = "<group>"; };
 		7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
 		9C91AF561247EF01FE1FB5DC /* Pods-24UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24UITests/Pods-24UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9D25BDD1AD69AEC155237345 /* Pods-24Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-24Tests/Pods-24Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -254,10 +258,11 @@
 		101BE0E41DA578B10075E1DE /* 24 */ = {
 			isa = PBXGroup;
 			children = (
+				7F083AA11DC466DE003259B6 /* Models */,
+				7F083A9C1DC4651B003259B6 /* Helpers */,
 				100C765D1DA640E40097212D /* Resources */,
 				101BE0E51DA578B10075E1DE /* AppDelegate.swift */,
 				F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */,
-				7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */,
 				101BE0E71DA578B10075E1DE /* ViewController.swift */,
 				F27E17AB1DAEC2F3001398EE /* OptionView.swift */,
 				101BE0E91DA578B10075E1DE /* Main.storyboard */,
@@ -265,7 +270,7 @@
 				101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */,
 				101BE0F11DA578B10075E1DE /* Info.plist */,
 				F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */,
-				7FCFA7971DC2B93700AC58E2 /* 24-Bridging-Header.h */,
+				7F083AA41DC472C4003259B6 /* 24-Bridging-Header.h */,
 			);
 			path = 24;
 			sourceTree = "<group>";
@@ -338,6 +343,23 @@
 			);
 			name = Shared;
 			path = 24Tests;
+			sourceTree = "<group>";
+		};
+		7F083A9C1DC4651B003259B6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7FCFA79A1DC3CE2100AC58E2 /* CommonFunctions.swift */,
+				7F083A9F1DC46658003259B6 /* Utilities.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		7F083AA11DC466DE003259B6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7F083AA21DC466E9003259B6 /* Problem.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		D608955D3BBC77B6792EC6FA /* Frameworks */ = {
@@ -716,7 +738,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				101BE0E81DA578B10075E1DE /* ViewController.swift in Sources */,
+				7F083AA31DC466E9003259B6 /* Problem.swift in Sources */,
 				F27E17AC1DAEC2F3001398EE /* OptionView.swift in Sources */,
+				7F083AA01DC46658003259B6 /* Utilities.swift in Sources */,
 				7FCFA79B1DC3CE2100AC58E2 /* CommonFunctions.swift in Sources */,
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
 				F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */,

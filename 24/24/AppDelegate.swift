@@ -10,8 +10,6 @@ import UIKit
 import CoreData
 import Mixpanel
 
-typealias Problem = (id : Int, problem : [Int], difficulty: Double)
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     // For 3D Touch
@@ -59,9 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler( handleShortcut(shortcutItem) )
         
     }
-    
-    
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if !hasAppLaunchedBefore() {
@@ -99,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // Functions to clear data
-    func resetApplication() {
+    open func resetApplication() {
         let defaultsToReset: [String] = ["level", "puzzles", "score"]
         for key in defaultsToReset {
             defaults.removeObject(forKey: key)
@@ -163,7 +158,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Core Data Saving support
     
-    func saveContext () {
+    open func saveContext () {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
@@ -175,10 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    /*******
-     * Helper functions for loading data
-     *******/
-    func preloadData () {
+    private func preloadData () {
         // Retrieve data from the source file
         if let contentsOfFile = Bundle.main.url(forResource: "problems", withExtension: "csv") {
             
@@ -190,96 +182,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let problem = NSManagedObject(entity: entity!, insertInto: managedObjectContext)
                     
                     problem.setValue(item.id, forKey: "id")
-                    problem.setValue(item.problem, forKey: "numbers")
+                    problem.setValue(item.numbers, forKey: "numbers")
                     problem.setValue(item.difficulty, forKey: "difficulty")
                     problem.setValue(false, forKey: "completed")
-                
+                    
                     self.saveContext()
                 }
             }
         }
     }
-    
-    func parseCSV(_ contentsOfURL: URL, encoding: String.Encoding, error: NSErrorPointer) -> [Problem]? {
-        // Load the CSV file and parse it
-        let delimiter: String = ","
-        var problemData: [Problem]?
-        
-        // Read CSV into array!
-        var content = ""
-        do {
-            content = try NSString(contentsOf: contentsOfURL, encoding: encoding.rawValue) as String
-        }
-        catch{
-            let nserror = error as NSError
-            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
-            return nil
-        }
-        problemData = []
-        
-        // Ignore the first row as it contains header info
-        let lines = (content.components(separatedBy: CharacterSet.newlines)).dropFirst()
-        
-        for line in lines {
-            var values:[String] = []
-            if line != "" {
-                // For a line with double quotes
-                // we use NSScanner to perform the parsing
-                if line.range(of: "\"") != nil {
-                    var textToScan:String = line
-                    var value:NSString?
-                    var textScanner:Scanner = Scanner(string: textToScan)
-                    while textScanner.string != "" {
-                        
-                        if (textScanner.string as NSString).substring(to: 1) == "\"" {
-                            textScanner.scanLocation += 1
-                            textScanner.scanUpTo("\"", into: &value)
-                            textScanner.scanLocation += 1
-                        } else {
-                            textScanner.scanUpTo(delimiter, into: &value)
-                        }
-                        
-                        // Store the value into the values array
-                        values.append(value as! String)
-                        
-                        // Retrieve the unscanned remainder of the string
-                        if textScanner.scanLocation < textScanner.string.characters.count {
-                            textToScan = (textScanner.string as NSString).substring(from: textScanner.scanLocation + 1)
-                        } else {
-                            textToScan = ""
-                        }
-                        textScanner = Scanner(string: textToScan)
-                    }
-                    
-                    // For a line without double quotes, we can simply separate the string
-                    // by using the delimiter (e.g. comma)
-                } else  {
-                    values = line.components(separatedBy: delimiter)
-                }
-                
-                // Put the values into the tuple and add it to the items array
-                let singleProblem: Problem = (id: Int(values[0]) ?? 0, problem: [Int(values[1]) ?? 1, Int(values[2]) ?? 0, Int(values[3]) ?? 0, Int(values[4]) ?? 0], difficulty: Double(values[5]) ?? 1.0)
-                problemData?.append(singleProblem)
-            }
-        }
-        return problemData
-    }
-    
-    func hasAppLaunchedBefore()->Bool{
-        let defaults = UserDefaults.standard
-        
-        if let appVersion = defaults.string(forKey: "appVersion"){
-            print("Running App Version : \(appVersion)")
-            return true
-        }
-        else {
-            let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
-            let appVersion = nsObject as! String
-
-            defaults.set(appVersion, forKey: "appVersion")
-            return false
-        }
-    }
-
 }
 

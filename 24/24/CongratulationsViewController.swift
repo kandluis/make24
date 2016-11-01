@@ -10,10 +10,10 @@ import UIKit
 
 class CongratulationsViewController: UIViewController {
     // User defaults
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
     // Type of Alerts
-    enum AlertType {
+    private enum AlertType {
         case finish
         case next_puzzle
         case next_level
@@ -22,12 +22,12 @@ class CongratulationsViewController: UIViewController {
     }
 
     // level related variables
-    fileprivate var level: Int = 0
-    fileprivate var puzzles: Int = 0
-    fileprivate var type: AlertType = AlertType.next_level
+    private var level: Int = 0
+    private var puzzles: Int = 0
+    private var type: AlertType = AlertType.next_level
     
     // Access to starting/stopping the sound
-    fileprivate var completion: ((String?) -> Void)!
+    private var completion: ((String?) -> Void)!
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -63,8 +63,8 @@ class CongratulationsViewController: UIViewController {
     var lose_variables = [UIView]()
     
     // view animation related variables
-    var animator:UIDynamicAnimator? = nil;
-    let gravity = UIGravityBehavior()
+    private var animator:UIDynamicAnimator? = nil;
+    private let gravity = UIGravityBehavior()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,9 +116,15 @@ class CongratulationsViewController: UIViewController {
         }
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        // more code
+    }
+    
     // Completion is passed the String corresponding to the
     // button the user clicked, if any.
-    func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: @escaping ((String?) -> Void)) -> () {
+    open func setOptions(alertStringIdentifier alert_type: String, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: @escaping ((String?) -> Void)) -> () {
         switch alert_type {
         case "next_level":
             type = AlertType.next_level
@@ -139,26 +145,26 @@ class CongratulationsViewController: UIViewController {
         self.completion = completion
     }
     
-    func lose() {
+    private func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage
         primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert"), for: UIControlState())
         secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert"), for: UIControlState())
     }
     
-    func beat_level() {
+    private func beat_level() {
         let winMessage = NSLocalizedString("You beat level ", comment: "friendly beat level message in alert")
         titleLabel.text = winMessage + String(level) + "!"
-//        animateImageView(trophyImage)
+        animateImageView(trophyImage, filename: "trophy")
         levelLabel.text = String(level)
-//        levelLabel.hidden = false
+        levelLabel.isHidden = false
         primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert"), for: UIControlState())
         secondaryButton.setTitle(NSLocalizedString("Leaderboard", comment: "beat level alert"), for:UIControlState())
 
         
     }
     
-    func congratulations() {
+    private func congratulations() {
         let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
 
         titleLabel.text = congratsMessage
@@ -176,13 +182,13 @@ class CongratulationsViewController: UIViewController {
         secondaryButton.setTitle(NSLocalizedString("Challenge", comment: "congrats alert"), for: UIControlState())
     }
     
-    func showStars() {
+    private func showStars() {
         for star in stars {
             star.isHidden=false
         }
         
     }
-    func animateImageView(_ image: UIImageView, filename: String) {
+    private func animateImageView(_ image: UIImageView, filename: String) {
         if let new_image = UIImage(named: filename) {
             // animate the new star
             image.animationImages = [new_image]
@@ -193,24 +199,18 @@ class CongratulationsViewController: UIViewController {
         // play sound effect
     }
     
-    func hideObjects(_ objects: [UIView]) {
+    private func hideObjects(_ objects: [UIView]) {
         for el in objects {
             el.isHidden = true
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-        // more code
-    }
-    
-    func snapToPoint(_ point: CGPoint, view: UIView) {
+    private func snapToPoint(_ point: CGPoint, view: UIView) {
         let snap = UISnapBehavior(item: view, snapTo: point)
         animator?.addBehavior(snap);
     }
     
-    func rate() {
+    private func rate() {
         self.type = AlertType.rate
         hideObjects(congratulations_variables + lose_variables + beat_level_variables)
         rateImage.isHidden = false
@@ -227,7 +227,6 @@ class CongratulationsViewController: UIViewController {
         if self.type == AlertType.next_level {
             if !defaults.bool(forKey: "rated") {
                 self.rate()
-                return
             }
         }
         
@@ -248,7 +247,7 @@ class CongratulationsViewController: UIViewController {
         })
     }
     
-    func dismissView() {
+    open func dismissView() {
         gravity.addItem(congratulationsView);
         gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);

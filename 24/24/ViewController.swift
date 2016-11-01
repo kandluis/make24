@@ -210,8 +210,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         loadSettings()
         setAnswerTouchTargets()
         
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        if !delegate.hasAppLaunchedBefore(){
+        if hasAppLaunchedBefore(){
             tutorial()
         }
     
@@ -601,13 +600,13 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             myAlert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
             myAlert.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
             myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self](buttonText: String?) -> Void in
+                // Things to do after the player has dismissed the presented alert.
                 if let text = buttonText {
                     if text == "Leaderboard" {
                         self.showLeaderboard()
                     }
                 }
                 
-                // Things to do after the player has dismissed the presented alert.
                 self.startStopBackgroundMusic()
                 self.dismissConfetti()
                 
@@ -1042,7 +1041,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     @IBAction func showOptions(_ sender: AnyObject) {
         let muteButtonText = silent ? "Unmute" : "Mute"
-        let soundIcon = silent ? "mute" : "sound_grey"
+        let soundIcon = silent ? "mute" : "sound_brown"
 
         
         let info = [
