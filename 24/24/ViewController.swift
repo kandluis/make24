@@ -218,7 +218,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     override func viewDidAppear(_ animated: Bool) {
         // The tutorial must be started after the view has appeared.
         // This is because launching it requires accessing key view
-        // components. 
+        // components.
         if Utilities.firstLaunch(){
             tutorial()
         }
@@ -262,11 +262,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         answerNumber2Label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tapAnswer2)))
     }
     // We can only ever tap the first answer! f
-    func tapAnswer(_ label: UILabel) {
+    func tapAnswer(_ label: UILabel, background: UIImageView) {
         if let text = label.text {
             if text.trim() != "" {
                 setNumberButton(label.tag, text: text)
                 label.text = " "
+                background.image = #imageLiteral(resourceName: "groove_large")
                 playSound(pop)
                 answersFilled -= 1
                 
@@ -278,12 +279,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         }
     }
     func tapAnswer1(){
-        tapAnswer(answerNumber1Label)
-        answerNumber1Background.image = UIImage(named: "groove_large")
+        tapAnswer(answerNumber1Label, background: answerNumber1Background)
     }
     func tapAnswer2(){
-        tapAnswer(answerNumber2Label)
-        answerNumber2Background.image = UIImage(named: "groove_large")
+        tapAnswer(answerNumber2Label, background: answerNumber2Background)
     }
     
     func tapOperation() {
@@ -292,7 +291,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 answerOperationLabel.text = " "
                 playSound(pop)
                 answersFilled -= 1
-                answerNumber1Background.image = UIImage(named: "groove_small")
+                answerOperationBackground.image = #imageLiteral(resourceName: "groove_small")
                 
                 if ongoingWalkthrough {
                     removeHole(answerOperationLabel)
@@ -665,9 +664,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         answerNumber2Label.text = " "
         answerOperationLabel.text = " "
         
-        answerNumber1Background.image = UIImage(named:"groove_large")
-        answerNumber2Background.image = UIImage(named:"groove_large")
-        answerOperationBackground.image = UIImage(named:"groove_small")
+        answerNumber1Background.image = #imageLiteral(resourceName: "groove_large")
+        answerNumber2Background.image = #imageLiteral(resourceName: "groove_large")
+        answerOperationBackground.image = #imageLiteral(resourceName: "groove_large")
         
         answersFilled = 0
     }
@@ -1015,7 +1014,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         if text.trim() == "" && answersFilled < 3 {
             answersFilled = answersFilled + 1
         }
-        answerOperationBackground.image = UIImage(named:"tile_small")
+        answerOperationBackground.image = #imageLiteral(resourceName: "tile_small")
         
         //play pop sound
         playSound(pop)
