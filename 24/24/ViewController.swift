@@ -211,13 +211,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         loadSettings()
         setAnswerTouchTargets()
         
+        Mixpanel.mainInstance().track(event: "Launched App")
+    
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // The tutorial must be started after the view has appeared.
+        // This is because launching it requires accessing key view
+        // components. 
         if Utilities.firstLaunch(){
             tutorial()
         }
-        
-        
-        Mixpanel.mainInstance().track(event: "Launched App")
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {

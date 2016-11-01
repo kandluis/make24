@@ -258,18 +258,17 @@
 		101BE0E41DA578B10075E1DE /* 24 */ = {
 			isa = PBXGroup;
 			children = (
+				10B9261D1DC85FBF009046FF /* Views */,
+				10B9261C1DC85FB0009046FF /* Controllers */,
 				7F083AA11DC466DE003259B6 /* Models */,
 				7F083A9C1DC4651B003259B6 /* Helpers */,
 				100C765D1DA640E40097212D /* Resources */,
 				101BE0E51DA578B10075E1DE /* AppDelegate.swift */,
 				F2F83B581DA66430006B34B0 /* AppData.xcdatamodeld */,
-				101BE0E71DA578B10075E1DE /* ViewController.swift */,
-				F27E17AB1DAEC2F3001398EE /* OptionView.swift */,
 				101BE0E91DA578B10075E1DE /* Main.storyboard */,
 				101BE0EC1DA578B10075E1DE /* Assets.xcassets */,
 				101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */,
 				101BE0F11DA578B10075E1DE /* Info.plist */,
-				F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */,
 				7F083AA41DC472C4003259B6 /* 24-Bridging-Header.h */,
 			);
 			path = 24;
@@ -291,6 +290,23 @@
 				101BE1071DA578B10075E1DE /* Info.plist */,
 			);
 			path = 24UITests;
+			sourceTree = "<group>";
+		};
+		10B9261C1DC85FB0009046FF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				101BE0E71DA578B10075E1DE /* ViewController.swift */,
+				F268DCFE1DAFFE5800DAD4A3 /* CongratulationsViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		10B9261D1DC85FBF009046FF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F27E17AB1DAEC2F3001398EE /* OptionView.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		3721F2B56E854B945F103F18 /* Pods */ = {
