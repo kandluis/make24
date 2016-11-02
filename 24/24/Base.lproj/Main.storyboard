@@ -283,6 +283,7 @@
                         <outlet property="answerOperationLabel" destination="jVk-Vn-OFq" id="0oI-jh-exk"/>
                         <outlet property="clearButton" destination="LGX-Lg-qek" id="cok-eY-9CH"/>
                         <outlet property="divideButton" destination="eKP-Lw-cfc" id="G8r-j5-i90"/>
+                        <outlet property="leaderBoardButton" destination="ssI-i1-DKN" id="QvA-Jm-xUn"/>
                         <outlet property="minusButton" destination="VV7-jJ-qQc" id="AHp-Vf-bvr"/>
                         <outlet property="multiplyButton" destination="Voi-Bu-K7o" id="PTS-f4-HWA"/>
                         <outlet property="newSetButton" destination="QJF-3P-yFv" id="ngF-Mn-IjB"/>

@@ -26,6 +26,7 @@
 		101BE1061DA578B10075E1DE /* _4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE1051DA578B10075E1DE /* _4UITests.swift */; };
 		10B9261F1DC868A5009046FF /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B9261E1DC868A5009046FF /* DoubleExtension.swift */; };
 		10B926211DC868DD009046FF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926201DC868DD009046FF /* StringExtension.swift */; };
+		10B926231DC9AF8C009046FF /* EnumExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926221DC9AF8C009046FF /* EnumExtension.swift */; };
 		21D6300BF0E20F3BA6BF3955 /* Pods_24UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E32753EDEEFC8F0A7D5D0E81 /* Pods_24UITests.framework */; };
 		46065B3E829D8646F538B115 /* Pods_24Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CBA4D131605A975C8730DF /* Pods_24Tests.framework */; };
 		7F07FCC41DBFEAC40021FC80 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F07FCC21DBFEAC40021FC80 /* Interface.storyboard */; };
@@ -128,6 +129,7 @@
 		101BE1071DA578B10075E1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10B9261E1DC868A5009046FF /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		10B926201DC868DD009046FF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		10B926221DC9AF8C009046FF /* EnumExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumExtension.swift; sourceTree = "<group>"; };
 		2342A36B5A89F1CE3B251324 /* Pods-24Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-24Tests/Pods-24Tests.release.xcconfig"; sourceTree = "<group>"; };
 		4C9557EBC04B053637DE0B12 /* Pods-24UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-24UITests/Pods-24UITests.release.xcconfig"; sourceTree = "<group>"; };
 		4E907183DA511BE8AC5B8181 /* Pods-24.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-24.release.xcconfig"; path = "Pods/Target Support Files/Pods-24/Pods-24.release.xcconfig"; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				7FCFA79A1DC3CE2100AC58E2 /* Common.swift */,
 				7F083A9F1DC46658003259B6 /* Utilities.swift */,
 				10B926201DC868DD009046FF /* StringExtension.swift */,
+				10B926221DC9AF8C009046FF /* EnumExtension.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -768,6 +771,7 @@
 				7FCFA79B1DC3CE2100AC58E2 /* Common.swift in Sources */,
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
 				F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */,
+				10B926231DC9AF8C009046FF /* EnumExtension.swift in Sources */,
 				F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

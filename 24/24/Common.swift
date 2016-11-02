@@ -22,14 +22,7 @@ class Common {
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         //New Excluded Activities Code
         activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
-        // activityVC.popoverPresentationController?.sourceView = sender as! UIView
         view.present(activityVC, animated: true, completion: nil)
-        print ("getting here")
-        if let congratulationsView = view as? CongratulationsViewController {
-            activityVC.completionWithItemsHandler = { activity, success, items, error in
-                congratulationsView.dismissView()
-            }
-        }
     }
 
     class func rateApp() {

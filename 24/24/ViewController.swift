@@ -17,6 +17,26 @@ import WatchConnectivity
 import SAConfettiView
 import Mixpanel
 
+enum GameDifficulty: Int, CaseCountable {
+    case easy = 0
+    case medium = 1
+    case hard =  2
+    
+    static let caseCount = GameDifficulty.countCases()
+}
+
+enum KeyForSetting: String {
+    case silent = "silent"
+    case difficulty = "diffculty"
+    case score = "score"
+    case rated =  "rated"
+    case problem = "problem"
+    
+    // Do not use directly. Instead use corresponding xKey() function.
+    case internalPuzzle = "puzzle"
+    case internalLevel = "level"
+}
+
 class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessionDelegate {
     
     // Answer board area.
@@ -47,6 +67,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     @IBOutlet weak var divideButton: UIButton!
     
     // Game options
+    @IBOutlet weak var leaderBoardButton: UIButton!
     @IBOutlet weak var optionsButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     
@@ -54,11 +75,20 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     var answersFilled: Int = 0
     var numbersLeft: Int = 4
     var currentNumbers = [Int:Int]()
+
+    var difficulty: GameDifficulty = GameDifficulty.easy {
+        willSet(newValue) {
+            defaults.set(newValue.rawValue, forKey: KeyForSetting.difficulty.rawValue)
+        }
+        didSet(oldValue) {
+            updateInternalProgress()
+        }
+    }
     var playerLevel: Int = 1 {
         didSet(oldValue) {
             // Safeguards
-            if playerLevel >= 1 && playerLevel <= maxLevel {
-                defaults.set(playerLevel, forKey: "level")
+            if playerLevel >= 1 && playerLevel <= levelsPerDifficulty {
+                defaults.set(playerLevel, forKey: levelKey())
             }
             else {
                 playerLevel = oldValue
@@ -68,7 +98,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     var puzzlesSolved: Int = 0 {
         didSet(oldValue) {
             if puzzlesSolved >= 0 && puzzlesSolved <= puzzlesPerLevel {
-                defaults.set(puzzlesSolved, forKey: "puzzles")
+                defaults.set(puzzlesSolved, forKey: puzzleKey())
             }
             else {
                 puzzlesSolved = oldValue
@@ -80,14 +110,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             // Safeguards
             if playerScore >= 0 {
                 scoreLabel.text = String(playerScore)
-                defaults.set(playerScore, forKey: "score")
+                defaults.set(playerScore, forKey: KeyForSetting.score.rawValue)
             }
             else {
                 playerScore = oldValue
             }
         }
     }
-    let maxLevel: Int = 10
+    let levelsPerDifficulty: Int = 10
     let puzzlesPerLevel: Int = 10
     var silent: Bool = false {
         didSet {
@@ -125,7 +155,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     var currentHoles = [UIView]()
     
     // Leaderboard
-    var localPlayer: GKLocalPlayer?
     let LEADER_BOARD_ID = "Overall"
 
     /*********
@@ -173,12 +202,23 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     /******
      * Settings Functions
      ******/
+    func levelKey() -> String {
+        return "\(KeyForSetting.difficulty.rawValue)(\(difficulty.rawValue)):\(KeyForSetting.internalLevel.rawValue)"
+    }
+    func puzzleKey() -> String {
+        return "\(levelKey())(\(playerLevel)):\(KeyForSetting.internalPuzzle.rawValue)"
+    }
+    // Sets the appropriate values based on an updated game difficulty.
+    func updateInternalProgress(){
+        playerLevel = defaults.integer(forKey: levelKey())
+        puzzlesSolved = defaults.integer(forKey: puzzleKey())
+    }
     func loadSettings(){
         // Sound
-        silent = defaults.bool(forKey: "silent")
-        playerLevel = defaults.integer(forKey: "level")
-        playerScore = defaults.integer(forKey: "score")
-        puzzlesSolved = defaults.integer(forKey: "puzzles")
+        silent = defaults.bool(forKey: KeyForSetting.silent.rawValue)
+        difficulty = GameDifficulty(rawValue: defaults.integer(forKey: KeyForSetting.difficulty.rawValue)) ?? GameDifficulty.easy
+        playerScore = defaults.integer(forKey: KeyForSetting.score.rawValue)
+        updateInternalProgress()
     }
     
     /*****
@@ -236,10 +276,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      * Database Functions
      *************/
     func getDifficultyRange(_ level: Int) -> (Double, Double) {
-        let maxLevel = Double(self.maxLevel)
-        let level = Double(self.playerLevel)
-        let max = level / maxLevel
-        return (max - 1 / maxLevel, max)
+        let buckets = Double(GameDifficulty.caseCount * self.levelsPerDifficulty)
+        let level = Double(self.difficulty.rawValue * self.levelsPerDifficulty +  self.playerLevel)
+        let max = level / buckets
+        return (max - (1 / buckets), max)
     }
     
     func loadProblems(_ level: Int) -> [NSManagedObject] {
@@ -352,7 +392,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
 
     // format puzzle into strings
-    
     func formatPuzzleToString (puzzle: [Int:Int]) -> String {
         var puzzleString = ""
         for (_, puzzleNumber) in puzzle {
@@ -360,7 +399,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         }
         return puzzleString
     }
-    //
     func initializeNumbers() {
         
         clearAnswers()
@@ -371,8 +409,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 setNumberButton(index, text: String(problem[index]))
                 currentNumbers[index] = selectedNumber
             }
-            let puzzleString = formatPuzzleToString(puzzle: currentNumbers)
-            defaults.set(puzzleString, forKey: "puzzle")
             
             // send data to watch if watch is supported
             if WCSession.isSupported() {
@@ -483,15 +519,19 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      * Gameplay Display Functions
      ***********/
     // Function is called before any variables are updated on a win
-    func getAlertTypeOnWin() -> String {
+    func getAlertTypeOnWin() -> AlertType {
+        // puzzlesSolved and difficulty are 0-indexed
+        // playerLevel is 1-indexed
         if puzzlesSolved == puzzlesPerLevel - 1 {
-            if playerLevel == maxLevel {
-                return "finish"
+            if playerLevel == levelsPerDifficulty {
+                if difficulty.rawValue == GameDifficulty.caseCount - 1 {
+                    return .finish
+                }
+                return .next_difficulty
             }
-            Mixpanel.mainInstance().track(event: "Next Level")
-            return "next_level"
+            return .next_level
         }
-        return "next_puzzle"
+        return .next_puzzle
     }
     func didWin() {
         // Core data is synchronized when the application exits!
@@ -509,13 +549,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         let alert_type = getAlertTypeOnWin()
         presentAlert(alert_type)
         
-        // Update player info
+        // Update player info.
         puzzlesSolved += 1
         playerScore += 1
-        // Check if level is passed
+        // Check if level is passed.
         if puzzlesSolved == puzzlesPerLevel {
             playerLevel += 1
             puzzlesSolved = 0
+        }
+        // Check if difficulty is passed. Recall this is 1-indexed.
+        if playerLevel == levelsPerDifficulty + 1 {
+            difficulty = GameDifficulty(rawValue: difficulty.rawValue + 1) ?? difficulty
         }
         
         Mixpanel.mainInstance().track(event: "Won Puzzle")
@@ -529,32 +573,61 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         startStopBackgroundMusic()
         playSound(fail)
         
-        presentAlert("fail")
+        presentAlert(.retry)
         reset()
         Mixpanel.mainInstance().track(event: "Failed Puzzle")
     }
-    func presentAlert(_ alert_type: String){
-        if alert_type == "finish" {
+    func presentAlert(_ alert_type: AlertType){
+        if case .finish = alert_type {
             showConfetti()
         }
-        
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let myAlert = storyboard.instantiateViewController(withIdentifier: "alert") as? CongratulationsViewController {
             myAlert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
             myAlert.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-            myAlert.setOptions(alertStringIdentifier: alert_type, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self](buttonText: String?) -> Void in
-                // Things to do after the player has dismissed the presented alert.
-                if let text = buttonText {
-                    if text == "Leaderboard" {
-                        self.showLeaderboard()
-                    }
-                }
-                
+            myAlert.setOptions(alert: alert_type, currentDifficulty: difficulty, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self](type: AlertType, action: UserAction?) -> Void in
+                let action = action ?? .dismiss
+                self.onUserAction(action: action)
+                self.onDismissAlert(type: type)
                 self.startStopBackgroundMusic()
-                self.dismissConfetti()
                 
-                })
+            })
             self.present(myAlert, animated: true, completion: nil)
+        }
+    }
+    func onUserAction(action: UserAction) {
+        switch action {
+        case .rate:
+            Common.rateApp()
+            self.defaults.set(true, forKey: KeyForSetting.rated.rawValue)
+        case .challange:
+            let puzzleAsString = self.formatPuzzleToString(puzzle: self.currentNumbers)
+            let message = "I challenge you to solve this puzzle! Use all four numbers \(puzzleAsString),and any basic operation (+,-,x,/) to make 24."
+            Common.shareApp(view: self, message: message)
+        case .nextLevel:
+            if !self.defaults.bool(forKey: KeyForSetting.rated.rawValue) {
+                self.presentAlert(AlertType.rate)
+            }
+        case .leaderboard:
+            self.showLeaderboard(attemptAuthentication: true)
+        case .ask:
+            let puzzleAsString = self.formatPuzzleToString(puzzle: self.currentNumbers)
+            let message = "Can you help me solve this puzzle? Use all four numbers \(puzzleAsString),and any basic operation (+,-,x,/) to make 24."
+            Common.shareApp(view: self, message: message)
+        case .keepGoing, .dismiss, .retry:
+            break
+        }
+    }
+    func onDismissAlert(type: AlertType){
+        switch type {
+        case .finish:
+            self.dismissConfetti()
+            // TODO: Inform the user that this is happening!?
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            delegate.resetApplication()
+        case .next_difficulty, .next_puzzle, .next_level, .retry, .rate:
+            break
         }
     }
     
@@ -615,9 +688,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func clearNumberButton(_ index: Int){
         numberButtons[index].setTitle(" ", for: UIControlState())
         // sets number button to blank background color
-    numberButtons[index].setBackgroundImage(UIImage(named:"groove_large"), for: UIControlState())
+    numberButtons[index].setBackgroundImage(#imageLiteral(resourceName: "groove_large"), for: UIControlState())
         numberButtons[index].isEnabled = false
-//        numberButtons[index].setBackgroundImage(nil, for: UIControlState())
     }
     
     func clearBoard() {
@@ -649,37 +721,41 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      ************/
     func alertUserAboutLogin(after completion: Closure?) {
         let title = "Fail Login!"
-        let message = "You have declined to login. Please login through the Game Center App or restart the application to be asked to login."
+        let message = "Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!"
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
         self.present(alert, animated: true, completion: completion)
     }
-    func showLeaderboard() {
-        if let authenticated = localPlayer?.isAuthenticated {
-            if authenticated {
-                self.reportIfHigher(gameScore: self.playerScore, afterReport: { [unowned self] in
-                    self.showLeaderboardView()
-                    })
-            }
-            else {
-                self.alertUserAboutLogin(after: nil)
-            }
+    func showLeaderboard(attemptAuthentication authenticate: Bool) {
+        if GKLocalPlayer.localPlayer().isAuthenticated {
+            // Disable user interaction with options/leaderboard.
+            optionsButton.isUserInteractionEnabled = false
+            leaderBoardButton.isUserInteractionEnabled = false
+            self.reportIfHigher(gameScore: self.playerScore, afterReport: { [unowned self] in
+                self.optionsButton.isUserInteractionEnabled = true
+                self.leaderBoardButton.isUserInteractionEnabled = true
+                self.showLeaderboardView()
+                })
+        }
+        else if authenticate {
+            authenticateLocalPlayer(afterAuthScreen: {[unowned self] in
+                self.showLeaderboard(attemptAuthentication: false)
+            })
         }
         else {
-            authenticateLocalPlayer(afterAuthScreen: nil)
+            alertUserAboutLogin(after: nil)
         }
     }
     func authenticateLocalPlayer(afterAuthScreen completion: Closure?) {
-        localPlayer = GKLocalPlayer.localPlayer()
-        localPlayer?.authenticateHandler = {(viewController, error) -> Void in
-            if (viewController != nil) {
+        GKLocalPlayer.localPlayer().authenticateHandler = {(viewController, error) -> Void in
+            if viewController != nil && !GKLocalPlayer.localPlayer().isAuthenticated {
                 self.present(viewController!, animated: true, completion: completion)
             }
             if let error = error {
                 print("Error authenticating player \(error)")
                 print(error.localizedDescription)
                 if error._code == 2 {
-                    self.alertUserAboutLogin(after: completion)
+                    self.alertUserAboutLogin(after: nil)
                 }
             }
         }
@@ -697,6 +773,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                         return self.reportScore(gameScore, afterReport: completion)
                     }
                 }
+                else {
+                   return self.reportScore(gameScore, afterReport: completion) 
+                }
             }
             if let code = completion {
                 code()
@@ -705,7 +784,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func reportScore(_ score: Int, afterReport completion: Closure?) {
         let scoreReporter = GKScore(leaderboardIdentifier:LEADER_BOARD_ID)
-        
         scoreReporter.value = Int64(score)
         let scoreArray: [GKScore] = [scoreReporter]
         GKScore.report(scoreArray, withCompletionHandler: {error -> Void in
@@ -828,11 +906,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
 
         })
     }
-    
+
+    /***** TOP LEVEL OPTION HANDLERS ****/
     func leaderBoardOption() {
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
-            self.showLeaderboard()
+            self.showLeaderboard(attemptAuthentication: true)
         }
         self.optionsView.hide()
     }
@@ -871,29 +950,42 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             self.silent = !self.silent
-            self.defaults.set(self.silent, forKey: "silent")
+            self.defaults.set(self.silent, forKey: KeyForSetting.silent.rawValue)
         }
         self.optionsView.hide()
     }
+    func showModes() {
+        let info = [
+            (selector: #selector(self.setEasyMode), image: "easy", text: "Easy"),
+            (selector: #selector(self.setMediumMode), image: "medium", text: "Medium"),
+            (selector: #selector(self.setHardMode), image: "hard", text: "Hard")
+        ]
+        let views = makeOptionViews(info)
+        self.optionsView.show(views)
+        
+    }
     
-    /***********
-     * Share Options
-     ***********/
-//    func shareApp() {
-//        let textToShare = "I'm playing this new, awesome game! Check it out!"
-//        
-//        if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
-//            let objectsToShare = [textToShare, myWebsite] as [Any]
-//            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-//            
-//            //New Excluded Activities Code
-//            activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
-//            
-//            // TODO: for ipad
-//            // activityVC.popoverPresentationController?.sourceView = sender as! UIView
-//            self.present(activityVC, animated: true, completion: nil)
-//        }
-//    }
+    /***** SUBMENU OPTION FOR MODE ****/
+    func setMode(mode: GameDifficulty) {
+        self.optionsView.didDissmissAllViews = { [unowned self] in
+            self.optionsView.didDissmissAllViews = {}
+            if self.difficulty != mode {
+                self.difficulty = mode
+                self.initializeNumbers()
+            }
+        }
+        self.optionsView.hide()
+    }
+    func setEasyMode() {
+        setMode(mode: GameDifficulty.medium)
+    }
+    
+    func setMediumMode() {
+        setMode(mode: GameDifficulty.medium)
+    }
+    func setHardMode() {
+        setMode(mode: GameDifficulty.hard)
+    }
     
     /******
      * User Actions
@@ -979,7 +1071,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     
     @IBAction func showLeader(_ sender: AnyObject) {
-        showLeaderboard()
+        showLeaderboard(attemptAuthentication: true)
         
     }
     @IBAction func showOptions(_ sender: AnyObject) {
@@ -996,44 +1088,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             ]
         let views = makeOptionViews(info)
         self.optionsView.show(views)
-    }
-    func showModes() {
-        let info = [
-            (selector: #selector(self.setEasyMode), image: "easy", text: "Easy"),
-            (selector: #selector(self.setMediumMode), image: "medium", text: "Medium"),
-            (selector: #selector(self.setHardMode), image: "hard", text: "Hard")
-        ]
-        let views = makeOptionViews(info)
-        self.optionsView.show(views)
-
-    }
-    
-    func setEasyMode() {
-        self.optionsView.didDissmissAllViews = { [unowned self] in
-            self.optionsView.didDissmissAllViews = {}
-            self.defaults.set("easy", forKey: "mode")
-        }
-        self.optionsView.hide()
-        
-        // TODO implement actual mode changing
-    }
-    
-    func setMediumMode() {
-        self.optionsView.didDissmissAllViews = { [unowned self] in
-            self.optionsView.didDissmissAllViews = {}
-            self.defaults.set("medium", forKey: "mode")
-        }
-        self.optionsView.hide()
-        
-        // TODO implement actual mode changing
-    }
-    func setHardMode() {
-        self.optionsView.didDissmissAllViews = { [unowned self] in
-            self.optionsView.didDissmissAllViews = {}
-            self.defaults.set("hard", forKey: "mode")
-        }
-        self.optionsView.hide()
-        // TODO implement actual mode changing
     }
     
     @IBAction func dismissWalkthrough(_ sender: AnyObject) {
