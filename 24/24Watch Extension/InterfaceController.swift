@@ -16,6 +16,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate{
     @IBOutlet var puzzleLabel: WKInterfaceLabel!
     
     private let session : WCSession? = WCSession.isSupported() ? WCSession.default() : nil
+    private let defaults: UserDefaults! = UserDefaults(suiteName: "group.bunnylemon.24")
     
     override init() {
         super.init()
@@ -28,9 +29,15 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate{
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
-        // Configure interface objects here.
-        puzzleLabel.setText("Start playing on the iPhone app")
+        // Check the shared storage for any messages.
+        if let puzzle = defaults.object(forKey: "puzzle") as? [Int: Int] {
+            setPuzzleLabel(puzzle: puzzle)
+        }
+        else {
+        // Configure interface objects here. Eventually, do something a bit fancier -- maybe
+        // generate a good puzzle here (ie, include the logic in the watch app), and send it to the iOS app.
+            puzzleLabel.setText("New puzzle!")
+        }
     }
     
     override func willActivate() {
@@ -44,10 +51,17 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate{
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-    
-    
-    // format puzzle into strings
 
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        if let msg = message["puzzle"] as? [Int:Int] {
+            print(msg)
+            print("received message")
+            
+            setPuzzleLabel(puzzle: msg)
+            
+        }
+    }
+    
     func setPuzzleLabel(puzzle: [Int:Int]) -> Void{
         var puzzleString = ""
         for (_, puzzleNumber) in puzzle {
@@ -56,16 +70,5 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate{
         
         self.puzzleLabel.setText(puzzleString)
         
-    }
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        print("Getting here")
-        if let msg = message["puzzle"] as? [Int:Int] {
-            print(msg)
-            print("received message")
-            
-            setPuzzleLabel(puzzle: msg)
-            
-        }
     }
 }

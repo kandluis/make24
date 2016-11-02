@@ -35,7 +35,7 @@
             <objects>
                 <notificationController id="YCC-NB-fut">
                     <items>
-                        <label alignment="left" text="New puzzle!" id="IdU-wH-bcW"/>
+                        <label width="136" alignment="left" text="New puzzle!" textAlignment="center" id="IdU-wH-bcW"/>
                     </items>
                     <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
                     <connections>

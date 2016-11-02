@@ -139,7 +139,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     let fail = Bundle.main.url(forResource: "fail1", withExtension: "mp3")!
     
     // User defaults
-    let defaults = UserDefaults.standard
+    let defaults: UserDefaults! = UserDefaults(suiteName: "group.bunnylemon.24")
     
     // Seconds to wait on  transitions.
     let TRIGGERTIME = Int64(500000000)
@@ -439,6 +439,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 self.session?.sendMessage(msg, replyHandler: { (reply)->Void in }, errorHandler: { (reply)->Void in })
                 
             }
+            // Store puzzle in shared defaults.
+            defaults.set(currentNumbers, forKey: "puzzle")
+            defaults.synchronize()
             
             // Numbers used reset!
             numbersLeft = 4

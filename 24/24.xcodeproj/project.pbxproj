@@ -129,6 +129,7 @@
 		101BE1051DA578B10075E1DE /* _4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _4UITests.swift; sourceTree = "<group>"; };
 		101BE1071DA578B10075E1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		106310AD1DC9D955005B9C4B /* Overlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
+		10B881F31DCA09D80000B2AD /* 24.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = 24.entitlements; sourceTree = "<group>"; };
 		10B9261E1DC868A5009046FF /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		10B926201DC868DD009046FF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		10B926221DC9AF8C009046FF /* EnumExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumExtension.swift; sourceTree = "<group>"; };
@@ -266,6 +267,7 @@
 		101BE0E41DA578B10075E1DE /* 24 */ = {
 			isa = PBXGroup;
 			children = (
+				10B881F31DCA09D80000B2AD /* 24.entitlements */,
 				10B9261D1DC85FBF009046FF /* Views */,
 				10B9261C1DC85FB0009046FF /* Controllers */,
 				7F083AA11DC466DE003259B6 /* Models */,
@@ -524,6 +526,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = J87Z56BB74;
 						LastSwiftMigration = 0810;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					101BE0F51DA578B10075E1DE = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -962,6 +969,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = 24/24.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = 24/Info.plist;
@@ -983,6 +991,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = 24/24.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = 24/Info.plist;
