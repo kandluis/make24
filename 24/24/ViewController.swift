@@ -917,11 +917,13 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     typealias ViewInfo = (selector: Selector, image: String, text: String)
     func makeOptionViews(_ viewInfo: [ViewInfo])->[UIView] {
-        let height:CGFloat = 54
-        let width:CGFloat = 300
-        let margin:CGFloat = 10
-        let x:CGFloat = self.view.frame.width / 2 - width/2
-        let y:CGFloat = 160
+        let totalFit:CGFloat = 10
+        let height:CGFloat = min(57, view.frame.size.height / totalFit)
+        let width:CGFloat = min(300, 0.8 * view.frame.size.width)
+        let margin:CGFloat = height / 6
+        let x:CGFloat = self.view.frame.size.width / 2 - width/2
+        // center - offset - 10 * 0.5 * (space of single item
+        let y:CGFloat = (self.view.frame.size.height / 2) - (height/2.0) - (totalFit * 0.25) * (height + margin)
         
         return viewInfo.enumerated().map({(i, info) -> UIView in
             let rect = CGRect(x: x, y: y + (height + margin) * CGFloat(i), width: width, height: height)
