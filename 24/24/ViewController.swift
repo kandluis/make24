@@ -163,7 +163,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      *********/
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        // Listen for when we go in an out of background.
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.willResignActive), name: Notification.Name.UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didBecomeActive), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
         numberButtons = [number1Button, number2Button, number3Button, number4Button]
         optionsView.fadeOutDuration = 1.1
         
@@ -198,6 +201,16 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func willResignActive() {
+        // App is always silenced in background.
+        silent = true
+    }
+    
+    func didBecomeActive(){
+        // Restore user setting.
+        silent = defaults.bool(forKey: KeyForSetting.silent.rawValue)
     }
     
     /******

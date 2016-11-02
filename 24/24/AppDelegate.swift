@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // For 3D Touch
     enum ShortcutIdentifier: String {
         case ShareApp
+        case Leaderboard
+        case Rate
+        case Tutorial
         
         init?(fullIdentifier: String) {
             guard let shortIdentifier = fullIdentifier.components(separatedBy: ".").last else {
@@ -30,17 +33,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleShortcut( _ shortcutItem:UIApplicationShortcutItem ) -> Bool {
-        guard let _ = ShortcutIdentifier(fullIdentifier: shortcutItem.type) else {
+        guard let identifier = ShortcutIdentifier(fullIdentifier: shortcutItem.type) else {
             return false
         }
         
         let message = "Just found this great app -- check it out! "
         // activitiy view controller stuff
-        if let view = self.window?.rootViewController
+        if let view = self.window?.rootViewController as? ViewController
         {
-            Common.shareApp(view, message: message)
+            switch identifier {
+            case .ShareApp:
+                Common.shareApp(view, message: message)
+            case .Leaderboard:
+                view.showLeader(self)
+            case .Tutorial:
+                view.tutorial()
+            case .Rate:
+                Common.rateApp()
+            }
+            return true
+            
         }
-        return true
+        return false
     }
     
     var window: UIWindow?
