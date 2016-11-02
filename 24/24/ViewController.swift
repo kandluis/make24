@@ -749,7 +749,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func authenticateLocalPlayer(afterAuthScreen completion: Closure?) {
         GKLocalPlayer.localPlayer().authenticateHandler = {(viewController, error) -> Void in
             if viewController != nil && !GKLocalPlayer.localPlayer().isAuthenticated {
-                self.present(viewController!, animated: true, completion: completion)
+                return self.present(viewController!, animated: true, completion: completion)
             }
             if let error = error {
                 print("Error authenticating player \(error)")
@@ -757,6 +757,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 if error._code == 2 {
                     self.alertUserAboutLogin(after: nil)
                 }
+            }
+            if let code = completion {
+                code()
             }
         }
         
@@ -774,7 +777,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                     }
                 }
                 else {
-                   return self.reportScore(gameScore, afterReport: completion) 
+                   return self.reportScore(gameScore, afterReport: completion)
                 }
             }
             if let code = completion {
