@@ -156,6 +156,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     
     // Leaderboard
     let LEADER_BOARD_ID = "Overall"
+    var onGameCenterDismiss: (() -> Void)?
 
     /*********
      * View Class Functions
@@ -164,11 +165,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         super.viewDidLoad()
     
         numberButtons = [number1Button, number2Button, number3Button, number4Button]
-        optionsView.fadeOutDuration = 1.3
+        optionsView.fadeOutDuration = 1.1
         
-        initializeNumbers()
         playBackgroundMusic(ambientSound)
         loadSettings()
+        initializeNumbers()
         setAnswerTouchTargets()
         
         Mixpanel.mainInstance().track(event: "Launched App")
@@ -211,6 +212,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     // Sets the appropriate values based on an updated game difficulty.
     func updateInternalProgress(){
         playerLevel = defaults.integer(forKey: levelKey())
+        if playerLevel == 0 {
+            playerLevel = 1
+        }
         puzzlesSolved = defaults.integer(forKey: puzzleKey())
     }
     func loadSettings(){
@@ -236,16 +240,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func tapAnswer(_ label: UILabel, background: UIImageView) {
         if let text = label.text {
             if text.trim() != "" {
-                setNumberButton(label.tag, text: text)
-                label.text = " "
-                background.image = #imageLiteral(resourceName: "groove_large")
-                playSound(pop)
-                answersFilled -= 1
-                
-                if ongoingWalkthrough {
-                    removeHole(label)
-                    addHole(holeToAdd: numberButtons[label.tag])
-                }
+                // Delay for a more natural feel.
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(TRIGGERTIME) / (10 * Double(NSEC_PER_SEC)), execute: { [unowned self]() -> Void in
+                    background.image = #imageLiteral(resourceName: "groove_large")
+                    label.text = " "
+                    self.setNumberButton(label.tag, text: text)
+                    self.playSound(self.pop)
+                    self.answersFilled -= 1
+                    if self.ongoingWalkthrough {
+                        self.removeHole(label)
+                        self.addHole(holeToAdd: self.numberButtons[label.tag])
+                    }
+                })
             }
         }
     }
@@ -259,15 +265,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func tapOperation() {
         if let text = answerOperationLabel.text {
             if text.trim() != "" {
-                answerOperationLabel.text = " "
-                playSound(pop)
-                answersFilled -= 1
-                answerOperationBackground.image = #imageLiteral(resourceName: "groove_small")
-                
-                if ongoingWalkthrough {
-                    removeHole(answerOperationLabel)
-                    addHole(holeToAdd: multiplyButton)
-                }
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(TRIGGERTIME) / (10 * Double(NSEC_PER_SEC)), execute: {[unowned self] in
+                    self.answerOperationLabel.text = " "
+                    self.playSound(self.pop)
+                    self.answersFilled -= 1
+                    self.answerOperationBackground.image = #imageLiteral(resourceName: "groove_small")
+                    
+                    if self.ongoingWalkthrough {
+                        self.removeHole(self.answerOperationLabel)
+                        self.addHole(holeToAdd: self.multiplyButton)
+                    }
+                })
             }
         }
     }
@@ -392,7 +400,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
 
     // format puzzle into strings
-    func formatPuzzleToString (puzzle: [Int:Int]) -> String {
+    func formatPuzzleToString (_ puzzle: [Int:Int]) -> String {
         var puzzleString = ""
         for (_, puzzleNumber) in puzzle {
             puzzleString = puzzleString + " " + String(puzzleNumber) + " "
@@ -588,38 +596,51 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             myAlert.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
             myAlert.setOptions(alert: alert_type, currentDifficulty: difficulty, currentLevel: playerLevel, puzzlesSolved: puzzlesSolved + 1, completion: {[unowned self](type: AlertType, action: UserAction?) -> Void in
                 let action = action ?? .dismiss
-                self.onUserAction(action: action)
-                self.onDismissAlert(type: type)
+                self.onUserAction(action)
+                self.onDismissAlert(type)
                 self.startStopBackgroundMusic()
                 
             })
             self.present(myAlert, animated: true, completion: nil)
         }
     }
-    func onUserAction(action: UserAction) {
+    func onUserAction(_ action: UserAction) {
         switch action {
         case .rate:
             Common.rateApp()
             self.defaults.set(true, forKey: KeyForSetting.rated.rawValue)
         case .challange:
-            let puzzleAsString = self.formatPuzzleToString(puzzle: self.currentNumbers)
+            let puzzleAsString = self.formatPuzzleToString(self.currentNumbers)
             let message = "I challenge you to solve this puzzle! Use all four numbers \(puzzleAsString),and any basic operation (+,-,x,/) to make 24."
-            Common.shareApp(view: self, message: message)
+            Common.shareApp(self, message: message)
         case .nextLevel:
             if !self.defaults.bool(forKey: KeyForSetting.rated.rawValue) {
                 self.presentAlert(AlertType.rate)
             }
         case .leaderboard:
             self.showLeaderboard(attemptAuthentication: true)
+            self.onGameCenterDismiss = {[unowned self, previousClosure = self.onGameCenterDismiss] in
+                // respect other handlers.
+                if let code = previousClosure {
+                    code()
+                }
+                
+                if !self.defaults.bool(forKey: KeyForSetting.rated.rawValue) {
+                    self.presentAlert(AlertType.rate)
+                }
+    
+                // Reset yourself.
+                self.onGameCenterDismiss = nil
+            }
         case .ask:
-            let puzzleAsString = self.formatPuzzleToString(puzzle: self.currentNumbers)
+            let puzzleAsString = self.formatPuzzleToString(self.currentNumbers)
             let message = "Can you help me solve this puzzle? Use all four numbers \(puzzleAsString),and any basic operation (+,-,x,/) to make 24."
-            Common.shareApp(view: self, message: message)
+            Common.shareApp(self, message: message)
         case .keepGoing, .dismiss, .retry:
             break
         }
     }
-    func onDismissAlert(type: AlertType){
+    func onDismissAlert(_ type: AlertType){
         switch type {
         case .finish:
             self.dismissConfetti()
@@ -676,13 +697,13 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func setNumberButton(_ index: Int, text: String) {
         let button = numberButtons[index]
-        button?.setBackgroundImage(UIImage(named:"tile_large")!, for: UIControlState())
         button?.titleLabel?.font = getFont(text, currentFont: button?.titleLabel?.font)
         button?.titleLabel?.adjustsFontSizeToFitWidth = true
         button?.contentVerticalAlignment = UIControlContentVerticalAlignment.fill
         button?.titleLabel?.textAlignment = .center
-        button?.setTitle(text, for: UIControlState())
+        button?.setTitle(text, for: .normal)
         button?.isEnabled = true
+        button?.setBackgroundImage(#imageLiteral(resourceName: "tile_large"), for: .normal)
     }
     
     func clearNumberButton(_ index: Int){
@@ -727,13 +748,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.present(alert, animated: true, completion: completion)
     }
     func showLeaderboard(attemptAuthentication authenticate: Bool) {
+        LoadingOverlay.shared.showOverlay(self.view)
         if GKLocalPlayer.localPlayer().isAuthenticated {
             // Disable user interaction with options/leaderboard.
             optionsButton.isUserInteractionEnabled = false
             leaderBoardButton.isUserInteractionEnabled = false
-            self.reportIfHigher(gameScore: self.playerScore, afterReport: { [unowned self] in
+            self.reportIfHigher(self.playerScore, afterReport: { [unowned self] in
                 self.optionsButton.isUserInteractionEnabled = true
                 self.leaderBoardButton.isUserInteractionEnabled = true
+                LoadingOverlay.shared.hideOverlayView()
                 self.showLeaderboardView()
                 })
         }
@@ -744,6 +767,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         }
         else {
             alertUserAboutLogin(after: nil)
+            LoadingOverlay.shared.hideOverlayView()
         }
     }
     func authenticateLocalPlayer(afterAuthScreen completion: Closure?) {
@@ -765,7 +789,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
     }
 
-    func reportIfHigher(gameScore: Int, afterReport completion: Closure?) {
+    func reportIfHigher(_ gameScore: Int, afterReport completion: Closure?) {
         let leaderboardRequest = GKLeaderboard(players: [GKLocalPlayer.localPlayer()])
         leaderboardRequest.identifier = LEADER_BOARD_ID
         leaderboardRequest.timeScope = GKLeaderboardTimeScope.allTime
@@ -808,7 +832,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     
     /* GKGameCenterlDelegate Function */
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismiss(animated: true, completion: nil)
+        gameCenterViewController.dismiss(animated: true, completion: onGameCenterDismiss)
     }
     
     /*********
@@ -920,10 +944,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func changeModesOption() {
         // TODO: Implement ads
-        self.optionsView.didDissmissAllViews = { [unowned self] in
-            self.optionsView.didDissmissAllViews = {}
-            self.showModes()
-        }
+        self.showModes()
         self.optionsView.hide()
     }
     func tutorialOption() {
@@ -945,7 +966,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             let message = "I'm playing this new, awesome game! Check it out!"
-            Common.shareApp(view: self, message: message)
+            Common.shareApp(self, message: message)
         }
         self.optionsView.hide()
     }
@@ -964,12 +985,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             (selector: #selector(self.setHardMode), image: "hard", text: "Hard")
         ]
         let views = makeOptionViews(info)
-        self.optionsView.show(views)
+        self.optionsView.addNextViews(views)
         
     }
     
     /***** SUBMENU OPTION FOR MODE ****/
-    func setMode(mode: GameDifficulty) {
+    func setMode(_ mode: GameDifficulty) {
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             if self.difficulty != mode {
@@ -980,14 +1001,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.hide()
     }
     func setEasyMode() {
-        setMode(mode: GameDifficulty.medium)
+        setMode(GameDifficulty.medium)
     }
     
     func setMediumMode() {
-        setMode(mode: GameDifficulty.medium)
+        setMode(GameDifficulty.medium)
     }
     func setHardMode() {
-        setMode(mode: GameDifficulty.hard)
+        setMode(GameDifficulty.hard)
     }
     
     /******
@@ -1099,7 +1120,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     
     // Apple watch stuff
-    private let session: WCSession? = WCSession.isSupported() ? WCSession.default() : nil
+    fileprivate let session: WCSession? = WCSession.isSupported() ? WCSession.default() : nil
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -1113,7 +1134,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         configureWCSession()
     }
     
-    private func configureWCSession() {
+    fileprivate func configureWCSession() {
         session?.delegate = self;
         session?.activate()
     }

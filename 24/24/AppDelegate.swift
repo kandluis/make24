@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // activitiy view controller stuff
         if let view = self.window?.rootViewController
         {
-            Common.shareApp(view: view, message: message)
+            Common.shareApp(view, message: message)
         }
         return true
     }
@@ -167,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    private func preloadData () {
+    fileprivate func preloadData () {
         // Retrieve data from the source file
         if let contentsOfFile = Bundle.main.url(forResource: "problems", withExtension: "csv") {
             

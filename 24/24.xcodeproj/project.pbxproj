@@ -24,6 +24,7 @@
 		101BE0F01DA578B10075E1DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */; };
 		101BE0FB1DA578B10075E1DE /* _4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE0FA1DA578B10075E1DE /* _4Tests.swift */; };
 		101BE1061DA578B10075E1DE /* _4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE1051DA578B10075E1DE /* _4UITests.swift */; };
+		106310AE1DC9D955005B9C4B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106310AD1DC9D955005B9C4B /* Overlay.swift */; };
 		10B9261F1DC868A5009046FF /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B9261E1DC868A5009046FF /* DoubleExtension.swift */; };
 		10B926211DC868DD009046FF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926201DC868DD009046FF /* StringExtension.swift */; };
 		10B926231DC9AF8C009046FF /* EnumExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926221DC9AF8C009046FF /* EnumExtension.swift */; };
@@ -127,6 +128,7 @@
 		101BE1011DA578B10075E1DE /* 24UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = 24UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		101BE1051DA578B10075E1DE /* _4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _4UITests.swift; sourceTree = "<group>"; };
 		101BE1071DA578B10075E1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		106310AD1DC9D955005B9C4B /* Overlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		10B9261E1DC868A5009046FF /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		10B926201DC868DD009046FF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		10B926221DC9AF8C009046FF /* EnumExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumExtension.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				F27E17AB1DAEC2F3001398EE /* OptionView.swift */,
+				106310AD1DC9D955005B9C4B /* Overlay.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -772,6 +775,7 @@
 				101BE0E61DA578B10075E1DE /* AppDelegate.swift in Sources */,
 				F268DCFF1DAFFE5800DAD4A3 /* CongratulationsViewController.swift in Sources */,
 				10B926231DC9AF8C009046FF /* EnumExtension.swift in Sources */,
+				106310AE1DC9D955005B9C4B /* Overlay.swift in Sources */,
 				F2F83B5A1DA66430006B34B0 /* AppData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -21,11 +21,11 @@ class OptionView: UIView {
         
         switch type {
         case let .bar(icon, text):
-            setupBarDesign(icon: icon, text: text)
+            setupBarDesign(icon, text: text)
         }
     }
     
-    func setupBarDesign(icon:UIImage?, text:String) {
+    func setupBarDesign(_ icon:UIImage?, text:String) {
         self.backgroundColor = UIColor.white
         self.layer.borderWidth = 0
         self.layer.borderColor = UIColor.black.cgColor

@@ -33,18 +33,18 @@ enum UserAction {
 
 class CongratulationsViewController: UIViewController {
     // User defaults
-    private let defaults = UserDefaults.standard
+    fileprivate let defaults = UserDefaults.standard
     
     // level related variables
-    private var difficulty: GameDifficulty = GameDifficulty.easy
-    private var level: Int = 0
-    private var puzzles: Int = 0
-    private var type: AlertType = AlertType.next_level
-    private var primary_action: UserAction?
-    private var secondary_action: UserAction?
+    fileprivate var difficulty: GameDifficulty = GameDifficulty.easy
+    fileprivate var level: Int = 0
+    fileprivate var puzzles: Int = 0
+    fileprivate var type: AlertType = AlertType.next_level
+    fileprivate var primary_action: UserAction?
+    fileprivate var secondary_action: UserAction?
     
     // Access to starting/stopping the sound
-    private var completion: ((AlertType, UserAction?) -> Void)!
+    fileprivate var completion: ((AlertType, UserAction?) -> Void)!
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -80,8 +80,8 @@ class CongratulationsViewController: UIViewController {
     var lose_variables = [UIView]()
     
     // view animation related variables
-    private var animator:UIDynamicAnimator? = nil;
-    private let gravity = UIGravityBehavior()
+    fileprivate var animator:UIDynamicAnimator? = nil;
+    fileprivate let gravity = UIGravityBehavior()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +140,7 @@ class CongratulationsViewController: UIViewController {
         self.completion = completion
     }
     
-    private func lose() {
+    fileprivate func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage
         primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert"), for: UIControlState())
@@ -149,7 +149,7 @@ class CongratulationsViewController: UIViewController {
         secondary_action = .ask
     }
     
-    private func congratulations() {
+    fileprivate func congratulations() {
         let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
         
         titleLabel.text = congratsMessage
@@ -158,7 +158,7 @@ class CongratulationsViewController: UIViewController {
         
         for star_index in 0..<puzzles {
             let star = stars[star_index]
-            animateImageView(star, filename: "colored_star")
+            animateImageView(star, filename: "colored_star", duration: 1.0, delay: Double(star_index) * 1.0)
             // TODO: make some sound effect
         }
         
@@ -168,7 +168,7 @@ class CongratulationsViewController: UIViewController {
         secondary_action = UserAction.challange
     }
     
-    private func beat_level() {
+    fileprivate func beat_level() {
         let winMessage = NSLocalizedString("You beat level ", comment: "friendly beat level message in alert")
         var modeMessage = ""
         switch difficulty {
@@ -179,8 +179,8 @@ class CongratulationsViewController: UIViewController {
             case .hard:
                 modeMessage = NSLocalizedString("on hard mode!", comment: "beat level on hard mode")
         }
-        titleLabel.text = winMessage + String(level) + modeMessage
-        animateImageView(trophyImage, filename: "trophy")
+        titleLabel.text = winMessage + String(level) + " " + modeMessage
+        animateImageView(trophyImage, filename: "trophy", duration: 1.0, delay: 0)
         levelLabel.text = String(level)
         primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert"), for: UIControlState())
         primary_action = UserAction.nextLevel
@@ -190,7 +190,7 @@ class CongratulationsViewController: UIViewController {
         
     }
     
-    private func rate() {
+    fileprivate func rate() {
         let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
         titleLabel.text = rateMessage
         primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert"), for: UIControlState())
@@ -199,43 +199,42 @@ class CongratulationsViewController: UIViewController {
         secondary_action = UserAction.rate
     }
     
-    private func showStars() {
+    fileprivate func showStars() {
         for star in stars {
             star.isHidden=false
         }
         
     }
-    private func animateImageView(_ image: UIImageView, filename: String) {
+    fileprivate func animateImageView(_ image: UIImageView, filename: String, duration: TimeInterval, delay: TimeInterval) {
         if let new_image = UIImage(named: filename) {
             // animate the new star
             image.animationImages = [new_image]
-            image.animationDuration = 1.0
+            image.animationDuration = duration
             image.startAnimating()
         }
-    
         // play sound effect
     }
     
-    private func hideObjects(_ objects: [UIView]) {
+    fileprivate func hideObjects(_ objects: [UIView]) {
         for el in objects {
             el.isHidden = true
         }
     }
     
-    private func snapToPoint(_ point: CGPoint, view: UIView) {
+    fileprivate func snapToPoint(_ point: CGPoint, view: UIView) {
         let snap = UISnapBehavior(item: view, snapTo: point)
         animator?.addBehavior(snap);
     }
     
     // Primary action!
     @IBAction func dismissCongratulations(_ sender: AnyObject) {
-        dismissView(action: self.primary_action)
+        dismissView(self.primary_action)
     }
     @IBAction func secondaryAction(_ sender: Any) {
-        dismissView(action: self.secondary_action)
+        dismissView(self.secondary_action)
     }
     
-    private func dismissView(action: UserAction?) {
+    fileprivate func dismissView(_ action: UserAction?) {
         gravity.addItem(congratulationsView);
         gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);

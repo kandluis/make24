@@ -11,7 +11,7 @@ import UIKit
 let APP_ID = "id959379869"
 
 class Common {
-    class func shareApp(view: UIViewController, message: String) {
+    class func shareApp(_ view: UIViewController, message: String) {
         var objectsToShare = [Any]()
         if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
             objectsToShare = [message, myWebsite]
@@ -29,7 +29,7 @@ class Common {
         // TODO test this
         let url_string = "https://www.youtube.com/watch?v=6dAL9ztYRqQ"
     //    let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
-        if let url = NSURL(string: url_string) {
+        if let url = URL(string: url_string) {
             UIApplication.shared.openURL(url as URL)
         }
     }

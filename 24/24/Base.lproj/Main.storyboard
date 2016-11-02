@@ -134,7 +134,7 @@
                                 <rect key="frame" x="18" y="407" width="342" height="106"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="uo7-Kx-JRG">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="uo7-Kx-JRG">
                                 <rect key="frame" x="31" y="419" width="70" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="40"/>
@@ -146,10 +146,10 @@
                                     <action selector="populateAnswers:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h1k-v8-f0x"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TSS-Ak-cSB">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TSS-Ak-cSB">
                                 <rect key="frame" x="113" y="419" width="70" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="40"/>
                                 <state key="normal" title="4" backgroundImage="tile_large">
                                     <color key="titleColor" red="0.3911588191986084" green="0.35708537697792053" blue="0.32031872868537903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -157,10 +157,10 @@
                                     <action selector="populateAnswers:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rbu-A4-6Wb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="P0L-VQ-GwZ">
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="P0L-VQ-GwZ">
                                 <rect key="frame" x="193" y="419" width="70" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="40"/>
                                 <state key="normal" title="3" backgroundImage="tile_large">
                                     <color key="titleColor" red="0.3911588191986084" green="0.35708537697792053" blue="0.32031872868537903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -168,10 +168,10 @@
                                     <action selector="populateAnswers:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xIH-Im-ZCw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Meb-0g-Jdc">
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Meb-0g-Jdc">
                                 <rect key="frame" x="274" y="419" width="70" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="40"/>
                                 <state key="normal" title="6" backgroundImage="tile_large">
                                     <color key="titleColor" red="0.3911588191986084" green="0.35708537697792053" blue="0.32031872868537903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -183,7 +183,7 @@
                                 <rect key="frame" x="18" y="539" width="342" height="95"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1Os-nF-zNz">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1Os-nF-zNz">
                                 <rect key="frame" x="31" y="550" width="70" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="49"/>
@@ -194,7 +194,7 @@
                                     <action selector="populateOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XCA-nv-7ch"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="VV7-jJ-qQc">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="VV7-jJ-qQc">
                                 <rect key="frame" x="113" y="550" width="70" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="49"/>
@@ -205,7 +205,7 @@
                                     <action selector="populateOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KSB-Ya-qkG"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Voi-Bu-K7o">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Voi-Bu-K7o">
                                 <rect key="frame" x="193" y="550" width="70" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="49"/>
@@ -216,7 +216,7 @@
                                     <action selector="populateOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Yj0-wn-JW9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eKP-Lw-cfc">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eKP-Lw-cfc">
                                 <rect key="frame" x="274" y="550" width="70" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="49"/>
