@@ -1,4 +1,3 @@
-
 /* Class = "UIButton"; normalTitle = "+"; ObjectID = "1Os-nF-zNz"; */
 "1Os-nF-zNz.normalTitle" = "+";
 
@@ -11,20 +10,11 @@
 /* Class = "UIButton"; normalTitle = "Next Level"; ObjectID = "2xc-SI-y05"; */
 "2xc-SI-y05.normalTitle" = "下一级";
 
-/* Class = "UIButton"; normalTitle = "Keep Going"; ObjectID = "3g3-Kz-CHs"; */
-"3g3-Kz-CHs.normalTitle" = "继续";
-
 /* Class = "UIButton"; normalTitle = "Skip"; ObjectID = "Ckp-ph-u9O"; */
 "Ckp-ph-u9O.normalTitle" = "跳跃";
 
 /* Class = "UILabel"; text = "Make 24 using all the given numbers!"; ObjectID = "HfC-9N-M4Z"; */
 "HfC-9N-M4Z.text" = "目标是通过使用所有四个数字来获得24";
-
-/* Class = "UIButton"; normalTitle = "Try Again"; ObjectID = "K2g-Wx-Xg8"; */
-"K2g-Wx-Xg8.normalTitle" = "再试一次";
-
-/* Class = "UILabel"; text = "Rate"; ObjectID = "Kwr-oI-Jzr"; */
-"Kwr-oI-Jzr.text" = "估价";
 
 /* Class = "UIButton"; normalTitle = "CLEAR"; ObjectID = "LGX-Lg-qek"; */
 "LGX-Lg-qek.normalTitle" = "取消";
@@ -34,12 +24,6 @@
 
 /* Class = "UIButton"; normalTitle = "6"; ObjectID = "Meb-0g-Jdc"; */
 "Meb-0g-Jdc.normalTitle" = "6";
-
-/* Class = "UILabel"; text = "More Games"; ObjectID = "MgJ-qJ-RzE"; */
-"MgJ-qJ-RzE.text" = "更多游戏";
-
-/* Class = "UILabel"; text = "Share"; ObjectID = "O67-Ux-osd"; */
-"O67-Ux-osd.text" = "分享";
 
 /* Class = "UILabel"; text = "Congrats!"; ObjectID = "Om5-V3-VPV"; */
 "Om5-V3-VPV.text" = "祝贺!";
@@ -68,9 +52,6 @@
 /* Class = "UILabel"; text = "The goal is to make 24"; ObjectID = "aNh-qm-SKw"; */
 "aNh-qm-SKw.text" = "目标是通过使用所有四个数字来获得24";
 
-/* Class = "UILabel"; text = "Tutorial"; ObjectID = "bMz-hb-L5X"; */
-"bMz-hb-L5X.text" = "教程";
-
 /* Class = "UILabel"; text = "Use all the numbers. Tap any number or operation to start."; ObjectID = "byi-j8-OI7"; */
 "byi-j8-OI7.text" = "使用所有的数字。 点击任意数字或操作开始。";
 
@@ -80,17 +61,11 @@
 /* Class = "UILabel"; text = "0"; ObjectID = "fXN-3M-u5F"; */
 "fXN-3M-u5F.text" = "0";
 
-/* Class = "UILabel"; text = "Timed Trials"; ObjectID = "guO-x5-202"; */
-"guO-x5-202.text" = "定时试验";
-
 /* Class = "UIButton"; normalTitle = "Leaderboard"; ObjectID = "hlJ-th-oI6"; */
 "hlJ-th-oI6.normalTitle" = "排行榜";
 
 /* Class = "UILabel"; text = "B"; ObjectID = "jVk-Vn-OFq"; */
 "jVk-Vn-OFq.text" = "B";
-
-/* Class = "UILabel"; text = "menu"; ObjectID = "r8p-Zk-blR"; */
-"r8p-Zk-blR.text" = "menu";
 
 /* Class = "UIButton"; normalTitle = "LEADERBOARD"; ObjectID = "ssI-i1-DKN"; */
 "ssI-i1-DKN.normalTitle" = "排行榜";
@@ -98,8 +73,6 @@
 /* Class = "UIButton"; normalTitle = "6"; ObjectID = "uo7-Kx-JRG"; */
 "uo7-Kx-JRG.normalTitle" = "6";
 
-/* Class = "UILabel"; text = "Multiplayer"; ObjectID = "yPW-ml-kIG"; */
-"yPW-ml-kIG.text" = "多人游戏";
-
 /* Class = "UILabel"; text = "SCORE"; ObjectID = "zyT-93-uS6"; */
 "zyT-93-uS6.text" = "分数";
+

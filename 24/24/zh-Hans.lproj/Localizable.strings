@@ -1,0 +1,45 @@
+/* lose alert */
+"Ask A Friend" = "问朋友";
+
+/* friendly lose message in alert */
+"Aww snap!" = "再来一次";
+
+/* congrats alert */
+"Challenge" = "敢于朋友";
+
+/* friendly congrats message in alert */
+"Congrats!" = "祝贺";
+
+/* friendly rate message in alert */
+"Enjoying the game?" = "喜欢吗?";
+
+/* congrats alert */
+"Keep Going" = "继续";
+
+/* beat level alert */
+"Leaderboard" = "排行榜";
+
+/* beat level alert */
+"Next Level" = "下一级";
+
+/* rate alert */
+"Not Now" = "跳跃";
+
+/* rate alert */
+"Rate the App" = "评论";
+
+/* lose alert */
+"Try Again" = "再试一次";
+
+/* friendly beat level message in alert */
+"You beat level " = " 你赢了 ";
+
+/* beat level on easy mode */
+"on easy mode!" = "容易";
+
+/* beat level on hard mode */
+"on hard mode!" = "难";
+
+/* beat level on medium mode */
+"on medium mode!" = "中";
+

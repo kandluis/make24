@@ -1,0 +1,45 @@
+/* lose alert */
+"Ask A Friend" = "Pregúntale";
+
+/* friendly lose message in alert */
+"Aww snap!" = "Aww! ";
+
+/* congrats alert */
+"Challenge" = "Desafíalo";
+
+/* friendly congrats message in alert */
+"Congrats!" = "Felicitaciones! ";
+
+/* friendly rate message in alert */
+"Enjoying the game?" = "¿Estas divirtiendo?";
+
+/* congrats alert */
+"Keep Going" = "Sigue";
+
+/* beat level alert */
+"Leaderboard" = "Marcador";
+
+/* beat level alert */
+"Next Level" = "Siguiente Nivel";
+
+/* rate alert */
+"Not Now" = "Salta";
+
+/* rate alert */
+"Rate the App" = "Califica la Aplicación";
+
+/* lose alert */
+"Try Again" = "De Nuevo";
+
+/* friendly beat level message in alert */
+"You beat level " = "Superaste el nivel";
+
+/* beat level on easy mode */
+"on easy mode!" = "Fácil";
+
+/* beat level on hard mode */
+"on hard mode!" = "Difícil";
+
+/* beat level on medium mode */
+"on medium mode!" = "Medio";
+

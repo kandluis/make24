@@ -439,9 +439,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 self.session?.sendMessage(msg, replyHandler: { (reply)->Void in }, errorHandler: { (reply)->Void in })
                 
             }
-            // Store puzzle in shared defaults.
-            defaults.set(currentNumbers, forKey: "puzzle")
-            defaults.synchronize()
             
             // Numbers used reset!
             numbersLeft = 4
