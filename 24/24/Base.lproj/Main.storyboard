@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -270,6 +270,17 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Med." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XsV-Py-RR5">
+                                <rect key="frame" x="291" y="197" width="39" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.73476743698120117" green="0.6790778636932373" blue="0.62850797176361084" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="hard" id="Cwk-Pr-Its">
+                                <rect key="frame" x="253" y="202" width="33" height="12"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.97056084871292114" green="0.95320701599121094" blue="0.89487993717193604" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -282,6 +293,8 @@
                         <outlet property="answerOperationBackground" destination="A7h-c8-FuD" id="ttU-LZ-zjI"/>
                         <outlet property="answerOperationLabel" destination="jVk-Vn-OFq" id="0oI-jh-exk"/>
                         <outlet property="clearButton" destination="LGX-Lg-qek" id="cok-eY-9CH"/>
+                        <outlet property="difficultyImage" destination="Cwk-Pr-Its" id="upx-bc-S1a"/>
+                        <outlet property="difficultyLabel" destination="XsV-Py-RR5" id="CTz-r4-4zj"/>
                         <outlet property="divideButton" destination="eKP-Lw-cfc" id="G8r-j5-i90"/>
                         <outlet property="leaderBoardButton" destination="ssI-i1-DKN" id="QvA-Jm-xUn"/>
                         <outlet property="minusButton" destination="VV7-jJ-qQc" id="AHp-Vf-bvr"/>
@@ -301,7 +314,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="372" y="161"/>
+            <point key="canvasLocation" x="371.5" y="160.5"/>
         </scene>
         <!--Congratulations View Controller-->
         <scene sceneID="iha-rL-2LN">
@@ -449,6 +462,7 @@
         <image name="grey_star" width="19" height="18"/>
         <image name="groove_large" width="72" height="84"/>
         <image name="groove_small" width="72" height="73"/>
+        <image name="hard" width="31" height="9"/>
         <image name="ice_cream" width="160" height="160"/>
         <image name="menu_background" width="205" height="130"/>
         <image name="numbers_background" width="582" height="188"/>

@@ -71,6 +71,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     @IBOutlet weak var optionsButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     
+    // Difficulty Options
+    @IBOutlet weak var difficultyLabel: UILabel!
+    @IBOutlet weak var difficultyImage: UIImageView!
+    
     // Gameplay related variables
     var answersFilled: Int = 0
     var numbersLeft: Int = 4
@@ -81,7 +85,26 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             defaults.set(newValue.rawValue, forKey: KeyForSetting.difficulty.rawValue)
         }
         didSet(oldValue) {
+            // Update display properties.
             updateInternalProgress()
+            
+            
+            // Determine image and text to use.
+            switch difficulty {
+            case .easy:
+                difficultyLabel.text = "Easy"
+                difficultyImage.image = #imageLiteral(resourceName: "easy")
+            case .medium:
+                difficultyLabel.text = "Med."
+                difficultyImage.image = #imageLiteral(resourceName: "medium")
+            case .hard:
+                difficultyLabel.text = "Hard"
+                difficultyImage.image = #imageLiteral(resourceName: "hard")
+                
+            }
+            difficultyLabel.sizeToFit()
+            difficultyImage.bounds.size = difficultyImage.image!.size
+            difficultyImage.center.x = difficultyLabel.frame.origin.x - difficultyImage.bounds.size.width / 2 - 4
         }
     }
     var playerLevel: Int = 1 {
@@ -916,10 +939,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     /*********
      * Options Menu Functions
      *********/
-    func createOptionsView(_ viewTapped: UITapGestureRecognizer,  image_name: String, text: String, frame: CGRect)  ->  OptionView {
+    func createOptionsView(_ viewTapped: UITapGestureRecognizer,  image: UIImage, text: String, frame: CGRect)  ->  OptionView {
         
         
-        let newView = OptionView(type: OptionViewType.bar(icon:UIImage(named: image_name), text:text), frame: frame)
+        let newView = OptionView(type: OptionViewType.bar(icon: image, text:text), frame: frame)
         
         viewTapped.numberOfTapsRequired = 1
         newView.isUserInteractionEnabled = true
@@ -928,7 +951,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         return newView
         
     }
-    typealias ViewInfo = (selector: Selector, image: String, text: String)
+    typealias ViewInfo = (selector: Selector, image: UIImage, text: String)
     func makeOptionViews(_ viewInfo: [ViewInfo])->[UIView] {
         let totalFit:CGFloat = 10
         let height:CGFloat = min(57, view.frame.size.height / totalFit)
@@ -942,7 +965,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             let rect = CGRect(x: x, y: y + (height + margin) * CGFloat(i), width: width, height: height)
             
             let tap = UITapGestureRecognizer(target: self, action: info.selector)
-            let view = createOptionsView(tap, image_name: info.image, text: info.text, frame: rect)
+            let view = createOptionsView(tap, image: info.image, text: info.text, frame: rect)
             view.backgroundColor = UIColor(red: 247/255, green: 243/255, blue: 228/255, alpha: 1)
             return view
 
@@ -995,9 +1018,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func showModes() {
         let info = [
-            (selector: #selector(self.setEasyMode), image: "easy", text: "Easy"),
-            (selector: #selector(self.setMediumMode), image: "medium", text: "Medium"),
-            (selector: #selector(self.setHardMode), image: "hard", text: "Hard")
+            (selector: #selector(self.setEasyMode), image: (difficulty != .easy) ? #imageLiteral(resourceName: "easy"): #imageLiteral(resourceName: "checkmark"), text: "Easy"),
+            (selector: #selector(self.setMediumMode), image: (difficulty != .medium) ? #imageLiteral(resourceName: "medium"): #imageLiteral(resourceName: "checkmark"), text: "Medium"),
+            (selector: #selector(self.setHardMode), image: (difficulty != .hard) ?#imageLiteral(resourceName: "hard") : #imageLiteral(resourceName: "checkmark"), text: "Hard")
         ]
         let views = makeOptionViews(info)
         self.optionsView.addNextViews(views)
@@ -1016,7 +1039,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.hide()
     }
     func setEasyMode() {
-        setMode(GameDifficulty.medium)
+        setMode(GameDifficulty.easy)
     }
     
     func setMediumMode() {
@@ -1115,15 +1138,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     @IBAction func showOptions(_ sender: AnyObject) {
         let muteButtonText = silent ? "Unmute" : "Mute"
-        let soundIcon = silent ? "mute" : "sound_brown"
+        let soundIcon = silent ? #imageLiteral(resourceName: "mute") : #imageLiteral(resourceName: "sound_brown")
         
         let info = [
-            (selector: #selector(self.leaderBoardOption), image: "leaderboard", text: "Leaderboard"),
+            (selector: #selector(self.leaderBoardOption), image: #imageLiteral(resourceName: "leaderboard"), text: "Leaderboard"),
             (selector: #selector(self.soundToggle), image: soundIcon, text: muteButtonText),
-            (selector: #selector(self.tutorialOption), image: "tutorial", text: "Tutorial"),
-            (selector: #selector(self.rateOption), image: "rate", text: "Rate the app"),
-            (selector: #selector(self.shareOption), image: "share", text: "Share with friends"),
-            (selector: #selector(self.changeModesOption), image: "modes", text: "Change Difficulty Level")
+            (selector: #selector(self.tutorialOption), image: #imageLiteral(resourceName: "tutorial"), text: "Tutorial"),
+            (selector: #selector(self.rateOption), image: #imageLiteral(resourceName: "rate"), text: "Rate the app"),
+            (selector: #selector(self.shareOption), image: #imageLiteral(resourceName: "share"), text: "Share with friends"),
+            (selector: #selector(self.changeModesOption), image: #imageLiteral(resourceName: "modes"), text: "Change Difficulty Level")
             ]
         let views = makeOptionViews(info)
         self.optionsView.show(views)
