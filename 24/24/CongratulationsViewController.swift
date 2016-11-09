@@ -143,9 +143,9 @@ class CongratulationsViewController: UIViewController {
     fileprivate func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage
-        primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert"), for: UIControlState())
+        primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert try again"), for: UIControlState())
         primary_action = .retry
-        secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert ask a friend"), for: UIControlState())
         secondary_action = .ask
     }
     
@@ -162,9 +162,9 @@ class CongratulationsViewController: UIViewController {
             // TODO: make some sound effect
         }
         
-        primaryButton.setTitle(NSLocalizedString("Keep Going", comment: "congrats alert"), for: UIControlState())
+        primaryButton.setTitle(NSLocalizedString("Keep Going", comment: "congrats alert keep going"), for: UIControlState())
         primary_action = UserAction.keepGoing
-        secondaryButton.setTitle(NSLocalizedString("Challenge", comment: "congrats alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Challenge", comment: "congrats alert challange"), for: UIControlState())
         secondary_action = UserAction.challange
     }
     
@@ -182,9 +182,9 @@ class CongratulationsViewController: UIViewController {
         titleLabel.text = winMessage + String(level) + " " + modeMessage
         animateImageView(trophyImage, filename: "trophy", duration: 1.0, delay: 0)
         levelLabel.text = String(level)
-        primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert"), for: UIControlState())
+        primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert next level"), for: UIControlState())
         primary_action = UserAction.nextLevel
-        secondaryButton.setTitle(NSLocalizedString("Leaderboard", comment: "beat level alert"), for:UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Leaderboard", comment: "beat level alert leaderboard"), for:UIControlState())
         secondary_action = UserAction.leaderboard
 
         
@@ -193,9 +193,9 @@ class CongratulationsViewController: UIViewController {
     fileprivate func rate() {
         let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
         titleLabel.text = rateMessage
-        primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert"), for: UIControlState())
+        primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert not now"), for: UIControlState())
         primary_action = UserAction.dismiss
-        secondaryButton.setTitle(NSLocalizedString("Rate the App", comment: "rate alert"), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Rate the App", comment: "rate alert rate the app"), for: UIControlState())
         secondary_action = UserAction.rate
     }
     

@@ -650,7 +650,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             self.defaults.set(true, forKey: KeyForSetting.rated.rawValue)
         case .challange:
             let puzzleAsString = self.formatPuzzleToString(self.currentNumbers)
-            let message = "I challenge you to solve this puzzle! Use all four numbers \(puzzleAsString),and any basic operation (+,-,x,/) to make 24."
+            let challange_msg1 = NSLocalizedString("I challenge you to solve this puzzle! Use all four numbers", comment: "Initial message when creating a challange text. Numbers will be appended.")
+            let challange_msg2 = NSLocalizedString("and any basic operation (+,-,x,/) to make 24.", comment: "Second half of the message presented when challenging.")
+            let message = challange_msg1 + " \(puzzleAsString), " + challange_msg2
             Common.shareApp(self, message: message)
         case .nextLevel:
             if !self.defaults.bool(forKey: KeyForSetting.rated.rawValue) {
@@ -673,7 +675,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             }
         case .ask:
             let puzzleAsString = self.formatPuzzleToString(self.currentNumbers)
-            let message = "Can you help me solve this puzzle? Use all four numbers \(puzzleAsString),and any basic operation (+,-,x,/) to make 24."
+            let help_msg1 = NSLocalizedString("Can you help me solve this puzzle? Use all four numbers", comment: "Initial message when asking for help. Numbers will be appended.")
+            let help_msg2 = NSLocalizedString("and any basic operation (+,-,x,/) to make 24.", comment: "Second half of the message presented when asking for help.")
+            let message = help_msg1 + " \(puzzleAsString), " + help_msg2
             Common.shareApp(self, message: message)
         case .keepGoing, .dismiss, .retry:
             break
@@ -780,10 +784,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      * Leaderboard Functions
      ************/
     func alertUserAboutLogin(after completion: Closure?) {
-        let title = "Fail Login!"
-        let message = "Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!"
+        let title = NSLocalizedString("Fail Login!", comment: "User failed to login to GameCenter")
+        let message = NSLocalizedString("Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!", comment: "Mesage presented to the user when they fail to login to the GameCenter")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Accept action"), style: .default) { _ in })
         self.present(alert, animated: true, completion: completion)
     }
     func showLeaderboard(attemptAuthentication authenticate: Bool) {
@@ -1006,7 +1010,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func shareOption(){
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
-            let message = "I'm playing this new, awesome game! Check it out!"
+            let message = NSLocalizedString("I'm playing this new, awesome game! Check it out!", comment: "Message when the user selects to share!")
             Common.shareApp(self, message: message)
         }
         self.optionsView.hide()
@@ -1021,9 +1025,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func showModes() {
         let info = [
-            (selector: #selector(self.setEasyMode), image: (difficulty != .easy) ? #imageLiteral(resourceName: "easy"): #imageLiteral(resourceName: "checkmark"), text: "Easy"),
-            (selector: #selector(self.setMediumMode), image: (difficulty != .medium) ? #imageLiteral(resourceName: "medium"): #imageLiteral(resourceName: "checkmark"), text: "Medium"),
-            (selector: #selector(self.setHardMode), image: (difficulty != .hard) ?#imageLiteral(resourceName: "hard") : #imageLiteral(resourceName: "checkmark"), text: "Hard")
+            (selector: #selector(self.setEasyMode), image: (difficulty != .easy) ? #imageLiteral(resourceName: "easy"): #imageLiteral(resourceName: "checkmark"), text: NSLocalizedString("Easy", comment: "Easy difficulty option")),
+            (selector: #selector(self.setMediumMode), image: (difficulty != .medium) ? #imageLiteral(resourceName: "medium"): #imageLiteral(resourceName: "checkmark"), text: NSLocalizedString("Medium", comment: "Medium difficulty option")),
+            (selector: #selector(self.setHardMode), image: (difficulty != .hard) ?#imageLiteral(resourceName: "hard") : #imageLiteral(resourceName: "checkmark"), text: NSLocalizedString("Hard", comment: "Hard difficulty option"))
         ]
         let views = makeOptionViews(info)
         self.optionsView.addNextViews(views)
