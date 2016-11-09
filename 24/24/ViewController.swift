@@ -92,13 +92,13 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             // Determine image and text to use.
             switch difficulty {
             case .easy:
-                difficultyLabel.text = "Easy"
+                difficultyLabel.text = NSLocalizedString("Easy", comment: "String shown in difficulty ui (keep short)")
                 difficultyImage.image = #imageLiteral(resourceName: "easy")
             case .medium:
-                difficultyLabel.text = "Med."
+                difficultyLabel.text = NSLocalizedString("Med.", comment: "String shown in difficulty ui (keep short)")
                 difficultyImage.image = #imageLiteral(resourceName: "medium")
             case .hard:
-                difficultyLabel.text = "Hard"
+                difficultyLabel.text = NSLocalizedString("Hard", comment: "String shown in difficulty ui (keep short)")
                 difficultyImage.image = #imageLiteral(resourceName: "hard")
                 
             }
@@ -467,8 +467,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             numbersLeft = 4
         }
         else {
-            let alert = UIAlertController(title: "Out of problems!", message: "You've run out of problems! Sending you back to square 1!", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+            let title = NSLocalizedString("Out of problems!", comment: "Title of alert when user has exhausted all possible problems")
+            let message = NSLocalizedString("You've run out of problems! Sending you back to square 1!", comment: "Message presented to the user when they have run out of problems!")
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Acceptance button for alert!"), style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
             self.present(alert, animated: true, completion: nil)
             
             let delegate = UIApplication.shared.delegate as!AppDelegate
@@ -541,9 +543,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         case "/" :
             if number2 == 0 {
                 startStopBackgroundMusic()
-                
-                let alert = UIAlertController(title: "Invalid Operation", message: "Division by zero is not allowed! ", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
+                let title = NSLocalizedString("Invalid Operation", comment: "Title of alert when user attempts to divide by 0")
+                let message = NSLocalizedString("Division by zero is not allowed!", comment: "Message to user when attempting to divide by 0")
+                let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Accept alert buttong"), style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.startStopBackgroundMusic()}))
                 self.present(alert, animated: true, completion: nil)
                 playSound(computerMistake)
                 return clearBoard()
@@ -1137,17 +1140,16 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
     }
     @IBAction func showOptions(_ sender: AnyObject) {
-        let muteButtonText = silent ? "Unmute" : "Mute"
+        let muteButtonText = silent ? NSLocalizedString("Unmute", comment: "Text shown when unmuting the sound") : NSLocalizedString("Mute", comment: "Text shown when muting")
         let soundIcon = silent ? #imageLiteral(resourceName: "mute") : #imageLiteral(resourceName: "sound_brown")
         
         let info = [
-            (selector: #selector(self.leaderBoardOption), image: #imageLiteral(resourceName: "leaderboard"), text: "Leaderboard"),
+            (selector: #selector(self.leaderBoardOption), image: #imageLiteral(resourceName: "leaderboard"), text: NSLocalizedString("Leaderboard", comment: "Text shown for the leaderboard option")),
             (selector: #selector(self.soundToggle), image: soundIcon, text: muteButtonText),
-            (selector: #selector(self.tutorialOption), image: #imageLiteral(resourceName: "tutorial"), text: "Tutorial"),
-            (selector: #selector(self.rateOption), image: #imageLiteral(resourceName: "rate"), text: "Rate the app"),
-            (selector: #selector(self.shareOption), image: #imageLiteral(resourceName: "share"), text: "Share with friends"),
-            (selector: #selector(self.changeModesOption), image: #imageLiteral(resourceName: "modes"), text: "Change Difficulty Level")
-            ]
+            (selector: #selector(self.tutorialOption), image: #imageLiteral(resourceName: "tutorial"), text: NSLocalizedString("Tutorial", comment: "Text shown for the tutorial option")),
+            (selector: #selector(self.rateOption), image: #imageLiteral(resourceName: "rate"), text: NSLocalizedString("Rate the app", comment: "Text shown for the option to rate the app.")),
+            (selector: #selector(self.shareOption), image: #imageLiteral(resourceName: "share"), text: NSLocalizedString("Share with friends", comment: "Text shown for the option to share the app with friends.")),
+            (selector: #selector(self.changeModesOption), image: #imageLiteral(resourceName: "modes"), text: NSLocalizedString("Change Difficulty Level", comment: "Text shown for the option to change difficulty level"))]
         let views = makeOptionViews(info)
         self.optionsView.show(views)
     }
