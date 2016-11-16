@@ -143,6 +143,7 @@ class CongratulationsViewController: UIViewController {
     fileprivate func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage
+        titleLabel.sizeToFit()
         primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert try again"), for: UIControlState())
         primary_action = .retry
         secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert ask a friend"), for: UIControlState())
@@ -153,6 +154,7 @@ class CongratulationsViewController: UIViewController {
         let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
         
         titleLabel.text = congratsMessage
+        titleLabel.sizeToFit()
         
         showStars()
         
@@ -169,7 +171,7 @@ class CongratulationsViewController: UIViewController {
     }
     
     fileprivate func beat_level() {
-        let winMessage = NSLocalizedString("You beat level ", comment: "friendly beat level message in alert")
+        let winMessage = NSLocalizedString("You beat level", comment: "friendly beat level message in alert")
         var modeMessage = ""
         switch difficulty {
             case .easy:
@@ -179,7 +181,8 @@ class CongratulationsViewController: UIViewController {
             case .hard:
                 modeMessage = NSLocalizedString("on hard mode!", comment: "beat level on hard mode")
         }
-        titleLabel.text = winMessage + String(level) + " " + modeMessage
+        titleLabel.text = winMessage + " " + String(level) + " " + modeMessage
+        titleLabel.sizeToFit()
         animateImageView(trophyImage, filename: "trophy", duration: 1.0, delay: 0)
         levelLabel.text = String(level)
         primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert next level"), for: UIControlState())
@@ -193,6 +196,7 @@ class CongratulationsViewController: UIViewController {
     fileprivate func rate() {
         let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
         titleLabel.text = rateMessage
+        titleLabel.sizeToFit()
         primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert not now"), for: UIControlState())
         primary_action = UserAction.dismiss
         secondaryButton.setTitle(NSLocalizedString("Rate the App", comment: "rate alert rate the app"), for: UIControlState())

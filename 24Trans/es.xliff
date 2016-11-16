@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="24/Base.lproj/LaunchScreen.storyboard" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body/>
+  </file>
+  <file original="24/Base.lproj/Main.storyboard" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="1Os-nF-zNz.normalTitle">
+        <source>+</source>
+        <target>+</target>
+        <note>Class = "UIButton"; normalTitle = "+"; ObjectID = "1Os-nF-zNz";</note>
+      </trans-unit>
+      <trans-unit id="1SG-dY-ORe.text">
+        <source>B</source>
+        <target>B</target>
+        <note>Class = "UILabel"; text = "B"; ObjectID = "1SG-dY-ORe";</note>
+      </trans-unit>
+      <trans-unit id="1mj-oM-g2J.text">
+        <source>B</source>
+        <target>B</target>
+        <note>Class = "UILabel"; text = "B"; ObjectID = "1mj-oM-g2J";</note>
+      </trans-unit>
+      <trans-unit id="2xc-SI-y05.normalTitle">
+        <source>Next Level</source>
+        <target>Siguiente Nivel</target>
+        <note>Class = "UIButton"; normalTitle = "Next Level"; ObjectID = "2xc-SI-y05";</note>
+      </trans-unit>
+      <trans-unit id="Ckp-ph-u9O.normalTitle">
+        <source>Skip</source>
+        <target>Salta</target>
+        <note>Class = "UIButton"; normalTitle = "Skip"; ObjectID = "Ckp-ph-u9O";</note>
+      </trans-unit>
+      <trans-unit id="HfC-9N-M4Z.text">
+        <source>Make 24 using all the given numbers!</source>
+        <target>¡Haz 24 con todos los números dados!</target>
+        <note>Class = "UILabel"; text = "Make 24 using all the given numbers!"; ObjectID = "HfC-9N-M4Z";</note>
+      </trans-unit>
+      <trans-unit id="LGX-Lg-qek.normalTitle">
+        <source>CLEAR</source>
+        <target>LIMPIA</target>
+        <note>Class = "UIButton"; normalTitle = "CLEAR"; ObjectID = "LGX-Lg-qek";</note>
+      </trans-unit>
+      <trans-unit id="Mbw-H1-fCM.text">
+        <source>1</source>
+        <target>1</target>
+        <note>Class = "UILabel"; text = "1"; ObjectID = "Mbw-H1-fCM";</note>
+      </trans-unit>
+      <trans-unit id="Meb-0g-Jdc.normalTitle">
+        <source>6</source>
+        <target>6</target>
+        <note>Class = "UIButton"; normalTitle = "6"; ObjectID = "Meb-0g-Jdc";</note>
+      </trans-unit>
+      <trans-unit id="Om5-V3-VPV.text">
+        <source>Congrats!</source>
+        <target>¡Felicitaciones!</target>
+        <note>Class = "UILabel"; text = "Congrats!"; ObjectID = "Om5-V3-VPV";</note>
+      </trans-unit>
+      <trans-unit id="P0L-VQ-GwZ.normalTitle">
+        <source>3</source>
+        <target>3</target>
+        <note>Class = "UIButton"; normalTitle = "3"; ObjectID = "P0L-VQ-GwZ";</note>
+      </trans-unit>
+      <trans-unit id="QJF-3P-yFv.normalTitle">
+        <source>NEW SET</source>
+        <target>NUEVO SET</target>
+        <note>Class = "UIButton"; normalTitle = "NEW SET"; ObjectID = "QJF-3P-yFv";</note>
+      </trans-unit>
+      <trans-unit id="TSS-Ak-cSB.normalTitle">
+        <source>4</source>
+        <target>4</target>
+        <note>Class = "UIButton"; normalTitle = "4"; ObjectID = "TSS-Ak-cSB";</note>
+      </trans-unit>
+      <trans-unit id="V2T-hO-iLh.normalTitle">
+        <source>RESET</source>
+        <target>REINICIA</target>
+        <note>Class = "UIButton"; normalTitle = "RESET"; ObjectID = "V2T-hO-iLh";</note>
+      </trans-unit>
+      <trans-unit id="VV7-jJ-qQc.normalTitle">
+        <source>-</source>
+        <target>-</target>
+        <note>Class = "UIButton"; normalTitle = "-"; ObjectID = "VV7-jJ-qQc";</note>
+      </trans-unit>
+      <trans-unit id="Voi-Bu-K7o.normalTitle">
+        <source>x</source>
+        <target>x</target>
+        <note>Class = "UIButton"; normalTitle = "x"; ObjectID = "Voi-Bu-K7o";</note>
+      </trans-unit>
+      <trans-unit id="XfA-5r-qyx.normalTitle">
+        <source>OPTIONS</source>
+        <target>OPCIONES</target>
+        <note>Class = "UIButton"; normalTitle = "OPTIONS"; ObjectID = "XfA-5r-qyx";</note>
+      </trans-unit>
+      <trans-unit id="XsV-Py-RR5.text">
+        <source>Med.</source>
+        <target>Med.</target>
+        <note>Class = "UILabel"; text = "Med."; ObjectID = "XsV-Py-RR5";</note>
+      </trans-unit>
+      <trans-unit id="aNh-qm-SKw.text">
+        <source>The goal is to make 24</source>
+        <target>El objetivo es hacer 24</target>
+        <note>Class = "UILabel"; text = "The goal is to make 24"; ObjectID = "aNh-qm-SKw";</note>
+      </trans-unit>
+      <trans-unit id="byi-j8-OI7.text">
+        <source>Use all the numbers. Tap any number or operation to start.</source>
+        <target>Usa todos los números. Toca cualquier número o operación para empezar.</target>
+        <note>Class = "UILabel"; text = "Use all the numbers. Tap any number or operation to start."; ObjectID = "byi-j8-OI7";</note>
+      </trans-unit>
+      <trans-unit id="eKP-Lw-cfc.normalTitle">
+        <source>/</source>
+        <target>/</target>
+        <note>Class = "UIButton"; normalTitle = "/"; ObjectID = "eKP-Lw-cfc";</note>
+      </trans-unit>
+      <trans-unit id="fXN-3M-u5F.text">
+        <source>0</source>
+        <target>0</target>
+        <note>Class = "UILabel"; text = "0"; ObjectID = "fXN-3M-u5F";</note>
+      </trans-unit>
+      <trans-unit id="hlJ-th-oI6.normalTitle">
+        <source>Leaderboard</source>
+        <target>Clasificación</target>
+        <note>Class = "UIButton"; normalTitle = "Leaderboard"; ObjectID = "hlJ-th-oI6";</note>
+      </trans-unit>
+      <trans-unit id="jVk-Vn-OFq.text">
+        <source>B</source>
+        <target>B</target>
+        <note>Class = "UILabel"; text = "B"; ObjectID = "jVk-Vn-OFq";</note>
+      </trans-unit>
+      <trans-unit id="ssI-i1-DKN.normalTitle">
+        <source>LEADERBOARD</source>
+        <target>CLASIFICACIÓN</target>
+        <note>Class = "UIButton"; normalTitle = "LEADERBOARD"; ObjectID = "ssI-i1-DKN";</note>
+      </trans-unit>
+      <trans-unit id="uo7-Kx-JRG.normalTitle">
+        <source>6</source>
+        <target>6</target>
+        <note>Class = "UIButton"; normalTitle = "6"; ObjectID = "uo7-Kx-JRG";</note>
+      </trans-unit>
+      <trans-unit id="zyT-93-uS6.text">
+        <source>SCORE</source>
+        <target>PUNTOS</target>
+        <note>Class = "UILabel"; text = "SCORE"; ObjectID = "zyT-93-uS6";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24/Info.plist" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24/Localizable.strings" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="Ask A Friend">
+        <source>Ask A Friend</source>
+        <target>Pregúnta a un Amigo</target>
+        <note>lose alert ask a friend</note>
+      </trans-unit>
+      <trans-unit id="Aww snap!">
+        <source>Aww snap!</source>
+        <target>¡A, que feo! </target>
+        <note>friendly lose message in alert</note>
+      </trans-unit>
+      <trans-unit id="Can you help me solve this puzzle? Use all four numbers">
+        <source>Can you help me solve this puzzle? Use all four numbers</source>
+        <target>¿Ayudame a resolver este rompecabezas? Utiliza todos los números</target>
+        <note>Initial message when asking for help. Numbers will be appended.</note>
+      </trans-unit>
+      <trans-unit id="Challenge">
+        <source>Challenge</source>
+        <target>Reta a alguien</target>
+        <note>congrats alert challange</note>
+      </trans-unit>
+      <trans-unit id="Change Difficulty Level">
+        <source>Change Difficulty Level</source>
+        <target>Cambia Dificultad</target>
+        <note>Text shown for the option to change difficulty level</note>
+      </trans-unit>
+      <trans-unit id="Congrats!">
+        <source>Congrats!</source>
+        <target>¡Felicitaciones!</target>
+        <note>friendly congrats message in alert</note>
+      </trans-unit>
+      <trans-unit id="Division by zero is not allowed!">
+        <source>Division by zero is not allowed!</source>
+        <target>¡División por cero no está permitida!</target>
+        <note>Message to user when attempting to divide by 0</note>
+      </trans-unit>
+      <trans-unit id="Easy">
+        <source>Easy</source>
+        <target>Fácil</target>
+        <note>Easy difficulty option
+   String shown in difficulty ui (keep short)</note>
+      </trans-unit>
+      <trans-unit id="Enjoying the game?">
+        <source>Enjoying the game?</source>
+        <target>¿Estas divirtiendote?</target>
+        <note>friendly rate message in alert</note>
+      </trans-unit>
+      <trans-unit id="Fail Login!">
+        <source>Fail Login!</source>
+        <target>Error en Sesión</target>
+        <note>User failed to login to GameCenter</note>
+      </trans-unit>
+      <trans-unit id="Hard">
+        <source>Hard</source>
+        <target>Difícil</target>
+        <note>Hard difficulty option
+   String shown in difficulty ui (keep short)</note>
+      </trans-unit>
+      <trans-unit id="I challenge you to solve this puzzle! Use all four numbers">
+        <source>I challenge you to solve this puzzle! Use all four numbers</source>
+        <target>¡Te desafío a resolver este rompecabezas! Utilisa los cuatro números</target>
+        <note>Initial message when creating a challange text. Numbers will be appended.</note>
+      </trans-unit>
+      <trans-unit id="I'm playing this new, awesome game! Check it out!">
+        <source>I'm playing this new, awesome game! Check it out!</source>
+        <target>¡Estoy jugando este nuevo e impresionante juego! ¡Echale un vistazo!</target>
+        <note>Message when the user selects to share!</note>
+      </trans-unit>
+      <trans-unit id="Invalid Operation">
+        <source>Invalid Operation</source>
+        <target>Operación inválida</target>
+        <note>Title of alert when user attempts to divide by 0</note>
+      </trans-unit>
+      <trans-unit id="Keep Going">
+        <source>Keep Going</source>
+        <target>Sigue</target>
+        <note>congrats alert keep going</note>
+      </trans-unit>
+      <trans-unit id="Leaderboard">
+        <source>Leaderboard</source>
+        <target>Clasificación</target>
+        <note>beat level alert leaderboard
+   Text shown for the leaderboard option</note>
+      </trans-unit>
+      <trans-unit id="Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!">
+        <source>Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!</source>
+        <target>El inicio de sesión ha fallado varias veces. Intenta acceder a través del Centro de juegos o intenta la acción de nuevo.</target>
+        <note>Mesage presented to the user when they fail to login to the GameCenter</note>
+      </trans-unit>
+      <trans-unit id="Medium">
+        <source>Medium</source>
+        <target>Medio</target>
+        <note>Medium difficulty option</note>
+      </trans-unit>
+      <trans-unit id="Mute">
+        <source>Mute</source>
+        <target>Mudo</target>
+        <note>Text shown when muting</note>
+      </trans-unit>
+      <trans-unit id="Next Level">
+        <source>Next Level</source>
+        <target>Siguiente Nivel</target>
+        <note>beat level alert next level</note>
+      </trans-unit>
+      <trans-unit id="Not Now">
+        <source>Not Now</source>
+        <target>Salta</target>
+        <note>rate alert not now</note>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target>OK</target>
+        <note>Accept action
+   Accept alert buttong
+   Acceptance button for alert!</note>
+      </trans-unit>
+      <trans-unit id="Out of problems!">
+        <source>Out of problems!</source>
+        <target>¡Fuera de rompecabezas!</target>
+        <note>Title of alert when user has exhausted all possible problems</note>
+      </trans-unit>
+      <trans-unit id="Rate the App">
+        <source>Rate the App</source>
+        <target>Califica el App</target>
+        <note>rate alert rate the app</note>
+      </trans-unit>
+      <trans-unit id="Rate the app">
+        <source>Rate the app</source>
+        <target>Califica el App</target>
+        <note>Text shown for the option to rate the app.</note>
+      </trans-unit>
+      <trans-unit id="Share with friends">
+        <source>Share with friends</source>
+        <target>Comparte con tus amigos</target>
+        <note>Text shown for the option to share the app with friends.</note>
+      </trans-unit>
+      <trans-unit id="Try Again">
+        <source>Try Again</source>
+        <target>De Nuevo</target>
+        <note>lose alert try again</note>
+      </trans-unit>
+      <trans-unit id="Tutorial">
+        <source>Tutorial</source>
+        <target>Tutorial</target>
+        <note>Text shown for the tutorial option</note>
+      </trans-unit>
+      <trans-unit id="Unmute">
+        <source>Unmute</source>
+        <target>Toca</target>
+        <note>Text shown when unmuting the sound</note>
+      </trans-unit>
+      <trans-unit id="You beat level">
+        <source>You beat level</source>
+        <target>Superaste el nivel</target>
+        <note>friendly beat level message in alert</note>
+      </trans-unit>
+      <trans-unit id="You've run out of problems! Sending you back to square 1!">
+        <source>You've run out of problems! Sending you back to square 1!</source>
+        <target>¡Te has quedado sin rompecabezas! ¡De nuevo al cuadrado 1!</target>
+        <note>Message presented to the user when they have run out of problems!</note>
+      </trans-unit>
+      <trans-unit id="and any basic operation (+,-,x,/) to make 24.">
+        <source>and any basic operation (+,-,x,/) to make 24.</source>
+        <target>y cualquier operación (+, -, x, /) para hacer 24.</target>
+        <note>Second half of the message presented when asking for help.
+   Second half of the message presented when challenging.</note>
+      </trans-unit>
+      <trans-unit id="on easy mode!">
+        <source>on easy mode!</source>
+        <target>en modo fácil</target>
+        <note>beat level on easy mode</note>
+      </trans-unit>
+      <trans-unit id="on hard mode!">
+        <source>on hard mode!</source>
+        <target>en modo difícil</target>
+        <note>beat level on hard mode</note>
+      </trans-unit>
+      <trans-unit id="on medium mode!">
+        <source>on medium mode!</source>
+        <target>en modo medio</target>
+        <note>beat level on medium mode</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24Tests/Info.plist" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24UITests/Info.plist" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24Watch Extension/Info.plist" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>24Watch Extension</source>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24Watch/Base.lproj/Interface.storyboard" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="IdU-wH-bcW.text">
+        <source>New puzzle!</source>
+        <target>¡Rompecabeza!</target>
+        <note>Class = "WKInterfaceLabel"; text = "New puzzle!"; ObjectID = "IdU-wH-bcW";</note>
+      </trans-unit>
+      <trans-unit id="jgP-E3-6c3.text">
+        <source>MAKE 24</source>
+        <target>HAZ 24</target>
+        <note>Class = "WKInterfaceLabel"; text = "MAKE 24"; ObjectID = "jgP-E3-6c3";</note>
+      </trans-unit>
+      <trans-unit id="y39-37-H0j.text">
+        <source>1   1   2   4</source>
+        <target>1   1   2   4</target>
+        <note>Class = "WKInterfaceLabel"; text = "1   1   2   4"; ObjectID = "y39-37-H0j";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="24Watch/Info.plist" source-language="en" datatype="plaintext" target-language="es">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.1" build-num="8T61a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>24</source>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

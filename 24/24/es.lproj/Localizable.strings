@@ -1,0 +1,112 @@
+/* lose alert ask a friend */
+"Ask A Friend" = "Pregúnta a un Amigo";
+
+/* friendly lose message in alert */
+"Aww snap!" = "¡A, que feo! ";
+
+/* Initial message when asking for help. Numbers will be appended. */
+"Can you help me solve this puzzle? Use all four numbers" = "¿Ayudame a resolver este rompecabezas? Utiliza todos los números";
+
+/* congrats alert challange */
+"Challenge" = "Reta a alguien";
+
+/* Text shown for the option to change difficulty level */
+"Change Difficulty Level" = "Cambia Dificultad";
+
+/* friendly congrats message in alert */
+"Congrats!" = "¡Felicitaciones!";
+
+/* Message to user when attempting to divide by 0 */
+"Division by zero is not allowed!" = "¡División por cero no está permitida!";
+
+/* Easy difficulty option
+   String shown in difficulty ui (keep short) */
+"Easy" = "Fácil";
+
+/* friendly rate message in alert */
+"Enjoying the game?" = "¿Estas divirtiendote?";
+
+/* User failed to login to GameCenter */
+"Fail Login!" = "Error en Sesión";
+
+/* Hard difficulty option
+   String shown in difficulty ui (keep short) */
+"Hard" = "Difícil";
+
+/* Initial message when creating a challange text. Numbers will be appended. */
+"I challenge you to solve this puzzle! Use all four numbers" = "¡Te desafío a resolver este rompecabezas! Utilisa los cuatro números";
+
+/* Message when the user selects to share! */
+"I'm playing this new, awesome game! Check it out!" = "¡Estoy jugando este nuevo e impresionante juego! ¡Echale un vistazo!";
+
+/* Title of alert when user attempts to divide by 0 */
+"Invalid Operation" = "Operación inválida";
+
+/* congrats alert keep going */
+"Keep Going" = "Sigue";
+
+/* beat level alert leaderboard
+   Text shown for the leaderboard option */
+"Leaderboard" = "Clasificación";
+
+/* Mesage presented to the user when they fail to login to the GameCenter */
+"Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!" = "El inicio de sesión ha fallado varias veces. Intenta acceder a través del Centro de juegos o intenta la acción de nuevo.";
+
+/* Medium difficulty option
+   String shown in difficulty ui (keep short) */
+"Medium" = "Medio";
+
+/* Text shown when muting */
+"Mute" = "Mudo";
+
+/* beat level alert next level */
+"Next Level" = "Siguiente Nivel";
+
+/* rate alert not now */
+"Not Now" = "Salta";
+
+/* Accept action
+   Accept alert buttong
+   Acceptance button for alert! */
+"OK" = "OK";
+
+/* Title of alert when user has exhausted all possible problems */
+"Out of problems!" = "¡Fuera de rompecabezas!";
+
+/* rate alert rate the app */
+"Rate the App" = "Califica la App";
+
+/* Text shown for the option to rate the app. */
+"Rate the app" = "Califica la App";
+
+/* Text shown for the option to share the app with friends. */
+"Share with friends" = "Comparte con tus amigos";
+
+/* lose alert try again */
+"Try Again" = "De Nuevo";
+
+/* Text shown for the tutorial option */
+"Tutorial" = "Tutorial";
+
+/* Text shown when unmuting the sound */
+"Unmute" = "Reanudar";
+
+/* friendly beat level message in alert */
+"You beat level" = "Superaste el nivel";
+
+/* Message presented to the user when they have run out of problems! */
+"You've run out of problems! Sending you back to square 1!" = "¡Te has quedado sin rompecabezas! ¡De nuevo al cuadrado 1!";
+
+/* Second half of the message presented when asking for help.
+   Second half of the message presented when challenging. */
+"and any basic operation (+,-,x,/) to make 24." = "y cualquier operación (+, -, x, /) para hacer 24.";
+
+/* beat level on easy mode */
+"on easy mode!" = "en modo fácil";
+
+/* beat level on hard mode */
+"on hard mode!" = "en modo difícil";
+
+/* beat level on medium mode */
+"on medium mode!" = "en modo medio";
+

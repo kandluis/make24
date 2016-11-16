@@ -1,0 +1,43 @@
+/* lose alert ask a friend */
+"Ask A Friend" = "Pregúntale";
+
+/* friendly lose message in alert */
+"Aww snap!" = "Aww! ";
+
+/* congrats alert challange */
+"Challenge" = "Desafíalo";
+
+/* friendly congrats message in alert */
+"Congrats!" = "Felicitaciones! ";
+
+/* friendly rate message in alert */
+"Enjoying the game?" = "¿Estas divirtiendo?";
+
+/* congrats alert keep going */
+"Keep Going" = "Sigue";
+
+/* beat level alert leaderboard
+   Text shown for the leaderboard option */
+"Leaderboard" = "Marcador";
+
+/* beat level alert next level */
+"Next Level" = "Siguiente Nivel";
+
+/* rate alert not now */
+"Not Now" = "Salta";
+
+/* rate alert rate the app */
+"Rate the App" = "Califica la Aplicación";
+
+/* lose alert try again */
+"Try Again" = "De Nuevo";
+
+/* beat level on easy mode */
+"on easy mode!" = "Fácil";
+
+/* beat level on hard mode */
+"on hard mode!" = "Difícil";
+
+/* beat level on medium mode */
+"on medium mode!" = "Medio";
+

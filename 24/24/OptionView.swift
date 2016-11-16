@@ -10,7 +10,7 @@ import UIKit
 
 
 enum OptionViewType {
-    case bar(icon:UIImage?, text:String)
+    case bar(leftIcon:UIImage?, text:String, rightIcon:UIImage?)
 }
 
 
@@ -20,12 +20,12 @@ class OptionView: UIView {
         super.init(frame:frame)
         
         switch type {
-        case let .bar(icon, text):
-            setupBarDesign(icon, text: text)
+        case let .bar(leftIcon, text, rightIcon):
+            setupBarDesign(leftIcon, text: text, rightIcon: rightIcon)
         }
     }
     
-    func setupBarDesign(_ icon:UIImage?, text:String) {
+    func setupBarDesign(_ leftIcon:UIImage?, text:String, rightIcon:UIImage?) {
         self.backgroundColor = UIColor.white
         self.layer.borderWidth = 0
         self.layer.borderColor = UIColor.black.cgColor
@@ -35,22 +35,32 @@ class OptionView: UIView {
         self.layer.shadowRadius = 2.0
         
         let margin:CGFloat = 6
+        let size = self.frame.height
         
-        if icon != nil {
-            let iconView = UIImageView(image: icon)
+        if leftIcon != nil {
+            let iconView = UIImageView(image: leftIcon)
             iconView.contentMode = UIViewContentMode.center
-            print(self.frame.height)
-            let size = self.frame.height
             iconView.frame = CGRect(x: margin, y: 0, width: size, height: size)
             self.addSubview(iconView)
         }
         
+        if rightIcon != nil {
+            let iconView = UIImageView(image: rightIcon)
+            iconView.contentMode = UIViewContentMode.center
+            iconView.frame = CGRect(x: self.frame.width - size - margin, y: 0, width: size, height: size)
+            self.addSubview(iconView)
+        }
+        
         var labelLeft = margin
-        if icon != nil {
-            labelLeft = margin + frame.height + margin
+        if leftIcon != nil {
+            labelLeft += (self.frame.height + margin)
+        }
+        var width = frame.width - labelLeft - margin
+        if rightIcon != nil {
+            width -= (self.frame.height + margin)
         }
         let label = UILabel()
-        label.frame = CGRect(x: labelLeft, y: 0, width: frame.width - labelLeft - margin, height: frame.height)
+        label.frame = CGRect(x: labelLeft, y: 0, width: width, height: frame.height)
         label.numberOfLines = 0
         label.text = text
         label.textColor = UIColor(red: 100/255, green: 91/255, blue: 82/255, alpha: 1)

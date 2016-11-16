@@ -1,0 +1,81 @@
+/* Class = "UIButton"; normalTitle = "+"; ObjectID = "1Os-nF-zNz"; */
+"1Os-nF-zNz.normalTitle" = "+";
+
+/* Class = "UILabel"; text = "B"; ObjectID = "1SG-dY-ORe"; */
+"1SG-dY-ORe.text" = "B";
+
+/* Class = "UILabel"; text = "B"; ObjectID = "1mj-oM-g2J"; */
+"1mj-oM-g2J.text" = "B";
+
+/* Class = "UIButton"; normalTitle = "Next Level"; ObjectID = "2xc-SI-y05"; */
+"2xc-SI-y05.normalTitle" = "Niveau suivant";
+
+/* Class = "UIButton"; normalTitle = "Skip"; ObjectID = "Ckp-ph-u9O"; */
+"Ckp-ph-u9O.normalTitle" = "Passe";
+
+/* Class = "UILabel"; text = "Make 24 using all the given numbers!"; ObjectID = "HfC-9N-M4Z"; */
+"HfC-9N-M4Z.text" = "Fais 24 en utilisant tous les nombres donnés!";
+
+/* Class = "UIButton"; normalTitle = "CLEAR"; ObjectID = "LGX-Lg-qek"; */
+"LGX-Lg-qek.normalTitle" = "DISSIPE";
+
+/* Class = "UILabel"; text = "1"; ObjectID = "Mbw-H1-fCM"; */
+"Mbw-H1-fCM.text" = "1";
+
+/* Class = "UIButton"; normalTitle = "6"; ObjectID = "Meb-0g-Jdc"; */
+"Meb-0g-Jdc.normalTitle" = "6";
+
+/* Class = "UILabel"; text = "Congrats!"; ObjectID = "Om5-V3-VPV"; */
+"Om5-V3-VPV.text" = "Félicitations!";
+
+/* Class = "UIButton"; normalTitle = "3"; ObjectID = "P0L-VQ-GwZ"; */
+"P0L-VQ-GwZ.normalTitle" = "3";
+
+/* Class = "UIButton"; normalTitle = "NEW SET"; ObjectID = "QJF-3P-yFv"; */
+"QJF-3P-yFv.normalTitle" = "NOUVEL ENSEMBLE";
+
+/* Class = "UIButton"; normalTitle = "4"; ObjectID = "TSS-Ak-cSB"; */
+"TSS-Ak-cSB.normalTitle" = "4";
+
+/* Class = "UIButton"; normalTitle = "RESET"; ObjectID = "V2T-hO-iLh"; */
+"V2T-hO-iLh.normalTitle" = "RÉINITIALISER";
+
+/* Class = "UIButton"; normalTitle = "-"; ObjectID = "VV7-jJ-qQc"; */
+"VV7-jJ-qQc.normalTitle" = "-";
+
+/* Class = "UIButton"; normalTitle = "x"; ObjectID = "Voi-Bu-K7o"; */
+"Voi-Bu-K7o.normalTitle" = "x";
+
+/* Class = "UIButton"; normalTitle = "OPTIONS"; ObjectID = "XfA-5r-qyx"; */
+"XfA-5r-qyx.normalTitle" = "OPTIONS";
+
+/* Class = "UILabel"; text = "Med."; ObjectID = "XsV-Py-RR5"; */
+"XsV-Py-RR5.text" = "Med.";
+
+/* Class = "UILabel"; text = "The goal is to make 24"; ObjectID = "aNh-qm-SKw"; */
+"aNh-qm-SKw.text" = "The goal is to make 24";
+
+/* Class = "UILabel"; text = "Use all the numbers. Tap any number or operation to start."; ObjectID = "byi-j8-OI7"; */
+"byi-j8-OI7.text" = "Use all the numbers. Tap any number or operation to start.";
+
+/* Class = "UIButton"; normalTitle = "/"; ObjectID = "eKP-Lw-cfc"; */
+"eKP-Lw-cfc.normalTitle" = "/";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "fXN-3M-u5F"; */
+"fXN-3M-u5F.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Leaderboard"; ObjectID = "hlJ-th-oI6"; */
+"hlJ-th-oI6.normalTitle" = "Leaderboard";
+
+/* Class = "UILabel"; text = "B"; ObjectID = "jVk-Vn-OFq"; */
+"jVk-Vn-OFq.text" = "B";
+
+/* Class = "UIButton"; normalTitle = "LEADERBOARD"; ObjectID = "ssI-i1-DKN"; */
+"ssI-i1-DKN.normalTitle" = "LEADERBOARD";
+
+/* Class = "UIButton"; normalTitle = "6"; ObjectID = "uo7-Kx-JRG"; */
+"uo7-Kx-JRG.normalTitle" = "6";
+
+/* Class = "UILabel"; text = "SCORE"; ObjectID = "zyT-93-uS6"; */
+"zyT-93-uS6.text" = "SCORE";
+
