@@ -1,38 +1,107 @@
-/* lose alert */
+/* lose alert ask a friend */
 "Ask A Friend" = "问朋友";
 
 /* friendly lose message in alert */
 "Aww snap!" = "再来一次";
 
-/* congrats alert */
+/* Initial message when asking for help. Numbers will be appended. */
+"Can you help me solve this puzzle? Use all four numbers" = "你能帮我解决这个难题吗？使用所有四个数字";
+
+/* congrats alert challange */
 "Challenge" = "敢于朋友";
+
+/* Text shown for the option to change difficulty level */
+"Change Difficulty Level" = "改变难度水平";
 
 /* friendly congrats message in alert */
 "Congrats!" = "祝贺";
 
+/* Message to user when attempting to divide by 0 */
+"Division by zero is not allowed!" = "不允许除以零";
+
+/* Easy difficulty option
+   String shown in difficulty ui (keep short) */
+"Easy" = "容易";
+
 /* friendly rate message in alert */
 "Enjoying the game?" = "喜欢吗?";
 
-/* congrats alert */
+/* User failed to login to GameCenter */
+"Fail Login!" = "登录失败";
+
+/* Hard difficulty option
+   String shown in difficulty ui (keep short) */
+"Hard" = "难";
+
+/* Initial message when creating a challange text. Numbers will be appended. */
+"I challenge you to solve this puzzle! Use all four numbers" = "我挑战你解决这个难题！使用所有四个数字";
+
+/* Message when the user selects to share! */
+"I'm playing this new, awesome game! Check it out!" = "我在玩这个新的，真棒游戏";
+
+/* Title of alert when user attempts to divide by 0 */
+"Invalid Operation" = "无效";
+
+/* congrats alert keep going */
 "Keep Going" = "继续";
 
-/* beat level alert */
+/* beat level alert leaderboard
+   Text shown for the leaderboard option */
 "Leaderboard" = "排行榜";
 
-/* beat level alert */
+/* Mesage presented to the user when they fail to login to the GameCenter */
+"Login has failed multiple times. Please attempt to login through the GameCenter or attempt the action again!" = "登录失败多次。请尝试通过GameCenter登录或再次尝试操作";
+
+/* String shown in difficulty ui (keep short) */
+"Med." = "中";
+
+/* Medium difficulty option */
+"Medium" = "中";
+
+/* Text shown when muting */
+"Mute" = "无声";
+
+/* beat level alert next level */
 "Next Level" = "下一级";
 
-/* rate alert */
+/* rate alert not now */
 "Not Now" = "跳跃";
 
-/* rate alert */
+/* Accept action
+   Accept alert buttong
+   Acceptance button for alert! */
+"OK" = "好";
+
+/* Title of alert when user has exhausted all possible problems */
+"Out of problems!" = "没问题了";
+
+/* rate alert rate the app */
 "Rate the App" = "评论";
 
-/* lose alert */
+/* Text shown for the option to rate the app. */
+"Rate the app" = "评论";
+
+/* Text shown for the option to share the app with friends. */
+"Share with friends" = "和朋友分享";
+
+/* lose alert try again */
 "Try Again" = "再试一次";
+
+/* Text shown for the tutorial option */
+"Tutorial" = "教程";
+
+/* Text shown when unmuting the sound */
+"Unmute" = "声音";
 
 /* friendly beat level message in alert */
 "You beat level " = " 你赢了 ";
+
+/* Message presented to the user when they have run out of problems! */
+"You've run out of problems! Sending you back to square 1!" = "你已经用完了问题！立即重置";
+
+/* Second half of the message presented when asking for help.
+   Second half of the message presented when challenging. */
+"and any basic operation (+,-,x,/) to make 24." = "和任何基本操作（+， - ，x，/）使24。";
 
 /* beat level on easy mode */
 "on easy mode!" = "容易";

@@ -1,8 +1,11 @@
+/* Class = "WKInterfaceLabel"; text = "Current Puzzle"; ObjectID = "0rT-B3-u38"; */
+"0rT-B3-u38.text" = "当前问题";
+
 /* Class = "WKInterfaceLabel"; text = "New puzzle!"; ObjectID = "IdU-wH-bcW"; */
 "IdU-wH-bcW.text" = "新题!";
 
-/* Class = "WKInterfaceLabel"; text = "MAKE 24"; ObjectID = "jgP-E3-6c3"; */
-"jgP-E3-6c3.text" = "MAKE 24";
+/* Class = "WKInterfaceLabel"; text = "Enter solutions in the iphone app."; ObjectID = "vHX-x1-vmT"; */
+"vHX-x1-vmT.text" = "用iphone输入解决方案";
 
 /* Class = "WKInterfaceLabel"; text = "1   1   2   4"; ObjectID = "y39-37-H0j"; */
 "y39-37-H0j.text" = "1   1   2   4";
