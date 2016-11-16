@@ -568,10 +568,12 @@
 					};
 					7F07FCBF1DBFEAC40021FC80 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = J87Z56BB74;
 						ProvisioningStyle = Automatic;
 					};
 					7F07FCCB1DBFEAC50021FC80 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = J87Z56BB74;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1056,6 +1058,7 @@
 				CODE_SIGN_ENTITLEMENTS = 24/24.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = J87Z56BB74;
 				INFOPLIST_FILE = 24/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1078,6 +1081,7 @@
 				CODE_SIGN_ENTITLEMENTS = 24/24.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = J87Z56BB74;
 				INFOPLIST_FILE = 24/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1149,6 +1153,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				DEVELOPMENT_TEAM = J87Z56BB74;
 				INFOPLIST_FILE = "24Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp.watchkitextension;
@@ -1168,6 +1173,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				DEVELOPMENT_TEAM = J87Z56BB74;
 				INFOPLIST_FILE = "24Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp.watchkitextension;
@@ -1189,6 +1195,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = J87Z56BB74;
 				IBSC_MODULE = _4Watch_Extension;
 				INFOPLIST_FILE = 24Watch/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp;
@@ -1211,6 +1218,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = J87Z56BB74;
 				IBSC_MODULE = _4Watch_Extension;
 				INFOPLIST_FILE = 24Watch/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.risingstarpathways.24.watchkitapp;

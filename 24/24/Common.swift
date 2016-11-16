@@ -8,12 +8,12 @@
 
 import UIKit
 
-let APP_ID = "id959379869"
+let APP_ID = "id1163517735"
 
 class Common {
     class func shareApp(_ view: UIViewController, message: String) {
         var objectsToShare = [Any]()
-        if let myWebsite = URL(string: "http://www.codingexplorer.com/") {
+        if let myWebsite = URL(string: "itms://itunes.apple.com/us/app/apple-store/\(APP_ID)?mt=8") {
             objectsToShare = [message, myWebsite]
         }
         else {
@@ -27,8 +27,7 @@ class Common {
 
     class func rateApp() {
         // TODO test this
-        let url_string = "https://www.youtube.com/watch?v=6dAL9ztYRqQ"
-    //    let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
+        let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
         if let url = URL(string: url_string) {
             UIApplication.shared.openURL(url as URL)
         }
