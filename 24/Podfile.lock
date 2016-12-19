@@ -1,10 +1,37 @@
 PODS:
-  - Mixpanel-swift (2.1.0)
+  - Firebase/AdMob (3.11.0):
+    - Firebase/Core
+    - Google-Mobile-Ads-SDK (= 7.16.0)
+  - Firebase/Core (3.11.0):
+    - FirebaseAnalytics (= 3.6.0)
+    - FirebaseCore (= 3.4.6)
+  - FirebaseAnalytics (3.6.0):
+    - FirebaseCore (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCore (3.4.6):
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (1.0.8)
+  - Google-Mobile-Ads-SDK (7.16.0)
+  - GoogleInterchangeUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleSymbolUtilities (1.1.2)
+  - GoogleToolboxForMac/Defines (2.1.0)
+  - GoogleToolboxForMac/NSData+zlib (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
+  - iRate (1.11.7)
+  - Mixpanel-swift (2.1.1)
   - SAConfettiView (0.1.8)
   - SwiftyWalkthrough (0.0.4)
   - TKSwarmAlert (1.0.4)
 
 DEPENDENCIES:
+  - Firebase/AdMob
+  - Firebase/Core
+  - iRate
   - Mixpanel-swift
   - SAConfettiView
   - SwiftyWalkthrough (from `https://github.com/kandluis/SwiftyWalkthrough.git`, branch `master`)
@@ -27,11 +54,20 @@ CHECKOUT OPTIONS:
     :git: https://github.com/kandluis/TKSwarmAlert.git
 
 SPEC CHECKSUMS:
-  Mixpanel-swift: 8bd335e85ea645dd5eacc1bb61f4b418fb4998d7
+  Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
+  FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
+  FirebaseCore: 03da1cb32615569bbc2830a22f9ad753d9a02ef5
+  FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
+  Google-Mobile-Ads-SDK: 92dff0e9ce1cfdfe640d9d80ab86d5e4371e478f
+  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
+  GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
+  iRate: adae3f183d83c925ac42d7a2e86e89e838963f57
+  Mixpanel-swift: 49966d4beec714aee3a026d39085b62b26eca081
   SAConfettiView: c87031a2280659261b730fce3669fb10e73636ee
   SwiftyWalkthrough: ab797ec56b250257ae330aa5cb25e9a14980181a
   TKSwarmAlert: ab34152af48391d8aa80b2386b5e6fe9f335ace7
 
-PODFILE CHECKSUM: 0ce1b7213b51bdfee101d75bdebeda2eacd2c72a
+PODFILE CHECKSUM: 8dfa982f4b3e42a25ffa4d4f806bc850fad7a723
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0.beta.1

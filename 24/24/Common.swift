@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import iRate
 
-let APP_ID = "id1163517735"
+let APP_ID = "1163517735"
 
 class Common {
-    class func shareApp(_ view: UIViewController, message: String) {
+    class func shareApp(fromController view: UIViewController, message: String) {
         var objectsToShare = [Any]()
-        if let myWebsite = URL(string: "itms://itunes.apple.com/us/app/apple-store/\(APP_ID)?mt=8") {
+        if let myWebsite = URL(string: "itms://itunes.apple.com/us/app/apple-store/id\(APP_ID)") {
             objectsToShare = [message, myWebsite]
         }
         else {
@@ -26,10 +27,8 @@ class Common {
     }
 
     class func rateApp() {
-        // TODO test this
-        let url_string = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)"
-        if let url = URL(string: url_string) {
-            UIApplication.shared.openURL(url as URL)
-        }
+        iRate.sharedInstance().openRatingsPageInAppStore()
     }
+    
+    static let ENABLE_ADS = true
 }

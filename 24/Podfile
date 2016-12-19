@@ -10,7 +10,9 @@ target '24' do
   pod 'SwiftyWalkthrough', :git => 'https://github.com/kandluis/SwiftyWalkthrough.git', :branch => 'master'
   pod 'SAConfettiView'
   pod 'Mixpanel-swift'
-
+  pod 'iRate'
+  pod 'Firebase/Core'
+  pod 'Firebase/AdMob'
 
   target '24Tests' do
     inherit! :search_paths
