@@ -29,7 +29,6 @@ enum UserAction {
     case dismiss
     case retry
     case ask
-    
 }
 
 class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
@@ -110,7 +109,6 @@ class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
             interstitial = createAndLoadInterstitial()
             hideObjects(congratulations_variables + lose_variables + rate_variables)
         case AlertType.next_puzzle:
-            interstitial = createAndLoadInterstitial()
             hideObjects(beat_level_variables + lose_variables + rate_variables)
         case AlertType.retry:
             hideObjects(congratulations_variables + beat_level_variables + rate_variables)
@@ -216,7 +214,6 @@ class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
                 modeMessage = NSLocalizedString("on hard mode!", comment: "beat level on hard mode")
         }
         titleLabel.text = winMessage + " " + String(level) + " " + modeMessage
-        titleLabel.sizeToFit()
         animateImageView(trophyImage, filename: "trophy", duration: 1.0, delay: 0)
         levelLabel.text = String(level)
         primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert next level"), for: UIControlState())
@@ -230,7 +227,6 @@ class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
     private func rate() {
         let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
         titleLabel.text = rateMessage
-        titleLabel.sizeToFit()
         primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert not now"), for: UIControlState())
         primary_action = UserAction.dismiss
         secondaryButton.setTitle(NSLocalizedString("Rate the App", comment: "rate alert rate the app"), for: UIControlState())

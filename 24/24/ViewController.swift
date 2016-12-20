@@ -322,10 +322,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      * Database Functions
      *************/
     func getDifficultyRange(_ level: Int) -> (Double, Double) {
-        let overlap: Double = 2
-        let buckets = Double(GameDifficulty.caseCount * self.levelsPerDifficulty + self.levelsPerDifficulty * self.puzzlesPerLevel + self.puzzlesSolved)
-        let current = Double(self.difficulty.rawValue * self.levelsPerDifficulty +  (self.playerLevel - 1) * self.puzzlesPerLevel + self.puzzlesSolved)
-        let max = (current + 1) / buckets
+        let overlap: Double = 4
+        let base1 = 1
+        let base2 = base1 * self.puzzlesPerLevel
+        let base3 = base2 * self.levelsPerDifficulty
+        let buckets = Double((GameDifficulty.caseCount - 1) * base3 + (self.levelsPerDifficulty - 1) * base2 + (self.puzzlesPerLevel - 1) * base1)
+        // Player level is 1 indexed.
+        let current = Double(self.difficulty.rawValue * base3 +  (self.playerLevel - 1) * base2 + self.puzzlesSolved * base1)
+        let max = current / buckets
         let min = (max - (overlap / buckets)) > 0 ? max - (overlap / buckets) : 0
         return (min, max)
     }
@@ -339,7 +343,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
         // Filter to only include levels not completed
         let (minDifficulty, maxDifficulty) = getDifficultyRange(level)
-        fetchRequest.predicate = NSPredicate(format: "completed == %@ AND difficulty > %f AND difficulty < %f", false as CVarArg, minDifficulty, maxDifficulty)
+        fetchRequest.predicate = NSPredicate(format: "completed == NO AND difficulty > %f AND difficulty < %f", minDifficulty, maxDifficulty)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "difficulty", ascending: true)]
         
         var results: [AnyObject]?
