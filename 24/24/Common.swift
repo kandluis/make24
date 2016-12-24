@@ -30,5 +30,5 @@ class Common {
         iRate.sharedInstance().openRatingsPageInAppStore()
     }
     
-    static let ENABLE_ADS = true
+    static let ENABLE_ADS = false
 }
