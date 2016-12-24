@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 // Type of Alerts
 enum AlertType {
@@ -28,10 +29,9 @@ enum UserAction {
     case dismiss
     case retry
     case ask
-    
 }
 
-class CongratulationsViewController: UIViewController {
+class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
     // User defaults
     fileprivate let defaults = UserDefaults.standard
     
@@ -44,7 +44,7 @@ class CongratulationsViewController: UIViewController {
     fileprivate var secondary_action: UserAction?
     
     // Access to starting/stopping the sound
-    fileprivate var completion: ((AlertType, UserAction?) -> Void)!
+    fileprivate var completion: ((AlertType, UserAction?) -> Void)?
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -57,17 +57,6 @@ class CongratulationsViewController: UIViewController {
     
     // congratulations view variables
     @IBOutlet weak var congratulationsView: UIView!
-    @IBOutlet weak var star1: UIImageView!
-    @IBOutlet weak var star2: UIImageView!
-    @IBOutlet weak var star3: UIImageView!
-    @IBOutlet weak var star4: UIImageView!
-    @IBOutlet weak var star5: UIImageView!
-    @IBOutlet weak var star6: UIImageView!
-    @IBOutlet weak var star7: UIImageView!
-    @IBOutlet weak var star8: UIImageView!
-    @IBOutlet weak var star9: UIImageView!
-    @IBOutlet weak var star10: UIImageView!
-    var stars = [UIImageView]()
     var congratulations_variables = [UIView]()
     
     // beat level view variables
@@ -83,13 +72,31 @@ class CongratulationsViewController: UIViewController {
     fileprivate var animator:UIDynamicAnimator? = nil;
     fileprivate let gravity = UIGravityBehavior()
     
+    // Star variables.
+    private var stars = [UIImageView]()
+    @IBOutlet weak var star0: UIImageView!
+    @IBOutlet weak var star1: UIImageView!
+    @IBOutlet weak var star2: UIImageView!
+    @IBOutlet weak var star3: UIImageView!
+    @IBOutlet weak var star4: UIImageView!
+    @IBOutlet weak var star5: UIImageView!
+    @IBOutlet weak var star6: UIImageView!
+    @IBOutlet weak var star7: UIImageView!
+    @IBOutlet weak var star8: UIImageView!
+    @IBOutlet weak var star9: UIImageView!
+    
+    // Ad-related functionality.
+    private var interstitial: GADInterstitial? = nil
+    @IBOutlet weak var adBanner: GADBannerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.congratulationsView.center.y = -self.congratulationsView.frame.size.height
+        // Reset position to above frame.
+        congratulationsView.frame.origin.y = -congratulationsView.frame.height
         // create the stars array
-        stars = [star1, star2, star3, star4, star5, star6, star7, star8, star9, star10]
+        stars = [star0, star1, star2, star3, star4, star5, star6, star7, star8, star9]
         congratulations_variables = stars
+        
         
         beat_level_variables = [trophyImage, levelLabel]
         
@@ -99,15 +106,24 @@ class CongratulationsViewController: UIViewController {
         
         switch type {
         case AlertType.next_level:
+            interstitial = createAndLoadInterstitial()
             hideObjects(congratulations_variables + lose_variables + rate_variables)
         case AlertType.next_puzzle:
             hideObjects(beat_level_variables + lose_variables + rate_variables)
         case AlertType.retry:
             hideObjects(congratulations_variables + beat_level_variables + rate_variables)
         case AlertType.next_difficulty, AlertType.finish:
+            interstitial = createAndLoadInterstitial()
             hideObjects(congratulations_variables + lose_variables + rate_variables)
         case AlertType.rate:
             hideObjects(congratulations_variables + lose_variables + beat_level_variables)
+        }
+        
+        if Common.ENABLE_ADS {
+            adBanner.adUnitID = "ca-app-pub-8426274585205695/6176110561"
+            adBanner.rootViewController = self
+            let request = GADRequest()
+            adBanner.load(request)
         }
     }
     
@@ -133,10 +149,26 @@ class CongratulationsViewController: UIViewController {
         
         self.layoutButtons()
     }
-    
-    // Completion is passed the String corresponding to the
-    // button the user clicked, if any.
-    open func setOptions(alert alert_type: AlertType, currentDifficulty difficulty: GameDifficulty, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: @escaping ((AlertType, UserAction?) -> Void)) -> () {
+    /*****
+     * Ad functionality. Only active if Common.ENABLE_ADS is true.
+     ******/
+    private func createAndLoadInterstitial() -> GADInterstitial? {
+        guard Common.ENABLE_ADS else { return nil }
+        let interstitial = GADInterstitial(adUnitID: "ca-app-pub-8426274585205695/4001373363")
+        let request = GADRequest()
+        // Request test ads on devices you specify. Your test device ID is printed to the console when
+        // an ad request is made.
+        interstitial.load(request)
+        interstitial.delegate = self
+        return interstitial
+    }
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        interstitial?.present(fromRootViewController: self)
+    }
+    /**
+     Sets some options for the view. This must be called before the view is loaded!
+     */
+    open func setOptions(alert alert_type: AlertType, currentDifficulty difficulty: GameDifficulty, currentLevel level: Int, puzzlesSolved puzzles: Int, completion: ((AlertType, UserAction?) -> Void)?) -> () {
         self.type = alert_type
         self.difficulty = difficulty
         self.level = level
@@ -144,7 +176,7 @@ class CongratulationsViewController: UIViewController {
         self.completion = completion
     }
     
-    func layoutButtons() {
+    private func layoutButtons() {
         let buttons: [UIButton] = [primaryButton, secondaryButton]
         for button in buttons {
             button.titleLabel?.numberOfLines = 1;
@@ -152,8 +184,7 @@ class CongratulationsViewController: UIViewController {
             button.titleLabel?.lineBreakMode = .byClipping
         }
     }
-    
-    fileprivate func lose() {
+    private func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage
         primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert try again"), for: UIControlState())
@@ -162,7 +193,7 @@ class CongratulationsViewController: UIViewController {
         secondary_action = .ask
     }
     
-    fileprivate func congratulations() {
+    private func congratulations() {
         let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
         
         titleLabel.text = congratsMessage
@@ -181,7 +212,7 @@ class CongratulationsViewController: UIViewController {
         secondary_action = UserAction.challange
     }
     
-    fileprivate func beat_level() {
+    private func beat_level() {
         let winMessage = NSLocalizedString("You beat level", comment: "friendly beat level message in alert")
         var modeMessage = ""
         switch difficulty {
@@ -193,7 +224,6 @@ class CongratulationsViewController: UIViewController {
                 modeMessage = NSLocalizedString("on hard mode!", comment: "beat level on hard mode")
         }
         titleLabel.text = winMessage + " " + String(level) + " " + modeMessage
-        titleLabel.sizeToFit()
         animateImageView(trophyImage, filename: "trophy", duration: 1.0, delay: 0)
         levelLabel.text = String(level)
         primaryButton.setTitle(NSLocalizedString("Next Level", comment: "beat level alert next level"), for: UIControlState())
@@ -204,7 +234,7 @@ class CongratulationsViewController: UIViewController {
         
     }
     
-    fileprivate func rate() {
+    private func rate() {
         let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
         titleLabel.text = rateMessage
         primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert not now"), for: UIControlState())
@@ -213,13 +243,13 @@ class CongratulationsViewController: UIViewController {
         secondary_action = UserAction.rate
     }
     
-    fileprivate func showStars() {
+    private func showStars() {
         for star in stars {
             star.isHidden=false
         }
         
     }
-    fileprivate func animateImageView(_ image: UIImageView, filename: String, duration: TimeInterval, delay: TimeInterval) {
+    private func animateImageView(_ image: UIImageView, filename: String, duration: TimeInterval, delay: TimeInterval) {
         if let new_image = UIImage(named: filename) {
             // animate the new star
             image.animationImages = [new_image]
@@ -229,13 +259,13 @@ class CongratulationsViewController: UIViewController {
         // play sound effect
     }
     
-    fileprivate func hideObjects(_ objects: [UIView]) {
+    private func hideObjects(_ objects: [UIView]) {
         for el in objects {
             el.isHidden = true
         }
     }
     
-    fileprivate func snapToPoint(_ point: CGPoint, view: UIView) {
+    private func snapToPoint(_ point: CGPoint, view: UIView) {
         let snap = UISnapBehavior(item: view, snapTo: point)
         animator?.addBehavior(snap);
     }
@@ -248,7 +278,7 @@ class CongratulationsViewController: UIViewController {
         dismissView(self.secondary_action)
     }
     
-    fileprivate func dismissView(_ action: UserAction?) {
+    private func dismissView(_ action: UserAction?) {
         gravity.addItem(congratulationsView);
         gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
         animator = UIDynamicAnimator(referenceView:self.view);

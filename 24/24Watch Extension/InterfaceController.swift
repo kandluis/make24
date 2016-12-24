@@ -54,9 +54,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate{
 
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         if let msg = message["puzzle"] as? [Int:Int] {
-            print(msg)
-            print("received message")
-            
             setPuzzleLabel(puzzle: msg)
             
         }

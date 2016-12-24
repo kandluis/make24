@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Utilities {
     class func parseCSV(_ contentsOfURL: URL, encoding: String.Encoding, error: NSErrorPointer) -> [Problem]? {
@@ -92,6 +93,16 @@ class Utilities {
             
             defaults.set(appVersion, forKey: "appVersion")
             return true
+        }
+    }
+    
+    class func fitTextTo(label: UILabel) {
+        let maxHeight : CGFloat = 10000
+        if let rect = label.attributedText?.boundingRect(with: CGSize(width: label.frame.size.width, height: maxHeight),
+                                                         options: .usesLineFragmentOrigin, context: nil) {
+            var frame = label.frame
+            frame.size.height = rect.size.height
+            label.frame = frame
         }
     }
 }

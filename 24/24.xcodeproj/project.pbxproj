@@ -25,6 +25,7 @@
 		101BE0FB1DA578B10075E1DE /* _4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE0FA1DA578B10075E1DE /* _4Tests.swift */; };
 		101BE1061DA578B10075E1DE /* _4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101BE1051DA578B10075E1DE /* _4UITests.swift */; };
 		106310AE1DC9D955005B9C4B /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106310AD1DC9D955005B9C4B /* Overlay.swift */; };
+		107BE56F1E0743D7001F65AB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 107BE56E1E0743D7001F65AB /* GoogleService-Info.plist */; };
 		10B9261F1DC868A5009046FF /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B9261E1DC868A5009046FF /* DoubleExtension.swift */; };
 		10B926211DC868DD009046FF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926201DC868DD009046FF /* StringExtension.swift */; };
 		10B926231DC9AF8C009046FF /* EnumExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B926221DC9AF8C009046FF /* EnumExtension.swift */; };
@@ -153,6 +154,7 @@
 		103780461DD7A38B00DAC9FD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		103780471DD7A38B00DAC9FD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		106310AD1DC9D955005B9C4B /* Overlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
+		107BE56E1E0743D7001F65AB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		10B881F31DCA09D80000B2AD /* 24.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = 24.entitlements; sourceTree = "<group>"; };
 		10B9261E1DC868A5009046FF /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		10B926201DC868DD009046FF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				101BE0EC1DA578B10075E1DE /* Assets.xcassets */,
 				101BE0EE1DA578B10075E1DE /* LaunchScreen.storyboard */,
 				101BE0F11DA578B10075E1DE /* Info.plist */,
+				107BE56E1E0743D7001F65AB /* GoogleService-Info.plist */,
 				7F083AA41DC472C4003259B6 /* 24-Bridging-Header.h */,
 			);
 			path = 24;
@@ -628,6 +631,7 @@
 				100C766F1DA6424D0097212D /* glass_ping.mp3 in Resources */,
 				100C766D1DA6424D0097212D /* fail1.mp3 in Resources */,
 				100C766C1DA6424D0097212D /* congrats.mp3 in Resources */,
+				107BE56F1E0743D7001F65AB /* GoogleService-Info.plist in Resources */,
 				100C766B1DA6424D0097212D /* computer_error.mp3 in Resources */,
 				7FFD867A1DCA64BE00EC7ED8 /* Localizable.strings in Resources */,
 				101BE0EB1DA578B10075E1DE /* Main.storyboard in Resources */,

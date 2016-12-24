@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import Mixpanel
+import iRate
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let shortIdentifier = fullIdentifier.components(separatedBy: ".").last else {
                 return nil
             }
-            print(shortIdentifier)
             self.init(rawValue: shortIdentifier)
         }
         
@@ -43,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             switch identifier {
             case .ShareApp:
-                Common.shareApp(view, message: message)
+                Common.shareApp(fromController: view, message: message)
             case .Leaderboard:
                 view.showLeader(self)
             case .Tutorial:
@@ -61,6 +62,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let defaults = UserDefaults.standard
     
+    func initialize() -> Void {
+        guard let irate = iRate.sharedInstance() else { return }
+        irate.daysUntilPrompt = 10
+        irate.usesCount = 5
+        irate.remindPeriod = 2.5
+        irate.useAllAvailableLanguages = false
+        irate.promptForNewVersionIfUserRated = true
+        irate.previewMode = true
+    }
+    
     // for shortcuts
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
 
@@ -74,7 +85,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         // track with mixpanel
         Mixpanel.initialize(token: "426c2e3c58bccfab6acd351efa99c3b6")
-        print(Mixpanel.mainInstance())
+        // Launch ad network if enabled!
+        if Common.ENABLE_ADS {
+            GADMobileAds.configure(withApplicationID: "ca-app-pub-8426274585205695~9269177762")
+        }
         // Disable sleep
         UIApplication.shared.isIdleTimerDisabled = true
         return true

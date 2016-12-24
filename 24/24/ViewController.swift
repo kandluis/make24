@@ -35,8 +35,10 @@ enum KeyForSetting: String {
     // Do not use directly. Instead use corresponding xKey() function.
     case internalPuzzle = "puzzle"
     case internalLevel = "level"
+    case internalScore = "_score"
 }
 
+@available(iOS 9.0, *)
 class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessionDelegate {
     
     // Answer board area.
@@ -138,7 +140,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             // Safeguards
             if playerScore >= 0 {
                 scoreLabel.text = String(playerScore)
-                defaults.set(playerScore, forKey: KeyForSetting.score.rawValue)
+                defaults.set(playerScore, forKey: scoreKey())
             }
             else {
                 playerScore = oldValue
@@ -204,7 +206,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         setAnswerTouchTargets()
         
         Mixpanel.mainInstance().track(event: "Launched App")
-    
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -217,22 +218,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         // Layout the buttong
         layoutButtons()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        super.viewWillDisappear(animated)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func willResignActive() {
         // App is always silenced in background.
         silent = true
@@ -241,6 +226,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func didBecomeActive(){
         // Restore user setting.
         silent = defaults.bool(forKey: KeyForSetting.silent.rawValue)
+    }
+    
+    /*** 
+     * Screenshot addition
+     */
+    private func addScreenshotListener() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: OperationQueue.main, using: { (notification: Notification) -> Void in
+            self.shareOption()
+        })
     }
     
     /******
@@ -252,8 +246,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func puzzleKey() -> String {
         return "\(levelKey())(\(playerLevel)):\(KeyForSetting.internalPuzzle.rawValue)"
     }
+    func scoreKey() -> String {
+        return "\(puzzleKey()):\(KeyForSetting.internalScore.rawValue)"
+    }
     // Sets the appropriate values based on an updated game difficulty.
     func updateInternalProgress(){
+        playerScore = defaults.integer(forKey: scoreKey())
         playerLevel = defaults.integer(forKey: levelKey())
         if playerLevel == 0 {
             playerLevel = 1
@@ -264,7 +262,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         // Sound
         silent = defaults.bool(forKey: KeyForSetting.silent.rawValue)
         difficulty = GameDifficulty(rawValue: defaults.integer(forKey: KeyForSetting.difficulty.rawValue)) ?? GameDifficulty.easy
-        playerScore = defaults.integer(forKey: KeyForSetting.score.rawValue)
         updateInternalProgress()
     }
     
@@ -335,10 +332,16 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
      * Database Functions
      *************/
     func getDifficultyRange(_ level: Int) -> (Double, Double) {
-        let buckets = Double(GameDifficulty.caseCount * self.levelsPerDifficulty)
-        let level = Double(self.difficulty.rawValue * self.levelsPerDifficulty +  self.playerLevel)
-        let max = level / buckets
-        return (max - (1 / buckets), max)
+        let overlap: Double = 4
+        let base1 = 1
+        let base2 = base1 * self.puzzlesPerLevel
+        let base3 = base2 * self.levelsPerDifficulty
+        let buckets = Double((GameDifficulty.caseCount - 1) * base3 + (self.levelsPerDifficulty - 1) * base2 + (self.puzzlesPerLevel - 1) * base1)
+        // Player level is 1 indexed.
+        let current = Double(self.difficulty.rawValue * base3 +  (self.playerLevel - 1) * base2 + self.puzzlesSolved * base1)
+        let max = current / buckets
+        let min = (max - (overlap / buckets)) > 0 ? max - (overlap / buckets) : 0
+        return (min, max)
     }
     
     func loadProblems(_ level: Int) -> [NSManagedObject] {
@@ -350,7 +353,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         
         // Filter to only include levels not completed
         let (minDifficulty, maxDifficulty) = getDifficultyRange(level)
-        fetchRequest.predicate = NSPredicate(format: "completed == %@ AND difficulty > %f AND difficulty < %f", false as CVarArg, minDifficulty, maxDifficulty)
+        fetchRequest.predicate = NSPredicate(format: "completed == NO AND difficulty > %f AND difficulty < %f", minDifficulty, maxDifficulty)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "difficulty", ascending: true)]
         
         var results: [AnyObject]?
@@ -360,8 +363,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
+        print("Loaded \(results?.count ?? 0) problems!")
         return results as? [NSManagedObject] ?? []
-
+    }
+    func saveCoreData() {
+        guard let AppDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        AppDelegate.saveContext()
     }
     
     /*****************
@@ -442,7 +449,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     
     // From a suitable array of problems, select the one to present.
     func selectProblem(_ problems: [NSManagedObject]) -> NSManagedObject? {
-        print("Selecting from \(problems.count) problems!")
         var selectedProblem: NSManagedObject?
         if problems.count > 0 {
             selectedProblem = problems[Int(arc4random_uniform(UInt32(problems.count)))]
@@ -472,8 +478,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             // send data to watch if watch is supported
             if WCSession.isSupported() {
                 let msg = ["puzzle": currentNumbers]
-                print(msg)
-                print(session ?? "")
                 self.session?.sendMessage(msg, replyHandler: { (reply)->Void in }, errorHandler: { (reply)->Void in })
                 
             }
@@ -597,8 +601,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func didWin() {
         // Core data is synchronized when the application exits!
-        selectedProblem?.setValue(true, forKey: "completed")
-        congratulations()
+        self.selectedProblem?.setValue(true, forKey: "completed")
+        self.saveCoreData()
+        self.congratulations()
     }
     func congratulations() {
         startStopBackgroundMusic()
@@ -611,10 +616,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         let alert_type = getAlertTypeOnWin()
         presentAlert(alert_type)
         
-        // Update player info.
+        // Update player info. These actions should not mess with UI.
         puzzlesSolved += 1
         playerScore += 1
-        // Check if level is passed.
+        // Check if level is passed. Present add!
         if puzzlesSolved == puzzlesPerLevel {
             playerLevel += 1
             puzzlesSolved = 0
@@ -625,7 +630,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         }
         
         Mixpanel.mainInstance().track(event: "Won Puzzle")
-        print(Mixpanel.mainInstance())
     }
     
     func didLose() {
@@ -668,7 +672,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             let challange_msg1 = NSLocalizedString("I challenge you to solve this puzzle! Use all four numbers", comment: "Initial message when creating a challange text. Numbers will be appended.")
             let challange_msg2 = NSLocalizedString("and any basic operation (+,-,x,/) to make 24.", comment: "Second half of the message presented when challenging.")
             let message = challange_msg1 + " \(puzzleAsString), " + challange_msg2
-            Common.shareApp(self, message: message)
+            Common.shareApp(fromController: self, message: message)
         case .nextLevel:
             if !self.defaults.bool(forKey: KeyForSetting.rated.rawValue) {
                 self.presentAlert(AlertType.rate)
@@ -693,7 +697,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             let help_msg1 = NSLocalizedString("Can you help me solve this puzzle? Use all four numbers", comment: "Initial message when asking for help. Numbers will be appended.")
             let help_msg2 = NSLocalizedString("and any basic operation (+,-,x,/) to make 24.", comment: "Second half of the message presented when asking for help.")
             let message = help_msg1 + " \(puzzleAsString), " + help_msg2
-            Common.shareApp(self, message: message)
+            Common.shareApp(fromController: self, message: message)
         case .keepGoing, .dismiss, .retry:
             break
         }
@@ -805,6 +809,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Accept action"), style: .default) { _ in })
         self.present(alert, animated: true, completion: completion)
     }
+    private var attemptedAuthentication: Bool = false
     func showLeaderboard(attemptAuthentication authenticate: Bool) {
         LoadingOverlay.shared.showOverlay(self.view)
         if GKLocalPlayer.localPlayer().isAuthenticated {
@@ -819,26 +824,24 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                 })
         }
         else if authenticate {
-            authenticateLocalPlayer(afterAuthScreen: {[unowned self] in
-                self.showLeaderboard(attemptAuthentication: false)
+            self.attemptedAuthentication = true
+            authenticateLocalPlayer({
+                LoadingOverlay.shared.hideOverlayView()
             })
         }
         else {
-            alertUserAboutLogin(after: nil)
-            LoadingOverlay.shared.hideOverlayView()
+            self.alertUserAboutLogin(after: {
+                LoadingOverlay.shared.hideOverlayView()
+            })
         }
     }
-    func authenticateLocalPlayer(afterAuthScreen completion: Closure?) {
+    func authenticateLocalPlayer(_ completion: (() -> Void)?) {
         GKLocalPlayer.localPlayer().authenticateHandler = {(viewController, error) -> Void in
             if viewController != nil && !GKLocalPlayer.localPlayer().isAuthenticated {
                 return self.present(viewController!, animated: true, completion: completion)
             }
             if let error = error {
-                print("Error authenticating player \(error)")
                 print(error.localizedDescription)
-                if error._code == 2 {
-                    self.alertUserAboutLogin(after: nil)
-                }
             }
             if let code = completion {
                 code()
@@ -873,8 +876,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         let scoreArray: [GKScore] = [scoreReporter]
         GKScore.report(scoreArray, withCompletionHandler: {error -> Void in
             if error != nil {
-                print("An error has occured:")
-                print("\n \(error) \n")
+                print("An error has occured: \(error?.localizedDescription)")
             }
             if let code = completion{
                 code()
@@ -882,10 +884,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         })
     }
     func showLeaderboardView() {
-        let viewControllerVar = self.view?.window?.rootViewController
+        let vc = self.view?.window?.rootViewController
         let gKGCViewController = GKGameCenterViewController()
         gKGCViewController.gameCenterDelegate = self
-        viewControllerVar?.present(gKGCViewController, animated: true, completion: nil)
+        vc?.present(gKGCViewController, animated: true, completion: nil)
     }
     
     /* GKGameCenterlDelegate Function */
@@ -998,12 +1000,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func leaderBoardOption() {
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
-            self.showLeaderboard(attemptAuthentication: true)
+            self.showLeaderboard(attemptAuthentication: !self.attemptedAuthentication)
         }
         self.optionsView.hide()
     }
     func changeModesOption() {
-        // TODO: Implement ads
         self.showModes()
         self.optionsView.hide()
     }
@@ -1015,7 +1016,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.hide()
     }
     func rateOption() {
-        // TODO: Test rating!
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             Common.rateApp()
@@ -1026,7 +1026,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         self.optionsView.didDissmissAllViews = { [unowned self] in
             self.optionsView.didDissmissAllViews = {}
             let message = NSLocalizedString("I'm playing this new, awesome game! Check it out!", comment: "Message when the user selects to share!")
-            Common.shareApp(self, message: message)
+            Common.shareApp(fromController: self, message: message)
         }
         self.optionsView.hide()
     }
@@ -1155,7 +1155,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     
     @IBAction func showLeader(_ sender: AnyObject) {
-        showLeaderboard(attemptAuthentication: true)
+        showLeaderboard(attemptAuthentication: !self.attemptedAuthentication)
         
     }
     @IBAction func showOptions(_ sender: AnyObject) {
@@ -1202,6 +1202,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     //Handlers in case the watch and phone watch connectivity session becomes disconnected
     func sessionDidDeactivate(_ session: WCSession) {}
     func sessionDidBecomeInactive(_ session: WCSession) {}
+    @available(iOS 9.3, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
     
     func showConfetti() {
