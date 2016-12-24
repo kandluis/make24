@@ -85,6 +85,8 @@ class CongratulationsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.congratulationsView.center.y = -self.congratulationsView.frame.size.height
         // create the stars array
         stars = [star1, star2, star3, star4, star5, star6, star7, star8, star9, star10]
         congratulations_variables = stars
@@ -128,6 +130,8 @@ class CongratulationsViewController: UIViewController {
         case AlertType.rate:
             rate()
         }
+        
+        self.layoutButtons()
     }
     
     // Completion is passed the String corresponding to the
@@ -140,10 +144,18 @@ class CongratulationsViewController: UIViewController {
         self.completion = completion
     }
     
+    func layoutButtons() {
+        let buttons: [UIButton] = [primaryButton, secondaryButton]
+        for button in buttons {
+            button.titleLabel?.numberOfLines = 1;
+            button.titleLabel?.adjustsFontSizeToFitWidth = true;
+            button.titleLabel?.lineBreakMode = .byClipping
+        }
+    }
+    
     fileprivate func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage
-        titleLabel.sizeToFit()
         primaryButton.setTitle(NSLocalizedString("Try Again", comment: "lose alert try again"), for: UIControlState())
         primary_action = .retry
         secondaryButton.setTitle(NSLocalizedString("Ask A Friend", comment: "lose alert ask a friend"), for: UIControlState())
@@ -154,7 +166,6 @@ class CongratulationsViewController: UIViewController {
         let congratsMessage = NSLocalizedString("Congrats!", comment: "friendly congrats message in alert")
         
         titleLabel.text = congratsMessage
-        titleLabel.sizeToFit()
         
         showStars()
         
@@ -196,7 +207,6 @@ class CongratulationsViewController: UIViewController {
     fileprivate func rate() {
         let rateMessage = NSLocalizedString("Enjoying the game?", comment: "friendly rate message in alert")
         titleLabel.text = rateMessage
-        titleLabel.sizeToFit()
         primaryButton.setTitle(NSLocalizedString("Not Now", comment: "rate alert not now"), for: UIControlState())
         primary_action = UserAction.dismiss
         secondaryButton.setTitle(NSLocalizedString("Rate the App", comment: "rate alert rate the app"), for: UIControlState())

@@ -214,6 +214,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         if Utilities.firstLaunch(){
             tutorial()
         }
+        // Layout the buttong
+        layoutButtons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -318,6 +320,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
                     }
                 })
             }
+        }
+    }
+    func layoutButtons() {
+        let buttons: [UIButton] = [resetButton, clearButton, newSetButton, leaderBoardButton, optionsButton]
+        for button in buttons {
+            button.titleLabel?.numberOfLines = 1;
+            button.titleLabel?.adjustsFontSizeToFitWidth = true;
+            button.titleLabel?.lineBreakMode = .byClipping
         }
     }
     
@@ -1030,7 +1040,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func showModes() {
         let info = [
-            (selector: #selector(self.setEasyMode), leftIcon: #imageLiteral(resourceName: "easy"), text: NSLocalizedString("Easy", comment: "Easy difficulty option"), rightIcon: (difficulty == .easy) ? #imageLiteral(resourceName: "checkmark") : nil),
+            (selector: #selector(self.setEasyMode), leftIcon: #imageLiteral(resourceName: "easy"), text: NSLocalizedString("Easy", comment: "Easy difficulty option"), rightIcon: (difficulty == .easy) ? #imageLiteral(resourceName: "checkmark") : nil as UIImage?),
             (selector: #selector(self.setMediumMode), leftIcon: #imageLiteral(resourceName: "medium"), text: NSLocalizedString("Medium", comment: "Medium difficulty option"), rightIcon: (difficulty == .medium) ? #imageLiteral(resourceName: "checkmark") : nil),
             (selector: #selector(self.setHardMode), leftIcon: #imageLiteral(resourceName: "hard"), text: NSLocalizedString("Hard", comment: "Hard difficulty option"), rightIcon: (difficulty == .hard) ? #imageLiteral(resourceName: "checkmark") : nil)
         ]
