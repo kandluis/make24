@@ -23,7 +23,7 @@ PODS:
   - GoogleToolboxForMac/NSData+zlib (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
   - iRate (1.11.7)
-  - Mixpanel-swift (2.1.1)
+  - Mixpanel-swift (2.1.2)
   - SAConfettiView (0.1.8)
   - SwiftyWalkthrough (0.0.4)
   - TKSwarmAlert (1.0.4)
@@ -63,11 +63,11 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   iRate: adae3f183d83c925ac42d7a2e86e89e838963f57
-  Mixpanel-swift: 49966d4beec714aee3a026d39085b62b26eca081
+  Mixpanel-swift: e6234affa94d14f76c856f301693dc43cae5dcb0
   SAConfettiView: c87031a2280659261b730fce3669fb10e73636ee
   SwiftyWalkthrough: ab797ec56b250257ae330aa5cb25e9a14980181a
   TKSwarmAlert: ab34152af48391d8aa80b2386b5e6fe9f335ace7
 
 PODFILE CHECKSUM: 8dfa982f4b3e42a25ffa4d4f806bc850fad7a723
 
-COCOAPODS: 1.2.0.beta.1
+COCOAPODS: 1.1.1
