@@ -146,8 +146,6 @@ class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
         case AlertType.rate:
             rate()
         }
-        
-        self.layoutButtons()
     }
     /*****
      * Ad functionality. Only active if Common.ENABLE_ADS is true.
@@ -176,14 +174,6 @@ class CongratulationsViewController: UIViewController, GADInterstitialDelegate {
         self.completion = completion
     }
     
-    private func layoutButtons() {
-        let buttons: [UIButton] = [primaryButton, secondaryButton]
-        for button in buttons {
-            button.titleLabel?.numberOfLines = 1;
-            button.titleLabel?.adjustsFontSizeToFitWidth = true;
-            button.titleLabel?.lineBreakMode = .byClipping
-        }
-    }
     private func lose() {
         let loseMessage = NSLocalizedString("Aww snap!", comment: "friendly lose message in alert")
         titleLabel.text = loseMessage

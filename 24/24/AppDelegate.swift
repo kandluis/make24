@@ -125,17 +125,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.removeObject(forKey: key)
         }
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Problem")
-        var results: [AnyObject]?
+        let fetchRequest: NSFetchRequest<CoreProblem> = CoreProblem.fetchRequest()
+        var results: [CoreProblem]?
         do {
             results =
                 try managedObjectContext.fetch(fetchRequest)
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
-        let problems = results as? [NSManagedObject] ?? []
+        let problems = results ?? []
         for problem in problems {
-          problem.setValue(false, forKey: "completed")
+            problem.completed = false as NSNumber
         }
     }
     
@@ -203,13 +203,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let items = Utilities.parseCSV(contentsOfFile, encoding: String.Encoding.utf8, error: &error) {
                 // Preload the problem data!
                 for item in items {
-                    let entity = NSEntityDescription.entity(forEntityName: "Problem", in: managedObjectContext)
-                    let problem = NSManagedObject(entity: entity!, insertInto: managedObjectContext)
+                    let entity = NSEntityDescription.entity(forEntityName: "CoreProblem", in: managedObjectContext)
+                    let problem = CoreProblem(entity: entity!, insertInto: managedObjectContext)
                     
-                    problem.setValue(item.id, forKey: "id")
-                    problem.setValue(item.numbers, forKey: "numbers")
-                    problem.setValue(item.difficulty, forKey: "difficulty")
-                    problem.setValue(false, forKey: "completed")
+                    problem.id = item.id as NSNumber
+                    problem.numbers = item.numbers as NSObject
+                    problem.difficulty = item.difficulty as NSNumber
+                    problem.completed = false as NSNumber
                     
                     self.saveContext()
                 }
