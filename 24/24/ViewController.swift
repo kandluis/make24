@@ -156,7 +156,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         }
     }
     // Current problem from db
-    var selectedProblem: NSManagedObject?
+    var selectedProblem: CoreProblem?
     
     // Audio variables
     var player: AVAudioPlayer? = nil
@@ -215,6 +215,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         if Utilities.firstLaunch(){
             tutorial()
         }
+        // Layout the buttong
+        layoutButtons()
     }
     func willResignActive() {
         // App is always silenced in background.
@@ -245,11 +247,16 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         return "\(levelKey())(\(playerLevel)):\(KeyForSetting.internalPuzzle.rawValue)"
     }
     func scoreKey() -> String {
-        return "\(puzzleKey()):\(KeyForSetting.internalScore.rawValue)"
+        return "\(levelKey()):\(KeyForSetting.internalScore.rawValue)"
     }
     // Sets the appropriate values based on an updated game difficulty.
     func updateInternalProgress(){
+        // Migration code. If the score is 0, we load the # of puzzles solved as a proxy for the
+        // score.
         playerScore = defaults.integer(forKey: scoreKey())
+        if playerScore == 0 {
+            playerScore = defaults.integer(forKey: puzzleKey())
+        }
         playerLevel = defaults.integer(forKey: levelKey())
         if playerLevel == 0 {
             playerLevel = 1
@@ -317,6 +324,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             }
         }
     }
+    func layoutButtons() {
+        let buttons: [UIButton] = [resetButton, clearButton, newSetButton, leaderBoardButton, optionsButton]
+        for button in buttons {
+            button.titleLabel?.numberOfLines = 1;
+            button.titleLabel?.adjustsFontSizeToFitWidth = true;
+            button.titleLabel?.lineBreakMode = .byClipping
+        }
+    }
     
     /************
      * Database Functions
@@ -329,24 +344,25 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
         let buckets = Double((GameDifficulty.caseCount - 1) * base3 + (self.levelsPerDifficulty - 1) * base2 + (self.puzzlesPerLevel - 1) * base1)
         // Player level is 1 indexed.
         let current = Double(self.difficulty.rawValue * base3 +  (self.playerLevel - 1) * base2 + self.puzzlesSolved * base1)
-        let max = current / buckets
-        let min = (max - (overlap / buckets)) > 0 ? max - (overlap / buckets) : 0
+        let center = current / buckets
+        let min = center - overlap / (2 * buckets)
+        let max = center + overlap / (2 * buckets)
         return (min, max)
     }
     
-    func loadProblems(_ level: Int) -> [NSManagedObject] {
+    func loadProblems(_ level: Int) -> [CoreProblem] {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return []
         }
         let managedContext = appDelegate.managedObjectContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Problem")
+        let fetchRequest: NSFetchRequest<CoreProblem> = CoreProblem.fetchRequest()
         
         // Filter to only include levels not completed
         let (minDifficulty, maxDifficulty) = getDifficultyRange(level)
         fetchRequest.predicate = NSPredicate(format: "completed == NO AND difficulty > %f AND difficulty < %f", minDifficulty, maxDifficulty)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "difficulty", ascending: true)]
         
-        var results: [AnyObject]?
+        var results: [CoreProblem]?
         do {
             results =
                 try managedContext.fetch(fetchRequest)
@@ -354,7 +370,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
             print("Could not fetch \(error), \(error.userInfo)")
         }
         print("Loaded \(results?.count ?? 0) problems!")
-        return results as? [NSManagedObject] ?? []
+        return results ?? []
     }
     func saveCoreData() {
         guard let AppDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -438,8 +454,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     
     // From a suitable array of problems, select the one to present.
-    func selectProblem(_ problems: [NSManagedObject]) -> NSManagedObject? {
-        var selectedProblem: NSManagedObject?
+    func selectProblem(_ problems: [CoreProblem]) -> CoreProblem? {
+        var selectedProblem: CoreProblem?
         if problems.count > 0 {
             selectedProblem = problems[Int(arc4random_uniform(UInt32(problems.count)))]
         }
@@ -591,7 +607,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func didWin() {
         // Core data is synchronized when the application exits!
-        self.selectedProblem?.setValue(true, forKey: "completed")
+        self.selectedProblem?.completed = true as NSNumber
         self.saveCoreData()
         self.congratulations()
     }
@@ -1030,7 +1046,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     }
     func showModes() {
         let info = [
-            (selector: #selector(self.setEasyMode), leftIcon: #imageLiteral(resourceName: "easy"), text: NSLocalizedString("Easy", comment: "Easy difficulty option"), rightIcon: (difficulty == .easy) ? #imageLiteral(resourceName: "checkmark") : nil),
+            (selector: #selector(self.setEasyMode), leftIcon: #imageLiteral(resourceName: "easy"), text: NSLocalizedString("Easy", comment: "Easy difficulty option"), rightIcon: (difficulty == .easy) ? #imageLiteral(resourceName: "checkmark") : nil as UIImage?),
             (selector: #selector(self.setMediumMode), leftIcon: #imageLiteral(resourceName: "medium"), text: NSLocalizedString("Medium", comment: "Medium difficulty option"), rightIcon: (difficulty == .medium) ? #imageLiteral(resourceName: "checkmark") : nil),
             (selector: #selector(self.setHardMode), leftIcon: #imageLiteral(resourceName: "hard"), text: NSLocalizedString("Hard", comment: "Hard difficulty option"), rightIcon: (difficulty == .hard) ? #imageLiteral(resourceName: "checkmark") : nil)
         ]

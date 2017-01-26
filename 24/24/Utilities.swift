@@ -81,19 +81,16 @@ class Utilities {
     }
 
     class func firstLaunch()->Bool{
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else { return true }
         let defaults = UserDefaults.standard
-        
-        if let appVersion = defaults.string(forKey: "appVersion"){
-            print("Running App Version : \(appVersion)")
-            return false
-        }
-        else {
-            let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
-            let appVersion = nsObject as! String
-            
-            defaults.set(appVersion, forKey: "appVersion")
+        guard let prevVersion = defaults.string(forKey: "appVersion") else { return true }
+        // Update the version!
+        defaults.set(appVersion, forKey: "appVersion")
+        guard appVersion == prevVersion else {
+            print("Previous version: \(prevVersion). New version: \(appVersion)")
             return true
         }
+        return false
     }
     
     class func fitTextTo(label: UILabel) {
