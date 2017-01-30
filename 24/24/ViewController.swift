@@ -473,7 +473,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, WCSessio
     func initializeNumbers() {
         
         clearAnswers()
-        if let problem = (selectProblem(loadProblems(playerLevel))?.value(forKey: "numbers") as? [Int]) {
+        selectedProblem = selectProblem(loadProblems(playerLevel))
+        if let problem = selectedProblem?.numbers as? [Int] {
             
             for index in 0..<numberButtons.count {
                 let selectedNumber = problem[index]
