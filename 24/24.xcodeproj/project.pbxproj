@@ -1086,7 +1086,7 @@
 				INFOPLIST_FILE = 24/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.risingstarpathways.24-free";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lemonbunny.24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "24/24-Bridging-Header.h";
@@ -1109,7 +1109,7 @@
 				INFOPLIST_FILE = 24/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.risingstarpathways.24-free";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lemonbunny.24;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "24/24-Bridging-Header.h";
@@ -1180,7 +1180,7 @@
 				DEVELOPMENT_TEAM = J87Z56BB74;
 				INFOPLIST_FILE = "24Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.risingstarpathways.24-free.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lemonbunny.24.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1200,7 +1200,7 @@
 				DEVELOPMENT_TEAM = J87Z56BB74;
 				INFOPLIST_FILE = "24Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.risingstarpathways.24-free.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lemonbunny.24.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1222,7 +1222,7 @@
 				DEVELOPMENT_TEAM = J87Z56BB74;
 				IBSC_MODULE = _4Watch_Extension;
 				INFOPLIST_FILE = 24Watch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.risingstarpathways.24-free.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lemonbunny.24.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1245,7 +1245,7 @@
 				DEVELOPMENT_TEAM = J87Z56BB74;
 				IBSC_MODULE = _4Watch_Extension;
 				INFOPLIST_FILE = 24Watch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.risingstarpathways.24-free.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lemonbunny.24.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;

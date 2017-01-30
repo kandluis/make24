@@ -17,15 +17,15 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.1</string>
+	<string>1.0.1</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>WKAppBundleIdentifier</key>
-			<string>com.risingstarpathways.24-free.watchkitapp</string>
+			<string>com.lemonbunny.24</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
