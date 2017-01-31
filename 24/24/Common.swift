@@ -9,7 +9,7 @@
 import UIKit
 import iRate
 
-let APP_ID = "1163517735"
+let APP_ID = "1200346468"
 
 class Common {
     class func shareApp(fromController view: UIViewController, message: String) {
